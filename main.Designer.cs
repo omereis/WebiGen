@@ -34,6 +34,9 @@
 			miExit = new ToolStripMenuItem();
 			popupHelp = new ToolStripMenuItem();
 			miAbout = new ToolStripMenuItem();
+			button1 = new Button();
+			comboDatabases = new ComboBox();
+			txtConnection = new TextBox();
 			menuMain.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -58,6 +61,7 @@
 			miDatabase.Name = "miDatabase";
 			miDatabase.Size = new Size(180, 22);
 			miDatabase.Text = "&Database...";
+			miDatabase.Click += miDatabase_Click;
 			// 
 			// miFileSep1
 			// 
@@ -84,15 +88,45 @@
 			miAbout.Size = new Size(116, 22);
 			miAbout.Text = "&About...";
 			// 
+			// button1
+			// 
+			button1.Location = new Point(168, 133);
+			button1.Name = "button1";
+			button1.Size = new Size(75, 23);
+			button1.TabIndex = 1;
+			button1.Text = "button1";
+			button1.UseVisualStyleBackColor = true;
+			button1.Click += button1_Click;
+			// 
+			// comboDatabases
+			// 
+			comboDatabases.DropDownStyle = ComboBoxStyle.DropDownList;
+			comboDatabases.FormattingEnabled = true;
+			comboDatabases.Location = new Point(315, 113);
+			comboDatabases.Name = "comboDatabases";
+			comboDatabases.Size = new Size(170, 23);
+			comboDatabases.TabIndex = 2;
+			// 
+			// txtConnection
+			// 
+			txtConnection.Location = new Point(65, 195);
+			txtConnection.Name = "txtConnection";
+			txtConnection.Size = new Size(711, 23);
+			txtConnection.TabIndex = 3;
+			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
+			Controls.Add(txtConnection);
+			Controls.Add(comboDatabases);
+			Controls.Add(button1);
 			Controls.Add(menuMain);
 			MainMenuStrip = menuMain;
 			Name = "frmMain";
 			Text = "WebeSmarts Data Generetor";
+			Load += frmMain_Load;
 			menuMain.ResumeLayout(false);
 			menuMain.PerformLayout();
 			ResumeLayout(false);
@@ -108,5 +142,8 @@
 		private ToolStripMenuItem miExit;
 		private ToolStripMenuItem popupHelp;
 		private ToolStripMenuItem miAbout;
+		private Button button1;
+		private ComboBox comboDatabases;
+		private TextBox txtConnection;
 	}
 }

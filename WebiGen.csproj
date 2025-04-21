@@ -8,4 +8,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\Common\DBParams.cs" Link="DBParams.cs" />
+    <Compile Include="..\..\Common\IniFile.cs" Link="IniFile.cs" />
+    <Compile Include="..\..\Common\Misc.cs" Link="Misc.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+  </ItemGroup>
+
 </Project>
