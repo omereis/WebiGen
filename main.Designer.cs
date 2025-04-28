@@ -37,6 +37,7 @@
 			button1 = new Button();
 			comboDatabases = new ComboBox();
 			txtConnection = new TextBox();
+			statusStrip1 = new StatusStrip();
 			menuMain.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -59,19 +60,19 @@
 			// miDatabase
 			// 
 			miDatabase.Name = "miDatabase";
-			miDatabase.Size = new Size(180, 22);
+			miDatabase.Size = new Size(131, 22);
 			miDatabase.Text = "&Database...";
 			miDatabase.Click += miDatabase_Click;
 			// 
 			// miFileSep1
 			// 
 			miFileSep1.Name = "miFileSep1";
-			miFileSep1.Size = new Size(177, 6);
+			miFileSep1.Size = new Size(128, 6);
 			// 
 			// miExit
 			// 
 			miExit.Name = "miExit";
-			miExit.Size = new Size(180, 22);
+			miExit.Size = new Size(131, 22);
 			miExit.Text = "E&xit";
 			miExit.Click += miExit_Click;
 			// 
@@ -114,11 +115,20 @@
 			txtConnection.Size = new Size(711, 23);
 			txtConnection.TabIndex = 3;
 			// 
+			// statusStrip1
+			// 
+			statusStrip1.Location = new Point(0, 428);
+			statusStrip1.Name = "statusStrip1";
+			statusStrip1.Size = new Size(800, 22);
+			statusStrip1.TabIndex = 4;
+			statusStrip1.Text = "statusStrip1";
+			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
+			Controls.Add(statusStrip1);
 			Controls.Add(txtConnection);
 			Controls.Add(comboDatabases);
 			Controls.Add(button1);
@@ -126,6 +136,7 @@
 			MainMenuStrip = menuMain;
 			Name = "frmMain";
 			Text = "WebeSmarts Data Generetor";
+			FormClosed += frmMain_FormClosed;
 			Load += frmMain_Load;
 			menuMain.ResumeLayout(false);
 			menuMain.PerformLayout();
@@ -145,5 +156,6 @@
 		private Button button1;
 		private ComboBox comboDatabases;
 		private TextBox txtConnection;
+		private StatusStrip statusStrip1;
 	}
 }
