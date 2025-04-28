@@ -37,8 +37,12 @@
 			button1 = new Button();
 			comboDatabases = new ComboBox();
 			txtConnection = new TextBox();
-			statusStrip1 = new StatusStrip();
+			status_bar = new StatusStrip();
+			toolStripStatusLabel1 = new ToolStripStatusLabel();
+			toolStripStatusLabel2 = new ToolStripStatusLabel();
+			toolStripStatusLabel3 = new ToolStripStatusLabel();
 			menuMain.SuspendLayout();
+			status_bar.SuspendLayout();
 			SuspendLayout();
 			// 
 			// menuMain
@@ -115,20 +119,39 @@
 			txtConnection.Size = new Size(711, 23);
 			txtConnection.TabIndex = 3;
 			// 
-			// statusStrip1
+			// status_bar
 			// 
-			statusStrip1.Location = new Point(0, 428);
-			statusStrip1.Name = "statusStrip1";
-			statusStrip1.Size = new Size(800, 22);
-			statusStrip1.TabIndex = 4;
-			statusStrip1.Text = "statusStrip1";
+			status_bar.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripStatusLabel2, toolStripStatusLabel3 });
+			status_bar.Location = new Point(0, 428);
+			status_bar.Name = "status_bar";
+			status_bar.Size = new Size(800, 22);
+			status_bar.TabIndex = 4;
+			status_bar.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabel1
+			// 
+			toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			toolStripStatusLabel1.Size = new Size(118, 17);
+			toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+			// 
+			// toolStripStatusLabel2
+			// 
+			toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+			toolStripStatusLabel2.Size = new Size(118, 17);
+			toolStripStatusLabel2.Text = "toolStripStatusLabel2";
+			// 
+			// toolStripStatusLabel3
+			// 
+			toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+			toolStripStatusLabel3.Size = new Size(118, 17);
+			toolStripStatusLabel3.Text = "toolStripStatusLabel3";
 			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
-			Controls.Add(statusStrip1);
+			Controls.Add(status_bar);
 			Controls.Add(txtConnection);
 			Controls.Add(comboDatabases);
 			Controls.Add(button1);
@@ -140,6 +163,8 @@
 			Load += frmMain_Load;
 			menuMain.ResumeLayout(false);
 			menuMain.PerformLayout();
+			status_bar.ResumeLayout(false);
+			status_bar.PerformLayout();
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -156,6 +181,9 @@
 		private Button button1;
 		private ComboBox comboDatabases;
 		private TextBox txtConnection;
-		private StatusStrip statusStrip1;
+		private StatusStrip status_bar;
+		private ToolStripStatusLabel toolStripStatusLabel1;
+		private ToolStripStatusLabel toolStripStatusLabel2;
+		private ToolStripStatusLabel toolStripStatusLabel3;
 	}
 }

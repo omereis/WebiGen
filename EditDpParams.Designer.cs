@@ -30,7 +30,7 @@
 			label3 = new Label();
 			txtConnection = new TextBox();
 			txtServer = new TextBox();
-			btnCompose = new Button();
+			btnBasicCompose = new Button();
 			comboDatabase = new ComboBox();
 			btnTest = new Button();
 			tabControl1 = new TabControl();
@@ -39,6 +39,7 @@
 			gridDetails = new DataGridView();
 			Column1 = new DataGridViewTextBoxColumn();
 			Column2 = new DataGridViewTextBoxColumn();
+			btnDetailCompose = new Button();
 			tabControl1.SuspendLayout();
 			tabSimple.SuspendLayout();
 			tabDetailed.SuspendLayout();
@@ -106,14 +107,15 @@
 			txtServer.Size = new Size(201, 23);
 			txtServer.TabIndex = 6;
 			// 
-			// btnCompose
+			// btnBasicCompose
 			// 
-			btnCompose.Location = new Point(12, 269);
-			btnCompose.Name = "btnCompose";
-			btnCompose.Size = new Size(75, 23);
-			btnCompose.TabIndex = 7;
-			btnCompose.Text = "Compose";
-			btnCompose.UseVisualStyleBackColor = true;
+			btnBasicCompose.Location = new Point(107, 133);
+			btnBasicCompose.Name = "btnBasicCompose";
+			btnBasicCompose.Size = new Size(132, 23);
+			btnBasicCompose.TabIndex = 7;
+			btnBasicCompose.Text = "Basic Compose";
+			btnBasicCompose.UseVisualStyleBackColor = true;
+			btnBasicCompose.Click += btnBasicCompose_Click;
 			// 
 			// comboDatabase
 			// 
@@ -148,6 +150,7 @@
 			// 
 			tabSimple.Controls.Add(txtServer);
 			tabSimple.Controls.Add(label1);
+			tabSimple.Controls.Add(btnBasicCompose);
 			tabSimple.Controls.Add(comboDatabase);
 			tabSimple.Controls.Add(label2);
 			tabSimple.Location = new Point(4, 24);
@@ -160,6 +163,7 @@
 			// 
 			// tabDetailed
 			// 
+			tabDetailed.Controls.Add(btnDetailCompose);
 			tabDetailed.Controls.Add(gridDetails);
 			tabDetailed.Location = new Point(4, 24);
 			tabDetailed.Name = "tabDetailed";
@@ -176,7 +180,7 @@
 			gridDetails.Location = new Point(6, 6);
 			gridDetails.Name = "gridDetails";
 			gridDetails.RowHeadersVisible = false;
-			gridDetails.Size = new Size(526, 194);
+			gridDetails.Size = new Size(526, 167);
 			gridDetails.TabIndex = 0;
 			// 
 			// Column1
@@ -191,6 +195,15 @@
 			Column2.Name = "Column2";
 			Column2.Width = 300;
 			// 
+			// btnDetailCompose
+			// 
+			btnDetailCompose.Location = new Point(107, 179);
+			btnDetailCompose.Name = "btnDetailCompose";
+			btnDetailCompose.Size = new Size(108, 23);
+			btnDetailCompose.TabIndex = 1;
+			btnDetailCompose.Text = "Detail Compose";
+			btnDetailCompose.UseVisualStyleBackColor = true;
+			// 
 			// DlgEditDB
 			// 
 			AcceptButton = btnOK;
@@ -200,7 +213,6 @@
 			ClientSize = new Size(725, 450);
 			Controls.Add(tabControl1);
 			Controls.Add(btnTest);
-			Controls.Add(btnCompose);
 			Controls.Add(txtConnection);
 			Controls.Add(label3);
 			Controls.Add(btnCancel);
@@ -230,7 +242,7 @@
 		private Label label3;
 		private TextBox txtConnection;
 		private TextBox txtServer;
-		private Button btnCompose;
+		private Button btnBasicCompose;
 		private ComboBox comboDatabase;
 		private Button btnTest;
 		private TabControl tabControl1;
@@ -239,5 +251,6 @@
 		private DataGridView gridDetails;
 		private DataGridViewTextBoxColumn Column1;
 		private DataGridViewTextBoxColumn Column2;
+		private Button btnDetailCompose;
 	}
 }

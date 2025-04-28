@@ -33,11 +33,11 @@ namespace WebiGen {
 			m_db_params = null;
 			m_database = null;
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void miExit_Click(object sender, EventArgs e) {
 			Close();
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void button1_Click(object sender, EventArgs e) {
 			//string connectionString = "Server=OMER\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
 			//string connectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
@@ -49,21 +49,29 @@ namespace WebiGen {
 				//Console.WriteLine(db);
 			}
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
+			bool fConnect=false;
+			string strConn="";
+
 			try {
-				string strConn = LoadIniConnectionString();
+				strConn = LoadIniConnectionString();
 				if(strConn.Length > 0) {
 					m_database = new SqlConnection(strConn);
 					m_database.Open();
+					fConnect = true;
+					if (status_bar.Items.Count == 0)
+						status_bar.Items.Add (strConn);
 				}
 			}
 			catch (Exception ex) {
 				MessageBox.Show ("Error connectiong to database\n" + ex.Message);
 				m_database = null;
+				fConnect = false;
 			}
+			UpdateStatusBar (strConn, fConnect);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void miDatabase_Click(object sender, EventArgs e) {
 			DlgEditDB dlg = new DlgEditDB();
 			string strConnection = LoadIniConnectionString();
@@ -76,24 +84,33 @@ namespace WebiGen {
 				txtConnection.Text = strConnection;
 			}
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private string LoadIniConnectionString() {
 			string str = "";
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			str = ini.ReadString("Database", "default");
 			return (str);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void SaveIniConnectionString(string strConnection) {
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			ini.WriteString("Database", "default", strConnection);
 		}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
 			if (m_database != null) {
 				m_database.Close();
 			}
 		}
+//-----------------------------------------------------------------------------
+		private void UpdateStatusBar (string strConnection, bool fConnect) {
+			TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
+			string strServer = ms_params.GetServer();
+			string strDatabase = ms_params.GetDatabase ();
+			status_bar.Items[0].Text = System.String.Format ("Server={0}", strServer);
+			status_bar.Items[1].Text = System.String.Format ("Database={0}", strDatabase);
+			status_bar.Items[2].Text = (fConnect ? "Connected" : "Disconnected");
+		}
 	}
-	//-----------------------------------------------------------------------------
-}
+//-----------------------------------------------------------------------------
+	}
