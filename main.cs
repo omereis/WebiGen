@@ -28,28 +28,31 @@ namespace WebiGen {
 		private TDBParams m_db_params;
 		private static readonly string DefauleConnectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
 		SqlConnection m_database;
+		string m_strErr="";
 		public frmMain() {
 			InitializeComponent();
 			m_db_params = null;
 			m_database = null;
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void miExit_Click(object sender, EventArgs e) {
 			Close();
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void button1_Click(object sender, EventArgs e) {
-			//string connectionString = "Server=OMER\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
-			//string connectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
-			DatabaseLister lister = new DatabaseLister();
-			List<string> databases = lister.GetDatabaseListUsingGetSchema(DefauleConnectionString);
-			comboDatabases.Items.Clear();
-			foreach(var db in databases) {
-				comboDatabases.Items.Add(db);
-				//Console.WriteLine(db);
-			}
+			/*
+						//string connectionString = "Server=OMER\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
+						//string connectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
+						DatabaseLister lister = new DatabaseLister();
+						List<string> databases = lister.GetDatabaseListUsingGetSchema(DefauleConnectionString);
+						comboDatabases.Items.Clear();
+						foreach(var db in databases) {
+							comboDatabases.Items.Add(db);
+							//Console.WriteLine(db);
+						}
+			*/
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
 			bool fConnect = false;
 			string strConn = "";
@@ -62,16 +65,16 @@ namespace WebiGen {
 				fConnect = false;
 			}
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private bool ConnectToDB() {
 			string strConn = LoadIniConnectionString();
 			bool fConnect = false;
 			try {
 				if(strConn.Length > 0) {
-					DisconnectDatabase ();
+					DisconnectDatabase();
 					m_database = new SqlConnection(strConn);
 					m_database.Open();
-					SetConnectButtons (true);
+					SetConnectButtons(true);
 					fConnect = true;
 				}
 			} catch(Exception e) {
@@ -81,7 +84,7 @@ namespace WebiGen {
 			UpdateStatusBar(/*strConn, fConnect*/);
 			return (fConnect);
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void miDatabase_Click(object sender, EventArgs e) {
 			DlgEditDB dlg = new DlgEditDB();
 			string strConnection = LoadIniConnectionString();
@@ -93,25 +96,25 @@ namespace WebiGen {
 				txtConnection.Text = strConnection;
 			}
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private string LoadIniConnectionString() {
 			string str = "";
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			str = ini.ReadString("Database", "default");
 			return (str);
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void SaveIniConnectionString(string strConnection) {
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			ini.WriteString("Database", "default", strConnection);
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
 			if(m_database != null) {
 				m_database.Close();
 			}
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void UpdateStatusBar(/*string strConnection, bool fConnect*/) {
 			//TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
 			string strServer = "", strDatabase = "";
@@ -127,28 +130,52 @@ namespace WebiGen {
 			status_bar.Items[1].Text = System.String.Format("Database={0}", strDatabase);
 			status_bar.Items[2].Text = (fConnect ? "Connected" : "Disconnected");
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void btnConnect_Click(object sender, EventArgs e) {
-			ConnectToDB ();
-			SetConnectButtons (true);
+			ConnectToDB();
+			SetConnectButtons(true);
 		}
-//-----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		private void btnDisconnect_Click(object sender, EventArgs e) {
-			DisconnectDatabase ();
-			SetConnectButtons (false);
+			DisconnectDatabase();
+			SetConnectButtons(false);
 			UpdateStatusBar();
 		}
-//-----------------------------------------------------------------------------
-		private void DisconnectDatabase () {
-			if (m_database != null)
-				if (m_database.State == ConnectionState.Open)
-					m_database.Close ();
+		//-----------------------------------------------------------------------------
+		private void DisconnectDatabase() {
+			if(m_database != null)
+				if(m_database.State == ConnectionState.Open)
+					m_database.Close();
 		}
-//-----------------------------------------------------------------------------
-		private void SetConnectButtons (bool fConnect) {
+		//-----------------------------------------------------------------------------
+		private void SetConnectButtons(bool fConnect) {
 			btnConnect.Enabled = !fConnect;
 			btnDisconnect.Enabled = fConnect;
 		}
+		//-----------------------------------------------------------------------------
+		private bool DatabaseConnected () {
+			bool fConnected = false;
+
+			if (m_database != null)
+				fConnected = m_database.State != ConnectionState.Open;
+			return (fConnected);
+		}
+		//-----------------------------------------------------------------------------
+		private void btnLoadMaps_Click(object sender, EventArgs e) {
+			if (DatabaseConnected ()) {
+				TMapInfo[] aMaps=null;
+
+				comboMaps.Items.Clear();
+				comboMaps.Items.Add ("");
+				if (TMapInfo.LoadMapsFromDB (m_database, ref aMaps, ref m_strErr)) {
+					if (aMaps != null)
+						for (int n=0 ; n < aMaps.Length; n++)
+							comboMaps.Items.Add(aMaps[n]);
+				}
+				else
+					MessageBox.Show ("Error loading maps:\n" + m_strErr);
+			}
+		}
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 }

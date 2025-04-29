@@ -36,7 +36,7 @@
 			popupHelp = new ToolStripMenuItem();
 			miAbout = new ToolStripMenuItem();
 			button1 = new Button();
-			comboDatabases = new ComboBox();
+			comboMaps = new ComboBox();
 			txtConnection = new TextBox();
 			status_bar = new StatusStrip();
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
@@ -45,6 +45,8 @@
 			toolbar = new ToolStrip();
 			btnConnect = new ToolStripButton();
 			btnDisconnect = new ToolStripButton();
+			btnLoadMaps = new Button();
+			label1 = new Label();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
@@ -108,14 +110,14 @@
 			button1.UseVisualStyleBackColor = true;
 			button1.Click += button1_Click;
 			// 
-			// comboDatabases
+			// comboMaps
 			// 
-			comboDatabases.DropDownStyle = ComboBoxStyle.DropDownList;
-			comboDatabases.FormattingEnabled = true;
-			comboDatabases.Location = new Point(315, 113);
-			comboDatabases.Name = "comboDatabases";
-			comboDatabases.Size = new Size(170, 23);
-			comboDatabases.TabIndex = 2;
+			comboMaps.DropDownStyle = ComboBoxStyle.DropDownList;
+			comboMaps.FormattingEnabled = true;
+			comboMaps.Location = new Point(49, 87);
+			comboMaps.Name = "comboMaps";
+			comboMaps.Size = new Size(170, 23);
+			comboMaps.TabIndex = 2;
 			// 
 			// txtConnection
 			// 
@@ -181,15 +183,36 @@
 			btnDisconnect.Text = "toolStripButton2";
 			btnDisconnect.Click += btnDisconnect_Click;
 			// 
+			// btnLoadMaps
+			// 
+			btnLoadMaps.Location = new Point(49, 58);
+			btnLoadMaps.Name = "btnLoadMaps";
+			btnLoadMaps.Size = new Size(86, 23);
+			btnLoadMaps.TabIndex = 6;
+			btnLoadMaps.Text = "Reload Maps";
+			btnLoadMaps.UseVisualStyleBackColor = true;
+			btnLoadMaps.Click += btnLoadMaps_Click;
+			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(7, 90);
+			label1.Name = "label1";
+			label1.Size = new Size(36, 15);
+			label1.TabIndex = 7;
+			label1.Text = "Maps";
+			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
+			Controls.Add(label1);
+			Controls.Add(btnLoadMaps);
 			Controls.Add(toolbar);
 			Controls.Add(status_bar);
 			Controls.Add(txtConnection);
-			Controls.Add(comboDatabases);
+			Controls.Add(comboMaps);
 			Controls.Add(button1);
 			Controls.Add(menuMain);
 			MainMenuStrip = menuMain;
@@ -217,7 +240,7 @@
 		private ToolStripMenuItem popupHelp;
 		private ToolStripMenuItem miAbout;
 		private Button button1;
-		private ComboBox comboDatabases;
+		private ComboBox comboMaps;
 		private TextBox txtConnection;
 		private StatusStrip status_bar;
 		private ToolStripStatusLabel toolStripStatusLabel1;
@@ -226,5 +249,7 @@
 		private ToolStrip toolbar;
 		private ToolStripButton btnConnect;
 		private ToolStripButton btnDisconnect;
+		private Button btnLoadMaps;
+		private Label label1;
 	}
 }
