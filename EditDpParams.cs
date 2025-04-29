@@ -73,7 +73,7 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		private void Upload(ref string strConnection) {
-			Compose();
+			BasicCompose ();
 			strConnection = txtConnection.Text;
 		}
 //-----------------------------------------------------------------------------
@@ -81,6 +81,7 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		private void btnTest_Click(object sender, EventArgs e) {
+			BasicCompose ();
 			string strConn = txtConnection.Text.Trim();
 			SqlConnection conn = null;
 
@@ -114,6 +115,10 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		private void btnBasicCompose_Click(object sender, EventArgs e) {
+			BasicCompose ();
+		}
+//-----------------------------------------------------------------------------
+		private void BasicCompose () {
 			string strServer = txtServer.Text.Trim();
 			string strDatabase = comboDatabase.Text.Trim();
 			string strConnection = TMsSqlDbParams.GetServerConnectionString(strServer, strDatabase);

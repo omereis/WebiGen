@@ -27,6 +27,7 @@
 		///  the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -41,8 +42,12 @@
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
 			toolStripStatusLabel2 = new ToolStripStatusLabel();
 			toolStripStatusLabel3 = new ToolStripStatusLabel();
+			toolbar = new ToolStrip();
+			btnConnect = new ToolStripButton();
+			btnDisconnect = new ToolStripButton();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
+			toolbar.SuspendLayout();
 			SuspendLayout();
 			// 
 			// menuMain
@@ -146,11 +151,42 @@
 			toolStripStatusLabel3.Size = new Size(118, 17);
 			toolStripStatusLabel3.Text = "toolStripStatusLabel3";
 			// 
+			// toolbar
+			// 
+			toolbar.BackColor = Color.Silver;
+			toolbar.Items.AddRange(new ToolStripItem[] { btnConnect, btnDisconnect });
+			toolbar.Location = new Point(0, 24);
+			toolbar.Name = "toolbar";
+			toolbar.Size = new Size(800, 25);
+			toolbar.TabIndex = 5;
+			toolbar.Text = "toolStrip1";
+			// 
+			// btnConnect
+			// 
+			btnConnect.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			btnConnect.Image = (Image)resources.GetObject("btnConnect.Image");
+			btnConnect.ImageTransparentColor = Color.Magenta;
+			btnConnect.Name = "btnConnect";
+			btnConnect.Size = new Size(23, 22);
+			btnConnect.Text = "toolStripButton1";
+			btnConnect.Click += btnConnect_Click;
+			// 
+			// btnDisconnect
+			// 
+			btnDisconnect.DisplayStyle = ToolStripItemDisplayStyle.Image;
+			btnDisconnect.Image = (Image)resources.GetObject("btnDisconnect.Image");
+			btnDisconnect.ImageTransparentColor = Color.Magenta;
+			btnDisconnect.Name = "btnDisconnect";
+			btnDisconnect.Size = new Size(23, 22);
+			btnDisconnect.Text = "toolStripButton2";
+			btnDisconnect.Click += btnDisconnect_Click;
+			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
+			Controls.Add(toolbar);
 			Controls.Add(status_bar);
 			Controls.Add(txtConnection);
 			Controls.Add(comboDatabases);
@@ -165,6 +201,8 @@
 			menuMain.PerformLayout();
 			status_bar.ResumeLayout(false);
 			status_bar.PerformLayout();
+			toolbar.ResumeLayout(false);
+			toolbar.PerformLayout();
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -185,5 +223,8 @@
 		private ToolStripStatusLabel toolStripStatusLabel1;
 		private ToolStripStatusLabel toolStripStatusLabel2;
 		private ToolStripStatusLabel toolStripStatusLabel3;
+		private ToolStrip toolbar;
+		private ToolStripButton btnConnect;
+		private ToolStripButton btnDisconnect;
 	}
 }

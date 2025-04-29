@@ -51,25 +51,35 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
-			bool fConnect=false;
-			string strConn="";
+			bool fConnect = false;
+			string strConn = "";
 
 			try {
-				strConn = LoadIniConnectionString();
-				if(strConn.Length > 0) {
-					m_database = new SqlConnection(strConn);
-					m_database.Open();
-					fConnect = true;
-					if (status_bar.Items.Count == 0)
-						status_bar.Items.Add (strConn);
-				}
-			}
-			catch (Exception ex) {
-				MessageBox.Show ("Error connectiong to database\n" + ex.Message);
+				fConnect = ConnectToDB();
+			} catch(Exception ex) {
+				MessageBox.Show("Error connectiong to database\n" + ex.Message);
 				m_database = null;
 				fConnect = false;
 			}
-			UpdateStatusBar (strConn, fConnect);
+		}
+//-----------------------------------------------------------------------------
+		private bool ConnectToDB() {
+			string strConn = LoadIniConnectionString();
+			bool fConnect = false;
+			try {
+				if(strConn.Length > 0) {
+					DisconnectDatabase ();
+					m_database = new SqlConnection(strConn);
+					m_database.Open();
+					SetConnectButtons (true);
+					fConnect = true;
+				}
+			} catch(Exception e) {
+				fConnect = false;
+				MessageBox.Show(e.Message);
+			}
+			UpdateStatusBar(/*strConn, fConnect*/);
+			return (fConnect);
 		}
 //-----------------------------------------------------------------------------
 		private void miDatabase_Click(object sender, EventArgs e) {
@@ -78,9 +88,8 @@ namespace WebiGen {
 			if(strConnection.Length == 0)
 				strConnection = DefauleConnectionString;
 			if(dlg.Execute(ref strConnection)) {
-				m_database =new SqlConnection(strConnection);
-				m_database.Open();
 				SaveIniConnectionString(strConnection);
+				ConnectToDB();
 				txtConnection.Text = strConnection;
 			}
 		}
@@ -98,19 +107,48 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
-			if (m_database != null) {
+			if(m_database != null) {
 				m_database.Close();
 			}
 		}
 //-----------------------------------------------------------------------------
-		private void UpdateStatusBar (string strConnection, bool fConnect) {
-			TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
-			string strServer = ms_params.GetServer();
-			string strDatabase = ms_params.GetDatabase ();
-			status_bar.Items[0].Text = System.String.Format ("Server={0}", strServer);
-			status_bar.Items[1].Text = System.String.Format ("Database={0}", strDatabase);
+		private void UpdateStatusBar(/*string strConnection, bool fConnect*/) {
+			//TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
+			string strServer = "", strDatabase = "";
+			bool fConnect = false;
+			if(m_database != null) {
+				strServer = m_database.DataSource;
+				strDatabase = m_database.Database;
+				fConnect = m_database.State == ConnectionState.Open;
+			}
+			//string strServer = ms_params.GetServer();
+			//string strDatabase = ms_params.GetDatabase ();
+			status_bar.Items[0].Text = System.String.Format("Server={0}", strServer);
+			status_bar.Items[1].Text = System.String.Format("Database={0}", strDatabase);
 			status_bar.Items[2].Text = (fConnect ? "Connected" : "Disconnected");
+		}
+//-----------------------------------------------------------------------------
+		private void btnConnect_Click(object sender, EventArgs e) {
+			ConnectToDB ();
+			SetConnectButtons (true);
+		}
+//-----------------------------------------------------------------------------
+		private void btnDisconnect_Click(object sender, EventArgs e) {
+			DisconnectDatabase ();
+			SetConnectButtons (false);
+			UpdateStatusBar();
+		}
+//-----------------------------------------------------------------------------
+		private void DisconnectDatabase () {
+			if (m_database != null)
+				if (m_database.State == ConnectionState.Open)
+					m_database.Close ();
+		}
+//-----------------------------------------------------------------------------
+		private void SetConnectButtons (bool fConnect) {
+			btnConnect.Enabled = !fConnect;
+			btnDisconnect.Enabled = fConnect;
 		}
 	}
 //-----------------------------------------------------------------------------
-	}
+}
