@@ -19,6 +19,7 @@ using System.Linq.Expressions;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Diagnostics.Metrics;
+using System.Windows.Forms.DataVisualization.Charting;
 //-----------------------------------------------------------------------------
 using OmerEisGlobal;
 using OmerEisCommon;
@@ -28,7 +29,7 @@ namespace WebiGen {
 		private TDBParams m_db_params;
 		private static readonly string DefauleConnectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
 		SqlConnection m_database;
-		string m_strErr="";
+		string m_strErr = "";
 		public frmMain() {
 			InitializeComponent();
 			m_db_params = null;
@@ -54,6 +55,7 @@ namespace WebiGen {
 		}
 		//-----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
+			Application.Idle += OnIdle;
 			bool fConnect = false;
 			string strConn = "";
 
@@ -110,6 +112,7 @@ namespace WebiGen {
 		}
 		//-----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
+			Application.Idle -= OnIdle;
 			if(m_database != null) {
 				m_database.Close();
 			}
@@ -153,27 +156,83 @@ namespace WebiGen {
 			btnDisconnect.Enabled = fConnect;
 		}
 		//-----------------------------------------------------------------------------
-		private bool DatabaseConnected () {
+		private bool DatabaseConnected() {
 			bool fConnected = false;
 
-			if (m_database != null)
-				fConnected = m_database.State != ConnectionState.Open;
+			if(m_database != null)
+				fConnected = m_database.State == ConnectionState.Open;
 			return (fConnected);
 		}
 		//-----------------------------------------------------------------------------
 		private void btnLoadMaps_Click(object sender, EventArgs e) {
-			if (DatabaseConnected ()) {
-				TMapInfo[] aMaps=null;
+			if(DatabaseConnected()) {
+				TMapInfo[] aMaps = null;
 
 				comboMaps.Items.Clear();
-				comboMaps.Items.Add ("");
-				if (TMapInfo.LoadMapsFromDB (m_database, ref aMaps, ref m_strErr)) {
-					if (aMaps != null)
-						for (int n=0 ; n < aMaps.Length; n++)
+				comboMaps.Items.Add("");
+				if(TMapInfo.LoadMapsFromDB(m_database, ref aMaps, ref m_strErr)) {
+					if(aMaps != null)
+						for(int n = 0; n < aMaps.Length; n++)
 							comboMaps.Items.Add(aMaps[n]);
+				} else
+					MessageBox.Show("Error loading maps:\n" + m_strErr);
+			}
+		}
+		//-----------------------------------------------------------------------------
+		private void OnIdle(object sender, EventArgs e) {
+			EnableLoadPoints();
+		}
+		//-----------------------------------------------------------------------------
+		private void EnableLoadPoints() {
+			bool fMapSelected = false;
+
+			try {
+				if(DatabaseConnected()) {
+					TMapInfo map = (TMapInfo)comboMaps.SelectedItem;
+					fMapSelected = (map != null);
 				}
+			} catch(Exception ex) {
+				fMapSelected = false;
+				Console.WriteLine(ex.Message);
+			}
+			btnLoadPoints.Enabled = fMapSelected;
+		}
+		//----------------------------------------------------------------------------
+		private void btnLoadPoints_Click(object sender, EventArgs e) {
+			TPointInfo[] aPoints = null;
+
+			gridPoints.Rows.Clear();
+			if(TPointInfo.LoadFromDB(m_database, ref aPoints, ref m_strErr)) {
+				gridPoints.RowCount = aPoints.Length;
+				for(int n = 0; n < aPoints.Length; n++)
+					DownloadPointToRow(n, aPoints[n]);
+			} else
+				MessageBox.Show("Error loading points\n" + m_strErr);
+		}
+		//----------------------------------------------------------------------------
+		private void DownloadPointToRow(int row, TPointInfo point) {
+			gridPoints.Rows[row].Cells[0].Tag = point;
+			gridPoints.Rows[row].Cells[0].Value = point.PointID;
+			gridPoints.Rows[row].Cells[1].Value = point.Name;
+			gridPoints.Rows[row].Cells[2].Value = point.Device;
+			gridPoints.Rows[row].Cells[3].Value = point.Detector;
+			gridPoints.Rows[row].Cells[4].Value = point.ConnectionID;
+			gridPoints.Rows[row].Cells[5].Value = point.IP;
+
+		}
+//----------------------------------------------------------------------------
+		private void gridPoints_CellClick(object sender, DataGridViewCellEventArgs e) {
+			if (e.ColumnIndex == 0)
+				TogglePoint (e.RowIndex);
+		}
+//----------------------------------------------------------------------------
+		private void TogglePoint (int row) {
+			if ((row >= 0) && (row < gridPoints.RowCount)) {
+				int n = TMisc.ToIntDef (gridPoints.Rows[row].Cells [0].Value);
+				if (n == 0)
+					gridPoints.Rows[row].Cells [0].Value = true;
 				else
-					MessageBox.Show ("Error loading maps:\n" + m_strErr);
+					gridPoints.Rows[row].Cells [0].Value = false;
 			}
 		}
 	}

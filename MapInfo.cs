@@ -85,6 +85,7 @@ namespace WebiGen {
 			try {
 				arMaps.Clear();
 				cmd.CommandText = String.Format("select * from {0} order by {1};", Table, FldName);
+				reader = cmd.ExecuteReader ();
 				while ((fLoad) && (reader.Read())) {
 					TMapInfoDB map = new TMapInfoDB ();
 					if ((fLoad = map.LoadFromReader (reader, ref strErr)) == true)
