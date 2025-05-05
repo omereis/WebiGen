@@ -32,6 +32,8 @@
 			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
 			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -52,16 +54,20 @@
 			btnLoadMaps = new Button();
 			label1 = new Label();
 			gridPoints = new DataGridView();
+			btnLoadPoints = new Button();
+			btnLoadRads = new Button();
+			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+			chartData = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			Column1 = new DataGridViewCheckBoxColumn();
+			Column7 = new DataGridViewTextBoxColumn();
 			Column2 = new DataGridViewTextBoxColumn();
 			Column6 = new DataGridViewTextBoxColumn();
 			Column3 = new DataGridViewTextBoxColumn();
 			Column4 = new DataGridViewTextBoxColumn();
 			Column5 = new DataGridViewTextBoxColumn();
-			btnLoadPoints = new Button();
-			button2 = new Button();
-			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
-			chartData = new System.Windows.Forms.DataVisualization.Charting.Chart();
+			Column8 = new DataGridViewTextBoxColumn();
+			Column9 = new DataGridViewTextBoxColumn();
+			Column10 = new DataGridViewTextBoxColumn();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
@@ -74,7 +80,7 @@
 			menuMain.Items.AddRange(new ToolStripItem[] { popupFile, popupHelp });
 			menuMain.Location = new Point(0, 0);
 			menuMain.Name = "menuMain";
-			menuMain.Size = new Size(996, 24);
+			menuMain.Size = new Size(1174, 24);
 			menuMain.TabIndex = 0;
 			menuMain.Text = "menuStrip1";
 			// 
@@ -119,7 +125,7 @@
 			// 
 			// button1
 			// 
-			button1.Location = new Point(217, 165);
+			button1.Location = new Point(80, 164);
 			button1.Name = "button1";
 			button1.Size = new Size(75, 23);
 			button1.TabIndex = 1;
@@ -148,7 +154,7 @@
 			status_bar.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripStatusLabel2, toolStripStatusLabel3 });
 			status_bar.Location = new Point(0, 563);
 			status_bar.Name = "status_bar";
-			status_bar.Size = new Size(996, 22);
+			status_bar.Size = new Size(1174, 22);
 			status_bar.TabIndex = 4;
 			status_bar.Text = "statusStrip1";
 			// 
@@ -176,7 +182,7 @@
 			toolbar.Items.AddRange(new ToolStripItem[] { btnConnect, btnDisconnect });
 			toolbar.Location = new Point(0, 24);
 			toolbar.Name = "toolbar";
-			toolbar.Size = new Size(996, 25);
+			toolbar.Size = new Size(1174, 25);
 			toolbar.TabIndex = 5;
 			toolbar.Text = "toolStrip1";
 			// 
@@ -232,21 +238,70 @@
 			dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
 			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			gridPoints.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column6, Column3, Column4, Column5 });
+			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column6, Column3, Column4, Column5, Column8, Column9, Column10 });
 			gridPoints.EditMode = DataGridViewEditMode.EditProgrammatically;
 			gridPoints.Location = new Point(333, 52);
 			gridPoints.MultiSelect = false;
 			gridPoints.Name = "gridPoints";
 			gridPoints.RowHeadersVisible = false;
-			gridPoints.Size = new Size(562, 150);
+			gridPoints.Size = new Size(819, 150);
 			gridPoints.TabIndex = 8;
 			gridPoints.CellClick += gridPoints_CellClick;
 			// 
+			// btnLoadPoints
+			// 
+			btnLoadPoints.Location = new Point(245, 52);
+			btnLoadPoints.Name = "btnLoadPoints";
+			btnLoadPoints.Size = new Size(82, 23);
+			btnLoadPoints.TabIndex = 9;
+			btnLoadPoints.Text = "Load Points";
+			btnLoadPoints.UseVisualStyleBackColor = true;
+			btnLoadPoints.Click += btnLoadPoints_Click;
+			// 
+			// btnLoadRads
+			// 
+			btnLoadRads.Location = new Point(29, 242);
+			btnLoadRads.Name = "btnLoadRads";
+			btnLoadRads.Size = new Size(75, 48);
+			btnLoadRads.TabIndex = 10;
+			btnLoadRads.Text = "Load Radiation";
+			btnLoadRads.UseVisualStyleBackColor = true;
+			btnLoadRads.Click += btnLoadRads_Click;
+			// 
+			// sqlCommand1
+			// 
+			sqlCommand1.CommandTimeout = 30;
+			sqlCommand1.EnableOptimizedParameterBinding = false;
+			// 
+			// chartData
+			// 
+			chartArea1.Name = "ChartArea1";
+			chartData.ChartAreas.Add(chartArea1);
+			legend1.Name = "Legend1";
+			chartData.Legends.Add(legend1);
+			chartData.Location = new Point(110, 237);
+			chartData.Name = "chartData";
+			series1.ChartArea = "ChartArea1";
+			series1.Legend = "Legend1";
+			series1.Name = "Series1";
+			chartData.Series.Add(series1);
+			chartData.Size = new Size(623, 300);
+			chartData.TabIndex = 11;
+			chartData.Text = "chart1";
+			// 
 			// Column1
 			// 
-			Column1.HeaderText = "Point ID";
+			Column1.HeaderText = "Select";
 			Column1.Name = "Column1";
-			Column1.Width = 60;
+			Column1.Width = 40;
+			// 
+			// Column7
+			// 
+			dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column7.DefaultCellStyle = dataGridViewCellStyle2;
+			Column7.HeaderText = "Point ID";
+			Column7.Name = "Column7";
+			Column7.Width = 75;
 			// 
 			// Column2
 			// 
@@ -276,53 +331,33 @@
 			Column5.HeaderText = "IP Address";
 			Column5.Name = "Column5";
 			// 
-			// btnLoadPoints
+			// Column8
 			// 
-			btnLoadPoints.Location = new Point(245, 52);
-			btnLoadPoints.Name = "btnLoadPoints";
-			btnLoadPoints.Size = new Size(82, 23);
-			btnLoadPoints.TabIndex = 9;
-			btnLoadPoints.Text = "Load Points";
-			btnLoadPoints.UseVisualStyleBackColor = true;
-			btnLoadPoints.Click += btnLoadPoints_Click;
+			Column8.HeaderText = "From";
+			Column8.Name = "Column8";
+			Column8.Width = 65;
 			// 
-			// button2
+			// Column9
 			// 
-			button2.Location = new Point(29, 242);
-			button2.Name = "button2";
-			button2.Size = new Size(75, 23);
-			button2.TabIndex = 10;
-			button2.Text = "button2";
-			button2.UseVisualStyleBackColor = true;
+			Column9.HeaderText = "To";
+			Column9.Name = "Column9";
+			Column9.Width = 65;
 			// 
-			// sqlCommand1
+			// Column10
 			// 
-			sqlCommand1.CommandTimeout = 30;
-			sqlCommand1.EnableOptimizedParameterBinding = false;
-			// 
-			// chartData
-			// 
-			chartArea1.Name = "ChartArea1";
-			chartData.ChartAreas.Add(chartArea1);
-			legend1.Name = "Legend1";
-			chartData.Legends.Add(legend1);
-			chartData.Location = new Point(110, 237);
-			chartData.Name = "chartData";
-			series1.ChartArea = "ChartArea1";
-			series1.Legend = "Legend1";
-			series1.Name = "Series1";
-			chartData.Series.Add(series1);
-			chartData.Size = new Size(623, 300);
-			chartData.TabIndex = 11;
-			chartData.Text = "chart1";
+			dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column10.DefaultCellStyle = dataGridViewCellStyle3;
+			Column10.HeaderText = "Count";
+			Column10.Name = "Column10";
+			Column10.Width = 70;
 			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(996, 585);
+			ClientSize = new Size(1174, 585);
 			Controls.Add(chartData);
-			Controls.Add(button2);
+			Controls.Add(btnLoadRads);
 			Controls.Add(btnLoadPoints);
 			Controls.Add(gridPoints);
 			Controls.Add(label1);
@@ -373,14 +408,18 @@
 		private Label label1;
 		private DataGridView gridPoints;
 		private Button btnLoadPoints;
+		private Button btnLoadRads;
+		private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+		private System.Windows.Forms.DataVisualization.Charting.Chart chartData;
 		private DataGridViewCheckBoxColumn Column1;
+		private DataGridViewTextBoxColumn Column7;
 		private DataGridViewTextBoxColumn Column2;
 		private DataGridViewTextBoxColumn Column6;
 		private DataGridViewTextBoxColumn Column3;
 		private DataGridViewTextBoxColumn Column4;
 		private DataGridViewTextBoxColumn Column5;
-		private Button button2;
-		private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
-		private System.Windows.Forms.DataVisualization.Charting.Chart chartData;
+		private DataGridViewTextBoxColumn Column8;
+		private DataGridViewTextBoxColumn Column9;
+		private DataGridViewTextBoxColumn Column10;
 	}
 }

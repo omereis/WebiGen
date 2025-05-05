@@ -35,11 +35,11 @@ namespace WebiGen {
 			m_db_params = null;
 			m_database = null;
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void miExit_Click(object sender, EventArgs e) {
 			Close();
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void button1_Click(object sender, EventArgs e) {
 			/*
 						//string connectionString = "Server=OMER\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
@@ -53,7 +53,7 @@ namespace WebiGen {
 						}
 			*/
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
 			Application.Idle += OnIdle;
 			bool fConnect = false;
@@ -67,7 +67,7 @@ namespace WebiGen {
 				fConnect = false;
 			}
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private bool ConnectToDB() {
 			string strConn = LoadIniConnectionString();
 			bool fConnect = false;
@@ -86,7 +86,7 @@ namespace WebiGen {
 			UpdateStatusBar(/*strConn, fConnect*/);
 			return (fConnect);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void miDatabase_Click(object sender, EventArgs e) {
 			DlgEditDB dlg = new DlgEditDB();
 			string strConnection = LoadIniConnectionString();
@@ -98,26 +98,26 @@ namespace WebiGen {
 				txtConnection.Text = strConnection;
 			}
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private string LoadIniConnectionString() {
 			string str = "";
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			str = ini.ReadString("Database", "default");
 			return (str);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void SaveIniConnectionString(string strConnection) {
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			ini.WriteString("Database", "default", strConnection);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
 			Application.Idle -= OnIdle;
 			if(m_database != null) {
 				m_database.Close();
 			}
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void UpdateStatusBar(/*string strConnection, bool fConnect*/) {
 			//TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
 			string strServer = "", strDatabase = "";
@@ -133,29 +133,29 @@ namespace WebiGen {
 			status_bar.Items[1].Text = System.String.Format("Database={0}", strDatabase);
 			status_bar.Items[2].Text = (fConnect ? "Connected" : "Disconnected");
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void btnConnect_Click(object sender, EventArgs e) {
 			ConnectToDB();
 			SetConnectButtons(true);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void btnDisconnect_Click(object sender, EventArgs e) {
 			DisconnectDatabase();
 			SetConnectButtons(false);
 			UpdateStatusBar();
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void DisconnectDatabase() {
 			if(m_database != null)
 				if(m_database.State == ConnectionState.Open)
 					m_database.Close();
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void SetConnectButtons(bool fConnect) {
 			btnConnect.Enabled = !fConnect;
 			btnDisconnect.Enabled = fConnect;
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private bool DatabaseConnected() {
 			bool fConnected = false;
 
@@ -163,7 +163,7 @@ namespace WebiGen {
 				fConnected = m_database.State == ConnectionState.Open;
 			return (fConnected);
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void btnLoadMaps_Click(object sender, EventArgs e) {
 			if(DatabaseConnected()) {
 				TMapInfo[] aMaps = null;
@@ -178,11 +178,12 @@ namespace WebiGen {
 					MessageBox.Show("Error loading maps:\n" + m_strErr);
 			}
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void OnIdle(object sender, EventArgs e) {
 			EnableLoadPoints();
+			EnableLoadRads();
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 		private void EnableLoadPoints() {
 			bool fMapSelected = false;
 
@@ -197,7 +198,7 @@ namespace WebiGen {
 			}
 			btnLoadPoints.Enabled = fMapSelected;
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void btnLoadPoints_Click(object sender, EventArgs e) {
 			TPointInfo[] aPoints = null;
 
@@ -209,31 +210,115 @@ namespace WebiGen {
 			} else
 				MessageBox.Show("Error loading points\n" + m_strErr);
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void DownloadPointToRow(int row, TPointInfo point) {
 			gridPoints.Rows[row].Cells[0].Tag = point;
-			gridPoints.Rows[row].Cells[0].Value = point.PointID;
-			gridPoints.Rows[row].Cells[1].Value = point.Name;
-			gridPoints.Rows[row].Cells[2].Value = point.Device;
-			gridPoints.Rows[row].Cells[3].Value = point.Detector;
-			gridPoints.Rows[row].Cells[4].Value = point.ConnectionID;
-			gridPoints.Rows[row].Cells[5].Value = point.IP;
+			gridPoints.Rows[row].Cells[0].Value = false;
+			gridPoints.Rows[row].Cells[1].Value = point.PointID;
+			gridPoints.Rows[row].Cells[2].Value = point.Name;
+			gridPoints.Rows[row].Cells[3].Value = point.Device;
+			gridPoints.Rows[row].Cells[4].Value = point.Detector;
+			gridPoints.Rows[row].Cells[5].Value = point.ConnectionID;
+			gridPoints.Rows[row].Cells[6].Value = point.IP;
 
 		}
 //----------------------------------------------------------------------------
 		private void gridPoints_CellClick(object sender, DataGridViewCellEventArgs e) {
-			if (e.ColumnIndex == 0)
-				TogglePoint (e.RowIndex);
+			if(e.ColumnIndex == 0)
+				TogglePoint(e.RowIndex);
 		}
 //----------------------------------------------------------------------------
-		private void TogglePoint (int row) {
-			if ((row >= 0) && (row < gridPoints.RowCount)) {
-				int n = TMisc.ToIntDef (gridPoints.Rows[row].Cells [0].Value);
-				if (n == 0)
-					gridPoints.Rows[row].Cells [0].Value = true;
+		private void TogglePoint(int row) {
+			if((row >= 0) && (row < gridPoints.RowCount)) {
+				//int n = TMisc.ToIntDef (gridPoints.Rows[row].Cells [0].Value);
+				if(CheckedPoint(row))
+					//if (n == 0)
+					gridPoints.Rows[row].Cells[0].Value = false;
 				else
-					gridPoints.Rows[row].Cells [0].Value = false;
+					gridPoints.Rows[row].Cells[0].Value = true;
 			}
+		}
+//----------------------------------------------------------------------------
+		private void EnableLoadRads() {
+			bool fEnabled = false;
+			int[] aPoints = UploadSelectedPoints();
+			if(aPoints != null)
+				for(int n = 0; (n < aPoints.Length) && (fEnabled == false); n++)
+					fEnabled = aPoints[n] > 0;
+			btnLoadRads.Enabled = fEnabled;
+		}
+//----------------------------------------------------------------------------
+		private int[] UploadSelectedPoints() {
+
+			int[] aIDs = null;
+			ArrayList ar = new ArrayList();
+
+			for(int n = 0; n < gridPoints.RowCount; n++) {
+				if(CheckedPoint(n)) {
+					TPointInfo point = UploadPointFromRow(n);
+					if(point != null)
+						ar.Add(point.PointID);
+				}
+			}
+			if(ar.Count > 0) {
+				aIDs = new int[ar.Count];
+				for(int n = 0; n < ar.Count; n++)
+					aIDs[n] = (int)ar[n];
+			}
+			return (aIDs);
+		}
+//----------------------------------------------------------------------------
+		private bool CheckedPoint(int row) {
+			bool fChecked = false;
+
+			if((row >= 0) && (row < gridPoints.RowCount))
+				fChecked = TMisc.ToIntDef(gridPoints.Rows[row].Cells[0].Value) > 0;
+			return (fChecked);
+		}
+//----------------------------------------------------------------------------
+		private TPointInfo UploadPointFromRow(int row) {
+			TPointInfo point = null;
+			if((row >= 0) && (row < gridPoints.RowCount))
+				point = (TPointInfo)gridPoints.Rows[row].Cells[0].Tag;
+			return (point);
+
+
+		}
+//----------------------------------------------------------------------------
+		private void btnLoadRads_Click(object sender, EventArgs e) {
+			TRadValue[] aRads=null;
+			int[] aIDs = UploadSelectedPoints();
+
+			for (int n=0 ; n < aIDs.Length ; n++) {
+				if (TRadValue.LoadFromDB (m_database, aIDs[n], ref aRads, ref m_strErr)) {
+					SetPointStats (aIDs[n], aRads);
+				}
+			}
+		}
+//----------------------------------------------------------------------------
+		private void SetPointStats (int idPoint, TRadValue[] aRads) {
+			if (aRads != null) {
+				int nRow = GetRowByPointID (idPoint);
+				if (nRow >= 0) {
+					if (aRads.Length > 0) {
+						gridPoints.Rows[nRow].Cells[7].Value = TMisc.AppTime (aRads[0].SampleTime);
+						gridPoints.Rows[nRow].Cells[8].Value = TMisc.AppTime (aRads[aRads.Length - 1].SampleTime);
+						gridPoints.Rows[nRow].Cells[9].Value = TMisc.IntFormat (aRads.Length);
+					}
+				}
+			}
+		}
+//----------------------------------------------------------------------------
+		private int GetRowByPointID (int idPoint) {
+			int n, nRow=-1;
+			TPointInfo point;
+
+			for (n=0 ; (n < gridPoints.Rows.Count) && (nRow < 0) ; n++) {
+				point = UploadPointFromRow (n);
+				if (point.PointID == idPoint)
+					nRow = n;
+			}
+			return (nRow);
 		}
 	}
 	//-----------------------------------------------------------------------------
