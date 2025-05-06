@@ -29,11 +29,11 @@
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
 			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
 			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
 			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -43,7 +43,6 @@
 			miAbout = new ToolStripMenuItem();
 			button1 = new Button();
 			comboMaps = new ComboBox();
-			txtConnection = new TextBox();
 			status_bar = new StatusStrip();
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
 			toolStripStatusLabel2 = new ToolStripStatusLabel();
@@ -54,10 +53,6 @@
 			btnLoadMaps = new Button();
 			label1 = new Label();
 			gridPoints = new DataGridView();
-			btnLoadPoints = new Button();
-			btnLoadRads = new Button();
-			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
-			chartData = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			Column1 = new DataGridViewCheckBoxColumn();
 			Column7 = new DataGridViewTextBoxColumn();
 			Column2 = new DataGridViewTextBoxColumn();
@@ -68,6 +63,10 @@
 			Column8 = new DataGridViewTextBoxColumn();
 			Column9 = new DataGridViewTextBoxColumn();
 			Column10 = new DataGridViewTextBoxColumn();
+			btnLoadPoints = new Button();
+			btnLoadRads = new Button();
+			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+			chartData = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
@@ -141,13 +140,6 @@
 			comboMaps.Name = "comboMaps";
 			comboMaps.Size = new Size(170, 23);
 			comboMaps.TabIndex = 2;
-			// 
-			// txtConnection
-			// 
-			txtConnection.Location = new Point(22, 208);
-			txtConnection.Name = "txtConnection";
-			txtConnection.Size = new Size(711, 23);
-			txtConnection.TabIndex = 3;
 			// 
 			// status_bar
 			// 
@@ -248,47 +240,6 @@
 			gridPoints.TabIndex = 8;
 			gridPoints.CellClick += gridPoints_CellClick;
 			// 
-			// btnLoadPoints
-			// 
-			btnLoadPoints.Location = new Point(245, 52);
-			btnLoadPoints.Name = "btnLoadPoints";
-			btnLoadPoints.Size = new Size(82, 23);
-			btnLoadPoints.TabIndex = 9;
-			btnLoadPoints.Text = "Load Points";
-			btnLoadPoints.UseVisualStyleBackColor = true;
-			btnLoadPoints.Click += btnLoadPoints_Click;
-			// 
-			// btnLoadRads
-			// 
-			btnLoadRads.Location = new Point(29, 242);
-			btnLoadRads.Name = "btnLoadRads";
-			btnLoadRads.Size = new Size(75, 48);
-			btnLoadRads.TabIndex = 10;
-			btnLoadRads.Text = "Load Radiation";
-			btnLoadRads.UseVisualStyleBackColor = true;
-			btnLoadRads.Click += btnLoadRads_Click;
-			// 
-			// sqlCommand1
-			// 
-			sqlCommand1.CommandTimeout = 30;
-			sqlCommand1.EnableOptimizedParameterBinding = false;
-			// 
-			// chartData
-			// 
-			chartArea1.Name = "ChartArea1";
-			chartData.ChartAreas.Add(chartArea1);
-			legend1.Name = "Legend1";
-			chartData.Legends.Add(legend1);
-			chartData.Location = new Point(110, 237);
-			chartData.Name = "chartData";
-			series1.ChartArea = "ChartArea1";
-			series1.Legend = "Legend1";
-			series1.Name = "Series1";
-			chartData.Series.Add(series1);
-			chartData.Size = new Size(623, 300);
-			chartData.TabIndex = 11;
-			chartData.Text = "chart1";
-			// 
 			// Column1
 			// 
 			Column1.HeaderText = "Select";
@@ -351,6 +302,47 @@
 			Column10.Name = "Column10";
 			Column10.Width = 70;
 			// 
+			// btnLoadPoints
+			// 
+			btnLoadPoints.Location = new Point(245, 52);
+			btnLoadPoints.Name = "btnLoadPoints";
+			btnLoadPoints.Size = new Size(82, 23);
+			btnLoadPoints.TabIndex = 9;
+			btnLoadPoints.Text = "Load Points";
+			btnLoadPoints.UseVisualStyleBackColor = true;
+			btnLoadPoints.Click += btnLoadPoints_Click;
+			// 
+			// btnLoadRads
+			// 
+			btnLoadRads.Location = new Point(333, 231);
+			btnLoadRads.Name = "btnLoadRads";
+			btnLoadRads.Size = new Size(97, 23);
+			btnLoadRads.TabIndex = 10;
+			btnLoadRads.Text = "Load Radiation";
+			btnLoadRads.UseVisualStyleBackColor = true;
+			btnLoadRads.Click += btnLoadRads_Click;
+			// 
+			// sqlCommand1
+			// 
+			sqlCommand1.CommandTimeout = 30;
+			sqlCommand1.EnableOptimizedParameterBinding = false;
+			// 
+			// chartData
+			// 
+			chartArea1.Name = "ChartArea1";
+			chartData.ChartAreas.Add(chartArea1);
+			legend1.Name = "Legend1";
+			chartData.Legends.Add(legend1);
+			chartData.Location = new Point(333, 260);
+			chartData.Name = "chartData";
+			series1.ChartArea = "ChartArea1";
+			series1.Legend = "Legend1";
+			series1.Name = "Series1";
+			chartData.Series.Add(series1);
+			chartData.Size = new Size(623, 300);
+			chartData.TabIndex = 11;
+			chartData.Text = "chart1";
+			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -364,7 +356,6 @@
 			Controls.Add(btnLoadMaps);
 			Controls.Add(toolbar);
 			Controls.Add(status_bar);
-			Controls.Add(txtConnection);
 			Controls.Add(comboMaps);
 			Controls.Add(button1);
 			Controls.Add(menuMain);
@@ -396,7 +387,6 @@
 		private ToolStripMenuItem miAbout;
 		private Button button1;
 		private ComboBox comboMaps;
-		private TextBox txtConnection;
 		private StatusStrip status_bar;
 		private ToolStripStatusLabel toolStripStatusLabel1;
 		private ToolStripStatusLabel toolStripStatusLabel2;

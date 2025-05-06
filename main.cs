@@ -41,17 +41,6 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		private void button1_Click(object sender, EventArgs e) {
-			/*
-						//string connectionString = "Server=OMER\\SQLEXPRESS;Database=master;Trusted_Connection=True;";
-						//string connectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
-						DatabaseLister lister = new DatabaseLister();
-						List<string> databases = lister.GetDatabaseListUsingGetSchema(DefauleConnectionString);
-						comboDatabases.Items.Clear();
-						foreach(var db in databases) {
-							comboDatabases.Items.Add(db);
-							//Console.WriteLine(db);
-						}
-			*/
 		}
 //-----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
@@ -95,7 +84,7 @@ namespace WebiGen {
 			if(dlg.Execute(ref strConnection)) {
 				SaveIniConnectionString(strConnection);
 				ConnectToDB();
-				txtConnection.Text = strConnection;
+				//txtConnection.Text = strConnection;
 			}
 		}
 //-----------------------------------------------------------------------------
@@ -169,13 +158,15 @@ namespace WebiGen {
 				TMapInfo[] aMaps = null;
 
 				comboMaps.Items.Clear();
-				comboMaps.Items.Add("");
 				if(TMapInfo.LoadMapsFromDB(m_database, ref aMaps, ref m_strErr)) {
 					if(aMaps != null)
 						for(int n = 0; n < aMaps.Length; n++)
 							comboMaps.Items.Add(aMaps[n]);
 				} else
 					MessageBox.Show("Error loading maps:\n" + m_strErr);
+				if (comboMaps.Items.Count > 0)
+					comboMaps.SelectedIndex = 0;
+				comboMaps.Items.Add("");
 			}
 		}
 //-----------------------------------------------------------------------------
@@ -189,7 +180,7 @@ namespace WebiGen {
 
 			try {
 				if(DatabaseConnected()) {
-					TMapInfo map = (TMapInfo)comboMaps.SelectedItem;
+					TMapInfo map = UploadCurrentMap ();
 					fMapSelected = (map != null);
 				}
 			} catch(Exception ex) {
@@ -199,8 +190,13 @@ namespace WebiGen {
 			btnLoadPoints.Enabled = fMapSelected;
 		}
 //----------------------------------------------------------------------------
+		private TMapInfo UploadCurrentMap () {
+			TMapInfo map = (TMapInfo)comboMaps.SelectedItem;
+		}
+//----------------------------------------------------------------------------
 		private void btnLoadPoints_Click(object sender, EventArgs e) {
 			TPointInfo[] aPoints = null;
+			TMapInfo map = UploadCurrentMap ();
 
 			gridPoints.Rows.Clear();
 			if(TPointInfo.LoadFromDB(m_database, ref aPoints, ref m_strErr)) {
