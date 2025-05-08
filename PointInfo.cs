@@ -54,10 +54,10 @@ namespace WebiGen {
 			ConnectionID = other.ConnectionID;
 		}
 //----------------------------------------------------------------------------
-		public static bool LoadFromDB (SqlConnection database, ref TPointInfo[] aPoints, ref string strErr) {
+		public static bool LoadFromDB (SqlConnection database, int idMap, ref TPointInfo[] aPoints, ref string strErr) {
 			ArrayList al = null;
 			aPoints = null;
-			bool fLoad = TPointInfoDB.LoadFromDB (database, ref al, ref strErr);
+			bool fLoad = TPointInfoDB.LoadFromDB (database, idMap, ref al, ref strErr);
 			if (fLoad) {
 				if (al != null) {
 					aPoints = new TPointInfo[al.Count];
@@ -66,6 +66,44 @@ namespace WebiGen {
 				}
 			}
 			return (fLoad);
+		}
+//----------------------------------------------------------------------------
+		public static DateTime? GetSamplingRate (TRadValue[] aRads) {
+			double dDiff;
+			SortedDictionary<double, int> histogram = new SortedDictionary<double, int>();
+			TimeSpan? ts=null;
+			DateTime? dtRate=null;
+
+			if (aRads != null) {
+				if (aRads.Length >= 2) {
+					for (int n=0 ; n < aRads.Length - 1 ; n++) {
+						DateTime? dtStart = aRads[n].SampleTime;
+						DateTime? dtEnd = aRads[n+1].SampleTime;
+						ts = dtEnd - dtStart;
+						if (ts != null) {
+							dDiff = ts.Value.TotalMilliseconds;
+							if (histogram.ContainsKey (dDiff))
+								histogram[dDiff]++;
+							else
+								histogram[dDiff] = 1;
+						}
+					}
+					//for (int n=0 ; n < histogram.Count ; n++)
+						//if (histogram.Keys.V
+				}
+				int m = histogram.Values.Max();
+				double dMax = -1;;
+				int nMax = -1;
+				foreach (KeyValuePair<double, int> kvp in histogram) {
+					if (kvp.Value > nMax) {
+						dMax = kvp.Key;
+						nMax = kvp.Value;
+					}
+				}
+				if (dMax > 0)
+					dtRate = new DateTime(1970, 1, 1) + TimeSpan.FromMilliseconds (dMax); 
+			}
+			return (dtRate);
 		}
 	}
 //----------------------------------------------------------------------------
@@ -83,7 +121,7 @@ namespace WebiGen {
 		public TPointInfoDB() : base () {}
 		public TPointInfoDB (TPointInfoDB other) : base (other) {}
 //----------------------------------------------------------------------------
-		public static bool LoadFromDB (SqlConnection database, ref ArrayList alPoints, ref string strErr) {
+		public static bool LoadFromDB (SqlConnection database, int idMap, ref ArrayList alPoints, ref string strErr) {
 			bool fLoad;
 			SqlDataReader reader = null;
 
@@ -91,7 +129,8 @@ namespace WebiGen {
 				alPoints = null;
 				TPointInfoDB point = new TPointInfoDB();
 				SqlCommand cmd = database.CreateCommand ();
-				cmd.CommandText = SelectString;
+				string strMapPoints = String.Format ("(PointId in (select Point_PointId as 'PointId' from locations where Map_MapId={0}))", idMap);
+				cmd.CommandText = SelectString + "and " + strMapPoints;
 				reader = cmd.ExecuteReader ();
 				for (fLoad = true ; (reader.Read ()) && (fLoad) ; ) {
 					if ((fLoad = point.LoadFromReader (reader, ref strErr)) == true) {

@@ -28,12 +28,13 @@
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -60,18 +61,23 @@
 			Column3 = new DataGridViewTextBoxColumn();
 			Column4 = new DataGridViewTextBoxColumn();
 			Column5 = new DataGridViewTextBoxColumn();
-			Column8 = new DataGridViewTextBoxColumn();
-			Column9 = new DataGridViewTextBoxColumn();
-			Column10 = new DataGridViewTextBoxColumn();
 			btnLoadPoints = new Button();
 			btnLoadRads = new Button();
 			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
-			chartData = new System.Windows.Forms.DataVisualization.Charting.Chart();
+			chartRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
+			gridStats = new DataGridView();
+			dataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
+			dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+			dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
+			dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
+			dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
+			Column11 = new DataGridViewTextBoxColumn();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)gridPoints).BeginInit();
-			((System.ComponentModel.ISupportInitialize)chartData).BeginInit();
+			((System.ComponentModel.ISupportInitialize)chartRate).BeginInit();
+			((System.ComponentModel.ISupportInitialize)gridStats).BeginInit();
 			SuspendLayout();
 			// 
 			// menuMain
@@ -124,7 +130,7 @@
 			// 
 			// button1
 			// 
-			button1.Location = new Point(80, 164);
+			button1.Location = new Point(368, 68);
 			button1.Name = "button1";
 			button1.Size = new Size(75, 23);
 			button1.TabIndex = 1;
@@ -221,22 +227,22 @@
 			// 
 			gridPoints.AllowUserToAddRows = false;
 			gridPoints.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle1.BackColor = Color.Silver;
-			dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle5.BackColor = Color.Silver;
+			dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
 			gridPoints.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column6, Column3, Column4, Column5, Column8, Column9, Column10 });
+			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column6, Column3, Column4, Column5 });
 			gridPoints.EditMode = DataGridViewEditMode.EditProgrammatically;
-			gridPoints.Location = new Point(333, 52);
+			gridPoints.Location = new Point(22, 153);
 			gridPoints.MultiSelect = false;
 			gridPoints.Name = "gridPoints";
 			gridPoints.RowHeadersVisible = false;
-			gridPoints.Size = new Size(819, 150);
+			gridPoints.Size = new Size(436, 150);
 			gridPoints.TabIndex = 8;
 			gridPoints.CellClick += gridPoints_CellClick;
 			// 
@@ -244,67 +250,49 @@
 			// 
 			Column1.HeaderText = "Select";
 			Column1.Name = "Column1";
-			Column1.Width = 40;
+			Column1.Width = 45;
 			// 
 			// Column7
 			// 
-			dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column7.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column7.DefaultCellStyle = dataGridViewCellStyle6;
 			Column7.HeaderText = "Point ID";
 			Column7.Name = "Column7";
-			Column7.Width = 75;
+			Column7.Width = 55;
 			// 
 			// Column2
 			// 
 			Column2.HeaderText = "Name";
 			Column2.Name = "Column2";
-			Column2.Width = 70;
+			Column2.Width = 55;
 			// 
 			// Column6
 			// 
 			Column6.HeaderText = "Device Type";
 			Column6.Name = "Column6";
+			Column6.Width = 55;
 			// 
 			// Column3
 			// 
 			Column3.HeaderText = "Detector Type";
 			Column3.Name = "Column3";
-			Column3.Width = 105;
+			Column3.Width = 55;
 			// 
 			// Column4
 			// 
 			Column4.HeaderText = "Connection ID";
 			Column4.Name = "Column4";
-			Column4.Width = 110;
+			Column4.Width = 55;
 			// 
 			// Column5
 			// 
 			Column5.HeaderText = "IP Address";
 			Column5.Name = "Column5";
-			// 
-			// Column8
-			// 
-			Column8.HeaderText = "From";
-			Column8.Name = "Column8";
-			Column8.Width = 65;
-			// 
-			// Column9
-			// 
-			Column9.HeaderText = "To";
-			Column9.Name = "Column9";
-			Column9.Width = 65;
-			// 
-			// Column10
-			// 
-			dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column10.DefaultCellStyle = dataGridViewCellStyle3;
-			Column10.HeaderText = "Count";
-			Column10.Name = "Column10";
-			Column10.Width = 70;
+			Column5.Width = 55;
 			// 
 			// btnLoadPoints
 			// 
-			btnLoadPoints.Location = new Point(245, 52);
+			btnLoadPoints.Location = new Point(22, 124);
 			btnLoadPoints.Name = "btnLoadPoints";
 			btnLoadPoints.Size = new Size(82, 23);
 			btnLoadPoints.TabIndex = 9;
@@ -314,7 +302,7 @@
 			// 
 			// btnLoadRads
 			// 
-			btnLoadRads.Location = new Point(333, 231);
+			btnLoadRads.Location = new Point(22, 309);
 			btnLoadRads.Name = "btnLoadRads";
 			btnLoadRads.Size = new Size(97, 23);
 			btnLoadRads.TabIndex = 10;
@@ -327,28 +315,88 @@
 			sqlCommand1.CommandTimeout = 30;
 			sqlCommand1.EnableOptimizedParameterBinding = false;
 			// 
-			// chartData
+			// chartRate
 			// 
-			chartArea1.Name = "ChartArea1";
-			chartData.ChartAreas.Add(chartArea1);
-			legend1.Name = "Legend1";
-			chartData.Legends.Add(legend1);
-			chartData.Location = new Point(333, 260);
-			chartData.Name = "chartData";
-			series1.ChartArea = "ChartArea1";
-			series1.Legend = "Legend1";
-			series1.Name = "Series1";
-			chartData.Series.Add(series1);
-			chartData.Size = new Size(623, 300);
-			chartData.TabIndex = 11;
-			chartData.Text = "chart1";
+			chartArea2.Name = "ChartArea1";
+			chartRate.ChartAreas.Add(chartArea2);
+			legend2.Name = "Legend1";
+			chartRate.Legends.Add(legend2);
+			chartRate.Location = new Point(494, 58);
+			chartRate.Name = "chartRate";
+			series2.ChartArea = "ChartArea1";
+			series2.Legend = "Legend1";
+			series2.Name = "Series1";
+			chartRate.Series.Add(series2);
+			chartRate.Size = new Size(510, 430);
+			chartRate.TabIndex = 11;
+			chartRate.Text = "chart1";
+			// 
+			// gridStats
+			// 
+			gridStats.AllowUserToAddRows = false;
+			gridStats.AllowUserToDeleteRows = false;
+			dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle7.BackColor = Color.Silver;
+			dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+			gridStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			gridStats.Columns.AddRange(new DataGridViewColumn[] { dataGridViewCheckBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, Column11 });
+			gridStats.EditMode = DataGridViewEditMode.EditProgrammatically;
+			gridStats.Location = new Point(22, 338);
+			gridStats.MultiSelect = false;
+			gridStats.Name = "gridStats";
+			gridStats.RowHeadersVisible = false;
+			gridStats.Size = new Size(436, 150);
+			gridStats.TabIndex = 12;
+			// 
+			// dataGridViewCheckBoxColumn1
+			// 
+			dataGridViewCheckBoxColumn1.HeaderText = "Select";
+			dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+			dataGridViewCheckBoxColumn1.Width = 50;
+			// 
+			// dataGridViewTextBoxColumn2
+			// 
+			dataGridViewTextBoxColumn2.HeaderText = "Name";
+			dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+			dataGridViewTextBoxColumn2.Width = 70;
+			// 
+			// dataGridViewTextBoxColumn7
+			// 
+			dataGridViewTextBoxColumn7.HeaderText = "From";
+			dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+			dataGridViewTextBoxColumn7.Width = 65;
+			// 
+			// dataGridViewTextBoxColumn8
+			// 
+			dataGridViewTextBoxColumn8.HeaderText = "To";
+			dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+			dataGridViewTextBoxColumn8.Width = 65;
+			// 
+			// dataGridViewTextBoxColumn9
+			// 
+			dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewTextBoxColumn9.HeaderText = "Count";
+			dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+			dataGridViewTextBoxColumn9.Width = 70;
+			// 
+			// Column11
+			// 
+			Column11.HeaderText = "Sampling";
+			Column11.Name = "Column11";
 			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1174, 585);
-			Controls.Add(chartData);
+			Controls.Add(gridStats);
+			Controls.Add(chartRate);
 			Controls.Add(btnLoadRads);
 			Controls.Add(btnLoadPoints);
 			Controls.Add(gridPoints);
@@ -371,7 +419,8 @@
 			toolbar.ResumeLayout(false);
 			toolbar.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)gridPoints).EndInit();
-			((System.ComponentModel.ISupportInitialize)chartData).EndInit();
+			((System.ComponentModel.ISupportInitialize)chartRate).EndInit();
+			((System.ComponentModel.ISupportInitialize)gridStats).EndInit();
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -400,7 +449,14 @@
 		private Button btnLoadPoints;
 		private Button btnLoadRads;
 		private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
-		private System.Windows.Forms.DataVisualization.Charting.Chart chartData;
+		private System.Windows.Forms.DataVisualization.Charting.Chart chartRate;
+		private DataGridView gridStats;
+		private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+		private DataGridViewTextBoxColumn Column11;
 		private DataGridViewCheckBoxColumn Column1;
 		private DataGridViewTextBoxColumn Column7;
 		private DataGridViewTextBoxColumn Column2;
@@ -408,8 +464,5 @@
 		private DataGridViewTextBoxColumn Column3;
 		private DataGridViewTextBoxColumn Column4;
 		private DataGridViewTextBoxColumn Column5;
-		private DataGridViewTextBoxColumn Column8;
-		private DataGridViewTextBoxColumn Column9;
-		private DataGridViewTextBoxColumn Column10;
 	}
 }
