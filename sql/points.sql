@@ -1,1 +1,1 @@
-fa
+select * from points, connections, connections_tcp where (connections.ConnectionId = connections_tcp.ConnectionId) and (connections.ConnectionId=points.Connection_ConnectionId) and (PointId in (select Point_PointId as 'PointId' from locations where Map_MapId={0}}))

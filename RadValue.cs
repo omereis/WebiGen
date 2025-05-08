@@ -57,6 +57,32 @@ namespace WebiGen {
 			}
 			return (fLoad);
 		}
+//----------------------------------------------------------------------------
+		public static void GetStats (TRadValue[] aRads, ref double dMin, ref double dMax, ref double dAvg, ref double dStd) {
+			if (aRads.Length > 0) {
+				int nCount = 0;
+				dMin = dMax = dAvg = aRads[0].Rate;
+				for (int n=1 ; n < aRads.Length ; n ++) {
+					double dRate = aRads[n].Rate;
+					if (dRate != 0) {
+						if (dRate < dMin)
+							dMin = dRate;
+						if (dRate > dMax)
+							dMax = dRate;
+						dAvg += dRate;
+						nCount++;
+					}
+				}
+				dAvg /= nCount;
+				dStd = 0;
+				for (int n=0 ; n < aRads.Length ; n ++)
+					if (aRads[n].Rate != 0)
+						dStd += Math.Pow (aRads[n].Rate - dAvg, 2);
+				dStd /= nCount;
+				dStd = Math.Sqrt (dStd);
+			}
+		}
+
 	}
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

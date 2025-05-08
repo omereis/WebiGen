@@ -28,13 +28,13 @@
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-			DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -66,7 +66,7 @@
 			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
 			chartRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			gridStats = new DataGridView();
-			dataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
+			dataGridViewCheckBoxColumn1 = new DataGridViewButtonColumn();
 			dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
 			dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
 			dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
@@ -227,14 +227,14 @@
 			// 
 			gridPoints.AllowUserToAddRows = false;
 			gridPoints.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle5.BackColor = Color.Silver;
-			dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = Color.Silver;
+			dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			gridPoints.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column6, Column3, Column4, Column5 });
 			gridPoints.EditMode = DataGridViewEditMode.EditProgrammatically;
@@ -254,8 +254,8 @@
 			// 
 			// Column7
 			// 
-			dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column7.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column7.DefaultCellStyle = dataGridViewCellStyle2;
 			Column7.HeaderText = "Point ID";
 			Column7.Name = "Column7";
 			Column7.Width = 55;
@@ -317,17 +317,17 @@
 			// 
 			// chartRate
 			// 
-			chartArea2.Name = "ChartArea1";
-			chartRate.ChartAreas.Add(chartArea2);
-			legend2.Name = "Legend1";
-			chartRate.Legends.Add(legend2);
+			chartArea1.Name = "ChartArea1";
+			chartRate.ChartAreas.Add(chartArea1);
+			legend1.Name = "Legend1";
+			chartRate.Legends.Add(legend1);
 			chartRate.Location = new Point(494, 58);
 			chartRate.Name = "chartRate";
-			series2.ChartArea = "ChartArea1";
-			series2.Legend = "Legend1";
-			series2.Name = "Series1";
-			chartRate.Series.Add(series2);
-			chartRate.Size = new Size(510, 430);
+			series1.ChartArea = "ChartArea1";
+			series1.Legend = "Legend1";
+			series1.Name = "Series1";
+			chartRate.Series.Add(series1);
+			chartRate.Size = new Size(668, 430);
 			chartRate.TabIndex = 11;
 			chartRate.Text = "chart1";
 			// 
@@ -335,14 +335,14 @@
 			// 
 			gridStats.AllowUserToAddRows = false;
 			gridStats.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle7.BackColor = Color.Silver;
-			dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle3.BackColor = Color.Silver;
+			dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
 			gridStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridStats.Columns.AddRange(new DataGridViewColumn[] { dataGridViewCheckBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, Column11 });
 			gridStats.EditMode = DataGridViewEditMode.EditProgrammatically;
@@ -352,11 +352,13 @@
 			gridStats.RowHeadersVisible = false;
 			gridStats.Size = new Size(436, 150);
 			gridStats.TabIndex = 12;
+			gridStats.CellClick += gridStats_CellClick;
 			// 
 			// dataGridViewCheckBoxColumn1
 			// 
-			dataGridViewCheckBoxColumn1.HeaderText = "Select";
+			dataGridViewCheckBoxColumn1.HeaderText = "Add";
 			dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+			dataGridViewCheckBoxColumn1.Resizable = DataGridViewTriState.True;
 			dataGridViewCheckBoxColumn1.Width = 50;
 			// 
 			// dataGridViewTextBoxColumn2
@@ -379,8 +381,8 @@
 			// 
 			// dataGridViewTextBoxColumn9
 			// 
-			dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle4;
 			dataGridViewTextBoxColumn9.HeaderText = "Count";
 			dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
 			dataGridViewTextBoxColumn9.Width = 70;
@@ -451,12 +453,6 @@
 		private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
 		private System.Windows.Forms.DataVisualization.Charting.Chart chartRate;
 		private DataGridView gridStats;
-		private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-		private DataGridViewTextBoxColumn Column11;
 		private DataGridViewCheckBoxColumn Column1;
 		private DataGridViewTextBoxColumn Column7;
 		private DataGridViewTextBoxColumn Column2;
@@ -464,5 +460,11 @@
 		private DataGridViewTextBoxColumn Column3;
 		private DataGridViewTextBoxColumn Column4;
 		private DataGridViewTextBoxColumn Column5;
+		private DataGridViewButtonColumn dataGridViewCheckBoxColumn1;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+		private DataGridViewTextBoxColumn Column11;
 	}
 }
