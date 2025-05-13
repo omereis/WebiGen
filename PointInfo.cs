@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 //----------------------------------------------------------------------------
 using OmerEisCommon;
+using System.Runtime.InteropServices;
 //----------------------------------------------------------------------------
 namespace WebiGen {
 	public class TPointInfo {
@@ -104,6 +105,10 @@ namespace WebiGen {
 					dtRate = new DateTime(1970, 1, 1) + TimeSpan.FromMilliseconds (dMax); 
 			}
 			return (dtRate);
+		}
+//----------------------------------------------------------------------------
+		public bool LoadStartRad (SqlConnection database, ref TRadValue rad, ref string strErr) {
+			return (TRadValue.LoadStartRad (database, PointID, ref rad, ref strErr));
 		}
 	}
 //----------------------------------------------------------------------------

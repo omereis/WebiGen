@@ -30,12 +30,10 @@
 			label2 = new Label();
 			label3 = new Label();
 			label4 = new Label();
-			label5 = new Label();
 			txtFrom = new TextBox();
 			txtTo = new TextBox();
 			txtCount = new TextBox();
 			txtRate = new TextBox();
-			label6 = new Label();
 			label7 = new Label();
 			label8 = new Label();
 			label9 = new Label();
@@ -50,18 +48,16 @@
 			label14 = new Label();
 			dtpStartDate = new DateTimePicker();
 			dtpEndDate = new DateTimePicker();
-			txtAddRate = new TextBox();
 			txtAddCount = new TextBox();
-			dtpStartTime = new DateTimePicker();
-			dtpEndTime = new DateTimePicker();
 			btnSetToStart = new Button();
 			btnCalculateCount = new Button();
 			btnCalculateStart = new Button();
+			label15 = new Label();
 			SuspendLayout();
 			// 
 			// btnOK
 			// 
-			btnOK.Location = new Point(372, 406);
+			btnOK.Location = new Point(396, 320);
 			btnOK.Name = "btnOK";
 			btnOK.Size = new Size(75, 23);
 			btnOK.TabIndex = 0;
@@ -71,7 +67,7 @@
 			// 
 			// btnCancel
 			// 
-			btnCancel.Location = new Point(265, 406);
+			btnCancel.Location = new Point(289, 320);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(75, 23);
 			btnCancel.TabIndex = 1;
@@ -123,15 +119,6 @@
 			label4.TabIndex = 6;
 			label4.Text = "Count";
 			// 
-			// label5
-			// 
-			label5.AutoSize = true;
-			label5.Location = new Point(67, 144);
-			label5.Name = "label5";
-			label5.Size = new Size(83, 15);
-			label5.TabIndex = 7;
-			label5.Text = "Sampling Rate";
-			// 
 			// txtFrom
 			// 
 			txtFrom.Location = new Point(165, 55);
@@ -161,21 +148,11 @@
 			// 
 			// txtRate
 			// 
-			txtRate.Location = new Point(165, 141);
+			txtRate.Location = new Point(315, 208);
 			txtRate.Name = "txtRate";
-			txtRate.ReadOnly = true;
 			txtRate.Size = new Size(100, 23);
 			txtRate.TabIndex = 11;
 			txtRate.TextAlign = HorizontalAlignment.Center;
-			// 
-			// label6
-			// 
-			label6.AutoSize = true;
-			label6.Location = new Point(280, 144);
-			label6.Name = "label6";
-			label6.Size = new Size(51, 15);
-			label6.TabIndex = 12;
-			label6.Text = "Seconds";
 			// 
 			// label7
 			// 
@@ -252,7 +229,7 @@
 			// label11
 			// 
 			label11.AutoSize = true;
-			label11.Location = new Point(300, 222);
+			label11.Location = new Point(262, 151);
 			label11.Name = "label11";
 			label11.Size = new Size(31, 15);
 			label11.TabIndex = 21;
@@ -261,7 +238,7 @@
 			// label12
 			// 
 			label12.AutoSize = true;
-			label12.Location = new Point(306, 254);
+			label12.Location = new Point(268, 183);
 			label12.Name = "label12";
 			label12.Size = new Size(27, 15);
 			label12.TabIndex = 22;
@@ -270,7 +247,7 @@
 			// label13
 			// 
 			label13.AutoSize = true;
-			label13.Location = new Point(287, 311);
+			label13.Location = new Point(249, 240);
 			label13.Name = "label13";
 			label13.Size = new Size(40, 15);
 			label13.TabIndex = 25;
@@ -279,7 +256,7 @@
 			// label14
 			// 
 			label14.AutoSize = true;
-			label14.Location = new Point(248, 284);
+			label14.Location = new Point(210, 213);
 			label14.Name = "label14";
 			label14.Size = new Size(83, 15);
 			label14.TabIndex = 26;
@@ -287,76 +264,68 @@
 			// 
 			// dtpStartDate
 			// 
-			dtpStartDate.Format = DateTimePickerFormat.Short;
-			dtpStartDate.Location = new Point(353, 221);
+			dtpStartDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
+			dtpStartDate.Format = DateTimePickerFormat.Custom;
+			dtpStartDate.Location = new Point(315, 150);
 			dtpStartDate.Name = "dtpStartDate";
-			dtpStartDate.Size = new Size(94, 23);
+			dtpStartDate.Size = new Size(160, 23);
 			dtpStartDate.TabIndex = 27;
 			// 
 			// dtpEndDate
 			// 
-			dtpEndDate.Format = DateTimePickerFormat.Short;
-			dtpEndDate.Location = new Point(353, 250);
+			dtpEndDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
+			dtpEndDate.Format = DateTimePickerFormat.Custom;
+			dtpEndDate.Location = new Point(315, 177);
 			dtpEndDate.Name = "dtpEndDate";
-			dtpEndDate.Size = new Size(94, 23);
+			dtpEndDate.Size = new Size(160, 23);
 			dtpEndDate.TabIndex = 28;
-			// 
-			// txtAddRate
-			// 
-			txtAddRate.Location = new Point(407, 281);
-			txtAddRate.Name = "txtAddRate";
-			txtAddRate.Size = new Size(100, 23);
-			txtAddRate.TabIndex = 29;
 			// 
 			// txtAddCount
 			// 
-			txtAddCount.Location = new Point(407, 310);
+			txtAddCount.Location = new Point(315, 237);
 			txtAddCount.Name = "txtAddCount";
 			txtAddCount.Size = new Size(100, 23);
 			txtAddCount.TabIndex = 30;
-			// 
-			// dtpStartTime
-			// 
-			dtpStartTime.Format = DateTimePickerFormat.Time;
-			dtpStartTime.Location = new Point(462, 221);
-			dtpStartTime.Name = "dtpStartTime";
-			dtpStartTime.Size = new Size(94, 23);
-			dtpStartTime.TabIndex = 31;
-			// 
-			// dtpEndTime
-			// 
-			dtpEndTime.Format = DateTimePickerFormat.Time;
-			dtpEndTime.Location = new Point(462, 250);
-			dtpEndTime.Name = "dtpEndTime";
-			dtpEndTime.Size = new Size(94, 23);
-			dtpEndTime.TabIndex = 32;
+			txtAddCount.TextAlign = HorizontalAlignment.Center;
 			// 
 			// btnSetToStart
 			// 
-			btnSetToStart.Location = new Point(602, 225);
+			btnSetToStart.Location = new Point(524, 179);
 			btnSetToStart.Name = "btnSetToStart";
 			btnSetToStart.Size = new Size(118, 23);
 			btnSetToStart.TabIndex = 33;
 			btnSetToStart.Text = "Set To Current Start";
 			btnSetToStart.UseVisualStyleBackColor = true;
+			btnSetToStart.Click += btnSetToEnd_Click;
 			// 
 			// btnCalculateCount
 			// 
-			btnCalculateCount.Location = new Point(604, 254);
+			btnCalculateCount.Location = new Point(524, 150);
 			btnCalculateCount.Name = "btnCalculateCount";
 			btnCalculateCount.Size = new Size(116, 23);
 			btnCalculateCount.TabIndex = 34;
 			btnCalculateCount.Text = "Calculate Count";
 			btnCalculateCount.UseVisualStyleBackColor = true;
+			btnCalculateCount.Click += btnCalculateCount_Click;
 			// 
 			// btnCalculateStart
 			// 
-			btnCalculateStart.Location = new Point(600, 308);
+			btnCalculateStart.Location = new Point(524, 245);
 			btnCalculateStart.Name = "btnCalculateStart";
 			btnCalculateStart.Size = new Size(118, 23);
 			btnCalculateStart.TabIndex = 35;
 			btnCalculateStart.Text = "Calculate Start";
 			btnCalculateStart.UseVisualStyleBackColor = true;
+			btnCalculateStart.Click += btnCalculateStart_Click;
+			// 
+			// label15
+			// 
+			label15.AutoSize = true;
+			label15.Location = new Point(424, 215);
+			label15.Name = "label15";
+			label15.Size = new Size(51, 15);
+			label15.TabIndex = 36;
+			label15.Text = "Seconds";
 			// 
 			// DlgAddPoint
 			// 
@@ -364,14 +333,12 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			CancelButton = btnCancel;
-			ClientSize = new Size(800, 450);
+			ClientSize = new Size(680, 358);
+			Controls.Add(label15);
 			Controls.Add(btnCalculateStart);
 			Controls.Add(btnCalculateCount);
 			Controls.Add(btnSetToStart);
-			Controls.Add(dtpEndTime);
-			Controls.Add(dtpStartTime);
 			Controls.Add(txtAddCount);
-			Controls.Add(txtAddRate);
 			Controls.Add(dtpEndDate);
 			Controls.Add(dtpStartDate);
 			Controls.Add(label14);
@@ -386,12 +353,10 @@
 			Controls.Add(label9);
 			Controls.Add(label8);
 			Controls.Add(label7);
-			Controls.Add(label6);
 			Controls.Add(txtRate);
 			Controls.Add(txtCount);
 			Controls.Add(txtTo);
 			Controls.Add(txtFrom);
-			Controls.Add(label5);
 			Controls.Add(label4);
 			Controls.Add(label3);
 			Controls.Add(label2);
@@ -419,12 +384,10 @@
 		private Label label2;
 		private Label label3;
 		private Label label4;
-		private Label label5;
 		private TextBox txtFrom;
 		private TextBox txtTo;
 		private TextBox txtCount;
 		private TextBox txtRate;
-		private Label label6;
 		private Label label7;
 		private Label label8;
 		private Label label9;
@@ -439,12 +402,10 @@
 		private Label label14;
 		private DateTimePicker dtpStartDate;
 		private DateTimePicker dtpEndDate;
-		private TextBox txtAddRate;
 		private TextBox txtAddCount;
-		private DateTimePicker dtpStartTime;
-		private DateTimePicker dtpEndTime;
 		private Button btnSetToStart;
 		private Button btnCalculateCount;
 		private Button btnCalculateStart;
+		private Label label15;
 	}
 }

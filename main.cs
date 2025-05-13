@@ -183,6 +183,7 @@ namespace WebiGen {
 		private void OnIdle(object sender, EventArgs e) {
 			EnableLoadPoints();
 			EnableLoadRads();
+			btnMaps.Enabled = DatabaseConnected();
 		}
 //----------------------------------------------------------------------------
 		private void EnableLoadPoints() {

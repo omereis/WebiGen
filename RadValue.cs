@@ -82,13 +82,17 @@ namespace WebiGen {
 				dStd = Math.Sqrt (dStd);
 			}
 		}
+//----------------------------------------------------------------------------
+		public static bool LoadStartRad (SqlConnection database, int idPoint, ref TRadValue rad, ref string strErr) {
+			return (TRadValueDB.LoadStartRad (database, idPoint, ref rad, ref strErr));
+		}
 
 	}
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //----------------------------------------------------------------------------
 	public class TRadValueDB : TRadValue {
-		private static readonly string Table = "DataRecords";
+		public static readonly string Table = "DataRecords";
 		private static readonly string FldTime = "RecordTime";
 		private static readonly string FldPointID = "Point_PointId";
 		private static readonly string FldDose = "Dose";
@@ -141,6 +145,35 @@ namespace WebiGen {
 				strErr = ex.Message;
 			}
 			return (fRead);
+		}
+//----------------------------------------------------------------------------
+		public static new bool LoadStartRad (SqlConnection database, int idPoint, ref TRadValue rad, ref string strErr) {
+			SqlDataReader reader = null;
+			bool fLoad = false;
+
+			try {
+				SqlCommand cmd = database.CreateCommand ();
+				cmd.CommandText = String.Format("select * from {0} where {1}={2} order by {3} asc;",
+									Table, FldPointID, idPoint, FldTime);
+				reader = cmd.ExecuteReader ();
+				if (reader != null) {
+					if (reader.Read ()) {
+						TRadValueDB rdb = new TRadValueDB ();
+						if ((fLoad = rdb.LoadFromReader (reader, ref strErr)) == true)
+							if (rdb != null)
+								rad = new TRadValue (rdb);
+					}
+				}
+			}
+			catch (Exception ex) {
+				strErr = ex.Message;
+				fLoad = false;
+			}
+			finally {
+				if (reader != null)
+					reader.Close ();
+			}
+			return (fLoad);
 		}
 	}
 }
