@@ -28,18 +28,22 @@
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
 			DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
 			miFileSep1 = new ToolStripSeparator();
 			miExit = new ToolStripMenuItem();
+			popupData = new ToolStripMenuItem();
+			miPointsExport = new ToolStripMenuItem();
+			importFromCSVToolStripMenuItem = new ToolStripMenuItem();
 			popupHelp = new ToolStripMenuItem();
 			miAbout = new ToolStripMenuItem();
 			button1 = new Button();
@@ -67,15 +71,13 @@
 			sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
 			chartRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			gridStats = new DataGridView();
-			dataGridViewCheckBoxColumn1 = new DataGridViewButtonColumn();
-			dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+			dataGridViewTextBoxColumn2 = new DataGridViewLinkColumn();
 			dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
 			dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
 			dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
 			Column11 = new DataGridViewTextBoxColumn();
-			popupData = new ToolStripMenuItem();
-			exportToCSVToolStripMenuItem = new ToolStripMenuItem();
-			importFromCSVToolStripMenuItem = new ToolStripMenuItem();
+			dlgOpenCsv = new OpenFileDialog();
+			dlgSaveCsv = new SaveFileDialog();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
@@ -119,6 +121,26 @@
 			miExit.Text = "E&xit";
 			miExit.Click += miExit_Click;
 			// 
+			// popupData
+			// 
+			popupData.DropDownItems.AddRange(new ToolStripItem[] { miPointsExport, importFromCSVToolStripMenuItem });
+			popupData.Name = "popupData";
+			popupData.Size = new Size(43, 20);
+			popupData.Text = "Data";
+			// 
+			// miPointsExport
+			// 
+			miPointsExport.Name = "miPointsExport";
+			miPointsExport.Size = new Size(172, 22);
+			miPointsExport.Text = "&Export to CSV...";
+			miPointsExport.Click += miPointsExport_Click;
+			// 
+			// importFromCSVToolStripMenuItem
+			// 
+			importFromCSVToolStripMenuItem.Name = "importFromCSVToolStripMenuItem";
+			importFromCSVToolStripMenuItem.Size = new Size(172, 22);
+			importFromCSVToolStripMenuItem.Text = "&Import from CSV...";
+			// 
 			// popupHelp
 			// 
 			popupHelp.DropDownItems.AddRange(new ToolStripItem[] { miAbout });
@@ -146,7 +168,7 @@
 			// 
 			comboMaps.DropDownStyle = ComboBoxStyle.DropDownList;
 			comboMaps.FormattingEnabled = true;
-			comboMaps.Location = new Point(49, 87);
+			comboMaps.Location = new Point(141, 66);
 			comboMaps.Name = "comboMaps";
 			comboMaps.Size = new Size(170, 23);
 			comboMaps.TabIndex = 2;
@@ -220,7 +242,7 @@
 			// 
 			// btnLoadMaps
 			// 
-			btnLoadMaps.Location = new Point(49, 58);
+			btnLoadMaps.Location = new Point(49, 66);
 			btnLoadMaps.Name = "btnLoadMaps";
 			btnLoadMaps.Size = new Size(86, 23);
 			btnLoadMaps.TabIndex = 6;
@@ -231,7 +253,7 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Location = new Point(7, 90);
+			label1.Location = new Point(7, 69);
 			label1.Name = "label1";
 			label1.Size = new Size(36, 15);
 			label1.TabIndex = 7;
@@ -241,18 +263,18 @@
 			// 
 			gridPoints.AllowUserToAddRows = false;
 			gridPoints.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle5.BackColor = Color.Silver;
-			dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = Color.Silver;
+			dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			gridPoints.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column6, Column3, Column4, Column5 });
 			gridPoints.EditMode = DataGridViewEditMode.EditProgrammatically;
-			gridPoints.Location = new Point(22, 153);
+			gridPoints.Location = new Point(12, 124);
 			gridPoints.MultiSelect = false;
 			gridPoints.Name = "gridPoints";
 			gridPoints.RowHeadersVisible = false;
@@ -268,8 +290,8 @@
 			// 
 			// Column7
 			// 
-			dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column7.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column7.DefaultCellStyle = dataGridViewCellStyle2;
 			Column7.HeaderText = "Point ID";
 			Column7.Name = "Column7";
 			Column7.Width = 55;
@@ -306,7 +328,7 @@
 			// 
 			// btnLoadPoints
 			// 
-			btnLoadPoints.Location = new Point(22, 124);
+			btnLoadPoints.Location = new Point(12, 95);
 			btnLoadPoints.Name = "btnLoadPoints";
 			btnLoadPoints.Size = new Size(82, 23);
 			btnLoadPoints.TabIndex = 9;
@@ -316,7 +338,7 @@
 			// 
 			// btnLoadRads
 			// 
-			btnLoadRads.Location = new Point(22, 309);
+			btnLoadRads.Location = new Point(7, 298);
 			btnLoadRads.Name = "btnLoadRads";
 			btnLoadRads.Size = new Size(97, 23);
 			btnLoadRads.TabIndex = 10;
@@ -331,17 +353,17 @@
 			// 
 			// chartRate
 			// 
-			chartArea2.Name = "ChartArea1";
-			chartRate.ChartAreas.Add(chartArea2);
-			legend2.Name = "Legend1";
-			chartRate.Legends.Add(legend2);
-			chartRate.Location = new Point(494, 58);
+			chartArea1.Name = "ChartArea1";
+			chartRate.ChartAreas.Add(chartArea1);
+			legend1.Name = "Legend1";
+			chartRate.Legends.Add(legend1);
+			chartRate.Location = new Point(489, 63);
 			chartRate.Name = "chartRate";
-			series2.ChartArea = "ChartArea1";
-			series2.Legend = "Legend1";
-			series2.Name = "Series1";
-			chartRate.Series.Add(series2);
-			chartRate.Size = new Size(668, 430);
+			series1.ChartArea = "ChartArea1";
+			series1.Legend = "Legend1";
+			series1.Name = "Series1";
+			chartRate.Series.Add(series1);
+			chartRate.Size = new Size(549, 274);
 			chartRate.TabIndex = 11;
 			chartRate.Text = "chart1";
 			// 
@@ -349,81 +371,70 @@
 			// 
 			gridStats.AllowUserToAddRows = false;
 			gridStats.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle7.BackColor = Color.Silver;
-			dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle3.BackColor = Color.Silver;
+			dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
 			gridStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			gridStats.Columns.AddRange(new DataGridViewColumn[] { dataGridViewCheckBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, Column11 });
+			gridStats.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, Column11 });
 			gridStats.EditMode = DataGridViewEditMode.EditProgrammatically;
-			gridStats.Location = new Point(22, 338);
+			gridStats.Location = new Point(7, 327);
 			gridStats.MultiSelect = false;
 			gridStats.Name = "gridStats";
 			gridStats.RowHeadersVisible = false;
-			gridStats.Size = new Size(436, 150);
+			gridStats.Size = new Size(464, 150);
 			gridStats.TabIndex = 12;
 			gridStats.CellClick += gridStats_CellClick;
-			// 
-			// dataGridViewCheckBoxColumn1
-			// 
-			dataGridViewCheckBoxColumn1.HeaderText = "Add";
-			dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
-			dataGridViewCheckBoxColumn1.Resizable = DataGridViewTriState.True;
-			dataGridViewCheckBoxColumn1.Width = 50;
 			// 
 			// dataGridViewTextBoxColumn2
 			// 
 			dataGridViewTextBoxColumn2.HeaderText = "Name";
 			dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+			dataGridViewTextBoxColumn2.Resizable = DataGridViewTriState.True;
+			dataGridViewTextBoxColumn2.SortMode = DataGridViewColumnSortMode.Automatic;
 			dataGridViewTextBoxColumn2.Width = 70;
 			// 
 			// dataGridViewTextBoxColumn7
 			// 
 			dataGridViewTextBoxColumn7.HeaderText = "From";
 			dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-			dataGridViewTextBoxColumn7.Width = 65;
+			dataGridViewTextBoxColumn7.Width = 110;
 			// 
 			// dataGridViewTextBoxColumn8
 			// 
 			dataGridViewTextBoxColumn8.HeaderText = "To";
 			dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-			dataGridViewTextBoxColumn8.Width = 65;
+			dataGridViewTextBoxColumn8.Width = 110;
 			// 
 			// dataGridViewTextBoxColumn9
 			// 
-			dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle4;
 			dataGridViewTextBoxColumn9.HeaderText = "Count";
 			dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
 			dataGridViewTextBoxColumn9.Width = 70;
 			// 
 			// Column11
 			// 
+			dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column11.DefaultCellStyle = dataGridViewCellStyle5;
 			Column11.HeaderText = "Sampling";
 			Column11.Name = "Column11";
+			Column11.Width = 70;
 			// 
-			// popupData
+			// dlgOpenCsv
 			// 
-			popupData.DropDownItems.AddRange(new ToolStripItem[] { exportToCSVToolStripMenuItem, importFromCSVToolStripMenuItem });
-			popupData.Name = "popupData";
-			popupData.Size = new Size(43, 20);
-			popupData.Text = "Data";
+			dlgOpenCsv.DefaultExt = "*.csv";
+			dlgOpenCsv.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
 			// 
-			// exportToCSVToolStripMenuItem
+			// dlgSaveCsv
 			// 
-			exportToCSVToolStripMenuItem.Name = "exportToCSVToolStripMenuItem";
-			exportToCSVToolStripMenuItem.Size = new Size(180, 22);
-			exportToCSVToolStripMenuItem.Text = "&Export to CSV...";
-			// 
-			// importFromCSVToolStripMenuItem
-			// 
-			importFromCSVToolStripMenuItem.Name = "importFromCSVToolStripMenuItem";
-			importFromCSVToolStripMenuItem.Size = new Size(180, 22);
-			importFromCSVToolStripMenuItem.Text = "&Import from CSV...";
+			dlgSaveCsv.DefaultExt = "*.csv";
+			dlgSaveCsv.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
 			// 
 			// frmMain
 			// 
@@ -444,7 +455,7 @@
 			Controls.Add(menuMain);
 			MainMenuStrip = menuMain;
 			Name = "frmMain";
-			Text = "WebeSmarts Data Generetor";
+			Text = "WebiSmarts Data Generetor";
 			FormClosed += frmMain_FormClosed;
 			Load += frmMain_Load;
 			menuMain.ResumeLayout(false);
@@ -493,15 +504,16 @@
 		private DataGridViewTextBoxColumn Column3;
 		private DataGridViewTextBoxColumn Column4;
 		private DataGridViewTextBoxColumn Column5;
-		private DataGridViewButtonColumn dataGridViewCheckBoxColumn1;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+		private ToolStripButton btnMaps;
+		private ToolStripMenuItem popupData;
+		private ToolStripMenuItem miPointsExport;
+		private ToolStripMenuItem importFromCSVToolStripMenuItem;
+		private DataGridViewLinkColumn dataGridViewTextBoxColumn2;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
 		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
 		private DataGridViewTextBoxColumn Column11;
-		private ToolStripButton btnMaps;
-		private ToolStripMenuItem popupData;
-		private ToolStripMenuItem exportToCSVToolStripMenuItem;
-		private ToolStripMenuItem importFromCSVToolStripMenuItem;
+		private OpenFileDialog dlgOpenCsv;
+		private SaveFileDialog dlgSaveCsv;
 	}
 }

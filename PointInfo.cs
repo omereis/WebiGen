@@ -110,6 +110,33 @@ namespace WebiGen {
 		public bool LoadStartRad (SqlConnection database, ref TRadValue rad, ref string strErr) {
 			return (TRadValue.LoadStartRad (database, PointID, ref rad, ref strErr));
 		}
+//----------------------------------------------------------------------------
+		public bool LoadRadiations (SqlConnection database, ref TRadValue[] aRad, ref string strErr) {
+			return (TRadValue.LoadFromDB (database, PointID, ref aRad, ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public int RadToCsv (TRadValue[] aRads, ArrayList al) {
+			string[] astr = new string[3];
+
+			astr[0] = "Point Name";
+			astr[1] = Name;
+			astr[2] = "";
+			al.Add(astr);
+			astr = new string[3];
+			astr[0] = "Date Time";
+			astr[1] = "Rate";
+			astr[2] = "Dose";
+			al.Add(astr);
+			for (int n=0 ; n < aRads.Length ; n++) {
+				astr = new string[3];
+				astr[0] = TMisc.AppDateTime (aRads[n].SampleTime);
+				astr[1] = aRads[n].Rate.ToString("0.##");
+				astr[2] = aRads[n].Dose.ToString("0.##");
+				al.Add (astr);
+			}
+			return (al.Count);
+		}
+
 	}
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -174,6 +201,7 @@ namespace WebiGen {
 			}
 			return (fRead);
 		}
+//----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------

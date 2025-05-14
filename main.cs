@@ -71,7 +71,7 @@ namespace WebiGen {
 			string strConn = LoadIniConnectionString();
 			bool fConnect = false;
 			try {
-				if(strConn.Length > 0) {
+				if (strConn.Length > 0) {
 					DisconnectDatabase();
 					m_database = new SqlConnection(strConn);
 					m_database.Open();
@@ -89,9 +89,9 @@ namespace WebiGen {
 		private void miDatabase_Click(object sender, EventArgs e) {
 			DlgEditDB dlg = new DlgEditDB();
 			string strConnection = LoadIniConnectionString();
-			if(strConnection.Length == 0)
+			if (strConnection.Length == 0)
 				strConnection = DefauleConnectionString;
-			if(dlg.Execute(ref strConnection)) {
+			if (dlg.Execute(ref strConnection)) {
 				SaveIniConnectionString(strConnection);
 				ConnectToDB();
 				//txtConnection.Text = strConnection;
@@ -112,7 +112,7 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
 			Application.Idle -= OnIdle;
-			if(m_database != null) {
+			if (m_database != null) {
 				m_database.Close();
 			}
 		}
@@ -121,7 +121,7 @@ namespace WebiGen {
 			//TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
 			string strServer = "", strDatabase = "";
 			bool fConnect = false;
-			if(m_database != null) {
+			if (m_database != null) {
 				strServer = m_database.DataSource;
 				strDatabase = m_database.Database;
 				fConnect = m_database.State == ConnectionState.Open;
@@ -145,8 +145,8 @@ namespace WebiGen {
 		}
 //----------------------------------------------------------------------------
 		private void DisconnectDatabase() {
-			if(m_database != null)
-				if(m_database.State == ConnectionState.Open)
+			if (m_database != null)
+				if (m_database.State == ConnectionState.Open)
 					m_database.Close();
 		}
 //----------------------------------------------------------------------------
@@ -158,23 +158,23 @@ namespace WebiGen {
 		private bool DatabaseConnected() {
 			bool fConnected = false;
 
-			if(m_database != null)
+			if (m_database != null)
 				fConnected = m_database.State == ConnectionState.Open;
 			return (fConnected);
 		}
 //----------------------------------------------------------------------------
 		private void btnLoadMaps_Click(object sender, EventArgs e) {
-			if(DatabaseConnected()) {
+			if (DatabaseConnected()) {
 				TMapInfo[] aMaps = null;
 
 				comboMaps.Items.Clear();
-				if(TMapInfo.LoadMapsFromDB(m_database, ref aMaps, ref m_strErr)) {
-					if(aMaps != null)
-						for(int n = 0; n < aMaps.Length; n++)
+				if (TMapInfo.LoadMapsFromDB(m_database, ref aMaps, ref m_strErr)) {
+					if (aMaps != null)
+						for (int n = 0; n < aMaps.Length; n++)
 							comboMaps.Items.Add(aMaps[n]);
 				} else
 					MessageBox.Show("Error loading maps:\n" + m_strErr);
-				if(comboMaps.Items.Count > 0)
+				if (comboMaps.Items.Count > 0)
 					comboMaps.SelectedIndex = 0;
 				comboMaps.Items.Add("");
 			}
@@ -190,7 +190,7 @@ namespace WebiGen {
 			bool fMapSelected = false;
 
 			try {
-				if(DatabaseConnected()) {
+				if (DatabaseConnected()) {
 					TMapInfo map = UploadCurrentMap();
 					fMapSelected = (map != null);
 				}
@@ -200,28 +200,28 @@ namespace WebiGen {
 			}
 			btnLoadPoints.Enabled = fMapSelected;
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private TMapInfo UploadCurrentMap() {
 			TMapInfo map = null;
 
-			if(comboMaps.SelectedItem != null)
+			if (comboMaps.SelectedItem != null)
 				map = (TMapInfo)comboMaps.SelectedItem;
 			return (map);
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void btnLoadPoints_Click(object sender, EventArgs e) {
 			TPointInfo[] aPoints = null;
 			TMapInfo map = UploadCurrentMap();
 
 			gridPoints.Rows.Clear();
-			if(TPointInfo.LoadFromDB(m_database, map.ID, ref aPoints, ref m_strErr)) {
+			if (TPointInfo.LoadFromDB(m_database, map.ID, ref aPoints, ref m_strErr)) {
 				gridPoints.RowCount = aPoints.Length;
-				for(int n = 0; n < aPoints.Length; n++)
+				for (int n = 0; n < aPoints.Length; n++)
 					DownloadPointToRow(n, aPoints[n]);
 			} else
 				MessageBox.Show("Error loading points\n" + m_strErr);
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void DownloadPointToRow(int row, TPointInfo point) {
 			gridPoints.Rows[row].Cells[0].Tag = point;
 			gridPoints.Rows[row].Cells[0].Value = false;
@@ -233,100 +233,110 @@ namespace WebiGen {
 			gridPoints.Rows[row].Cells[6].Value = point.IP;
 
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void gridPoints_CellClick(object sender, DataGridViewCellEventArgs e) {
-			if(e.ColumnIndex == 0)
+			if (e.ColumnIndex == 0)
 				TogglePoint(e.RowIndex);
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void TogglePoint(int row) {
-			if((row >= 0) && (row < gridPoints.RowCount)) {
+			if ((row >= 0) && (row < gridPoints.RowCount)) {
 				//int n = TMisc.ToIntDef (gridPoints.Rows[row].Cells [0].Value);
-				if(CheckedPoint(row))
+				if (CheckedPoint(row))
 					//if (n == 0)
 					gridPoints.Rows[row].Cells[0].Value = false;
 				else
 					gridPoints.Rows[row].Cells[0].Value = true;
 			}
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void EnableLoadRads() {
 			bool fEnabled = false;
 			TPointInfo[] aPoints = UploadSelectedPoints();
-			if(aPoints != null)
-				for(int n = 0; (n < aPoints.Length) && (fEnabled == false); n++)
+			if (aPoints != null)
+				for (int n = 0; (n < aPoints.Length) && (fEnabled == false); n++)
 					fEnabled = aPoints[n].PointID > 0;
 			btnLoadRads.Enabled = fEnabled;
+			miPointsExport.Enabled = fEnabled;
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private TPointInfo[] UploadSelectedPoints() {
 
 			//int[] aIDs = null;
 			TPointInfo[] aPoints = null;
 			ArrayList ar = new ArrayList();
 
-			for(int n = 0; n < gridPoints.RowCount; n++) {
-				if(CheckedPoint(n)) {
+			for (int n = 0; n < gridPoints.RowCount; n++) {
+				if (CheckedPoint(n)) {
 					TPointInfo point = UploadPointFromRow(gridPoints, n);
-					if(point != null)
+					if (point != null)
 						ar.Add(new TPointInfo(point));
 				}
 			}
-			if(ar.Count > 0) {
+			if (ar.Count > 0) {
 				aPoints = new TPointInfo[ar.Count];
-				for(int n = 0; n < ar.Count; n++)
+				for (int n = 0; n < ar.Count; n++)
 					aPoints[n] = (TPointInfo)ar[n];
 			}
 			return (aPoints);
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private bool CheckedPoint(int row) {
 			bool fChecked = false;
 
-			if((row >= 0) && (row < gridPoints.RowCount))
+			if ((row >= 0) && (row < gridPoints.RowCount))
 				fChecked = TMisc.ToIntDef(gridPoints.Rows[row].Cells[0].Value) > 0;
 			return (fChecked);
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private TPointInfo UploadPointFromRow(DataGridView grid, int row) {
 			TPointInfo point = null;
 
-			if((row >= 0) && (row < grid.RowCount))
+			if ((row >= 0) && (row < grid.RowCount))
 				point = (TPointInfo)grid.Rows[row].Cells[0].Tag;
 			return (point);
 
 
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void btnLoadRads_Click(object sender, EventArgs e) {
-			TRadValue[] aRads = null;
-			TPointInfo[] aPoints = UploadSelectedPoints();
-			//int[] aIDs = UploadSelectedPoints();
+			System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
+			try {
+				System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+				TRadValue[] aRads = null;
+				TPointInfo[] aPoints = UploadSelectedPoints();
+				//int[] aIDs = UploadSelectedPoints();
 
-			for(int n = 0; n < aPoints.Length; n++) {
-				if(TRadValue.LoadFromDB(m_database, aPoints[n].PointID, ref aRads, ref m_strErr)) {
-					SetPointStats(aPoints[n], aRads);
-					DownloadPointsChart(aPoints[n], aRads);
+				for (int n = 0; n < aPoints.Length; n++) {
+					if (TRadValue.LoadFromDB(m_database, aPoints[n].PointID, ref aRads, ref m_strErr)) {
+						SetPointStats(aPoints[n], aRads);
+						DownloadPointsChart(aPoints[n], aRads);
+					}
 				}
 			}
+			catch (Exception ex) {
+			}
+			finally {
+				System.Windows.Forms.Cursor.Current = curOld;
+			}
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private void SetPointStats(TPointInfo point, TRadValue[] aRads) {
-			if(aRads != null) {
-				if(aRads.Length > 0) {
+			if (aRads != null) {
+				if (aRads.Length > 0) {
 					int nRow = GetRowByPointID(gridStats, point);
-					if(nRow < 0)
+					if (nRow < 0)
 						nRow = gridStats.Rows.Add();
-					if(nRow >= 0) {
+					if (nRow >= 0) {
 						try {
 							gridStats.Rows[nRow].Cells[0].Tag = point;
-							gridStats.Rows[nRow].Cells[1].Value = point.Name;
-							gridStats.Rows[nRow].Cells[2].Value = TMisc.AppTime(aRads[0].SampleTime);
-							gridStats.Rows[nRow].Cells[3].Value = TMisc.AppTime(aRads[aRads.Length - 1].SampleTime);
-							gridStats.Rows[nRow].Cells[4].Value = TMisc.IntFormat(aRads.Length);
+							gridStats.Rows[nRow].Cells[0].Value = point.Name;
+							gridStats.Rows[nRow].Cells[1].Value = TMisc.AppDateTime(aRads[0].SampleTime);
+							gridStats.Rows[nRow].Cells[2].Value = TMisc.AppDateTime(aRads[aRads.Length - 1].SampleTime);
+							gridStats.Rows[nRow].Cells[3].Value = TMisc.IntFormat(aRads.Length);
 							DateTime? dt = TPointInfo.GetSamplingRate(aRads);
-							if(dt != null)
-								gridStats.Rows[nRow].Cells[5].Value = System.String.Format("{0}.{1:D3}", dt.Value.Second, dt.Value.Millisecond);
+							if (dt != null)
+								gridStats.Rows[nRow].Cells[4].Value = System.String.Format("{0}.{1:D3}", dt.Value.Second, dt.Value.Millisecond);
 						} catch(Exception ex) {
 							m_strErr = ex.Message;
 						}
@@ -334,14 +344,14 @@ namespace WebiGen {
 				}
 			}
 		}
-		//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 		private int GetRowByPointID(DataGridView grid, TPointInfo point) {
 			int n, nRow = -1;
 			TPointInfo pointGrid;
 
-			for(n = 0; (n < grid.Rows.Count) && (nRow < 0); n++) {
+			for (n = 0; (n < grid.Rows.Count) && (nRow < 0); n++) {
 				pointGrid = UploadPointFromRow(grid, n);
-				if(point.PointID == pointGrid.PointID)
+				if (point.PointID == pointGrid.PointID)
 					nRow = n;
 			}
 			return (nRow);
@@ -350,21 +360,21 @@ namespace WebiGen {
 		private void DownloadPointsChart(TPointInfo point, TRadValue[] aRads) {
 			Series ser = FindSeriesByPoint(chartRate, point);
 
-			if(ser == null) {
+			if (ser == null) {
 				ser = CreateSeries(chartRate, point);
 				chartRate.Series.Add(ser);
 			} else
 				ser.Points.Clear();
-			for(int n = 0; n < aRads.Length; n++)
+			for (int n = 0; n < aRads.Length; n++)
 				ser.Points.AddXY(aRads[n].SampleTime, aRads[n].Rate);
 		}
 //----------------------------------------------------------------------------
 		private Series FindSeriesByPoint(Chart chart, TPointInfo point) {
 			Series serFound = null;
 
-			for(int n = 0; (n < chart.Series.Count) && (serFound == null); n++) {
+			for (int n = 0; (n < chart.Series.Count) && (serFound == null); n++) {
 				TPointInfo ptRad = (TPointInfo)chart.Series[n].Tag;
-				if(point.PointID == ptRad.PointID)
+				if (point.PointID == ptRad.PointID)
 					serFound = chart.Series[n];
 			}
 			return (serFound);
@@ -381,13 +391,40 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		private void gridStats_CellClick(object sender, DataGridViewCellEventArgs e) {
 			if (e.ColumnIndex == 0) {
-				TPointInfo point = (TPointInfo) gridStats.Rows[e.RowIndex].Cells[0].Tag;
+				TPointInfo point = (TPointInfo)gridStats.Rows[e.RowIndex].Cells[0].Tag;
 				//MessageBox.Show ("Adding points to " + point.Name);
-				DlgAddPoint  dlg = new DlgAddPoint();
+				DlgAddPoint dlg = new DlgAddPoint();
 				//SqlTransaction transaction = m_database.BeginTransaction();
-				bool f= dlg.Execute (m_database, point);
+				bool f = dlg.Execute(m_database, point);
+			}
+		}
+//----------------------------------------------------------------------------
+		private void miPointsExport_Click(object sender, EventArgs e) {
+			TPointInfo[] aPoints = UploadSelectedPoints();
+			TRadValue[] aRads = null;
+			ArrayList al = new ArrayList();
+			System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
+
+			if (dlgSaveCsv.ShowDialog() == DialogResult.OK) {
+				try {
+					System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+					if (aPoints != null) {
+						for (int n=0 ; n < aPoints.Length ; n++) {
+							if (aPoints[n].LoadRadiations (m_database, ref aRads, ref m_strErr))
+								aPoints[n].RadToCsv (aRads, al);
+						}
+						if (al.Count > 0)
+							TMisc.SaveToCsv (dlgSaveCsv.FileName, al);
+					}
+				}
+				catch (Exception ex) {
+					MessageBox.Show (ex.Message);
+				}
+				finally {
+					System.Windows.Forms.Cursor.Current = curOld;
+				}
 			}
 		}
 	}
-	//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 }

@@ -47,7 +47,8 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		private void Download(TPointInfo point) {
 			TRadValue[] aRads = new TRadValue[3];
-			if(TRadValue.LoadFromDB(m_database, point.PointID, ref aRads, ref m_strErr)) {
+
+			if (TRadValue.LoadFromDB(m_database, point.PointID, ref aRads, ref m_strErr)) {
 				Tag = point;
 				txtName.Text = point.Name;
 				txtFrom.Text = TMisc.AppDateTime(aRads[0].SampleTime);
@@ -58,7 +59,9 @@ namespace WebiGen {
 				if(dt != null)
 					txtRate.Text = System.String.Format("{0}.{1:D3}", dt.Value.Second, dt.Value.Millisecond);
 				DownloadStats(aRads);
-			} else
+				SetToStart ();
+			}
+			else
 				MessageBox.Show(m_strErr);
 		}
 //----------------------------------------------------------------------------
@@ -84,6 +87,10 @@ namespace WebiGen {
 		}
 //----------------------------------------------------------------------------
 		private void btnSetToEnd_Click(object sender, EventArgs e) {
+			SetToStart ();
+		}
+//----------------------------------------------------------------------------
+		private void SetToStart () {
 			TRadValue rad = null;
 
 			if(m_point.LoadStartRad(m_database, ref rad, ref m_strErr)) {
@@ -114,12 +121,12 @@ namespace WebiGen {
 			int idx;
 			if (str.Length > 0) {
 				while ((idx = str.IndexOf(",")) >= 0)
-					str.Remove(idx);
+					str = str.Remove(idx, 1);
 				int nCount = TMisc.ToIntDef(str);
 				double dSamplingRate = TMisc.ToDoubleDef(txtRate.Text);
 				if (dSamplingRate > 0) {
-					ulong nTotalCount = (ulong) (nCount / dSamplingRate);
-					TimeSpan ts = TimeSpan.FromSeconds(nCount);
+					ulong nTotalCount = (ulong) (nCount * dSamplingRate);
+					TimeSpan ts = TimeSpan.FromSeconds(nTotalCount);
 					DateTime dtStart = dtEnd.Subtract(ts);
 					dtpStartDate.Value = dtStart;
 				}
