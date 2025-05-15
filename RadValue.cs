@@ -91,7 +91,7 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //----------------------------------------------------------------------------
-	public class TRadValueDB : TRadValue {
+	internal class TRadValueDB : TRadValue {
 		public static readonly string Table = "DataRecords";
 		private static readonly string FldTime = "RecordTime";
 		private static readonly string FldPointID = "Point_PointId";

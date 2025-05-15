@@ -31,17 +31,15 @@ namespace WebiGen {
 			DialogResult = DialogResult.OK;
 		}
 //----------------------------------------------------------------------------
-		public bool Execute(SqlConnection database, TPointInfo point) {
+		public bool Execute(SqlConnection database, TPointInfo point, ref TRadAdd ra) {
 			m_database = database;
 			m_point = point;
 			//m_cmd = database.CreateCommand();
 			//m_trns = database.BeginTransaction();
 			Download(point);
 			bool f = ShowDialog() == DialogResult.OK;
-			//			if (f)
-			//				m_trns.Commit();
-			//			else
-			//				m_trns.Rollback();
+			if (f)
+				Upload (ref ra);
 			return (f);
 		}
 //----------------------------------------------------------------------------
@@ -63,6 +61,19 @@ namespace WebiGen {
 			}
 			else
 				MessageBox.Show(m_strErr);
+		}
+//----------------------------------------------------------------------------
+		private void Upload (ref TRadAdd raDest) {
+			TRadAdd ra = new TRadAdd();
+			ra.Start = dtpStartDate.Value;
+			ra.End = dtpEndDate.Value;
+			ra.SamplingRate = TMisc.ToDoubleDef (txtRate.Text);
+			ra.Min = TMisc.ToDoubleDef(txtMin.Text);
+			ra.Max = TMisc.ToDoubleDef(txtMax.Text);
+			ra.Average = TMisc.ToDoubleDef(txtAverage.Text);
+			ra.StdDev = TMisc.ToDoubleDef (txtStdDiv.Text);
+			if (ra.IsValid())
+				raDest = new TRadAdd(ra);
 		}
 //----------------------------------------------------------------------------
 		private TimeSpan? UploadSamplingRate() {
