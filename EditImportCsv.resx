@@ -117,78 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="menuMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="status_bar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>129, 17</value>
-  </metadata>
-  <metadata name="toolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>236, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnConnect.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIVSURBVEhLzZS7SuxQFEDvJ/gVItjYCIJgI4ggWKuVGgQb
-        CxUU1E4bUSxErFQQbAQrHyCilQ/QsVAHX/iaxJkkRCOIgQwDZpmcxMyEGe/NfQh3QTjZO8OafXb2yQ++
-        if9ffHamcH+vBtEfijMZg+vrNIZhijiRSLG4CCcnsog9fkv88KAyP28xM0N4LS2ZYj06SgW/8okt9iqc
-        nISVFQ1VNbAsS+SmphwWFvzKC4kltm2b0VGYmysW3NyojI0RtuWT2BXv7MgMDXn9zPfRI5fLMTwMyeRj
-        kPGJJXYcR6zb2zK9vV4/83LDeKGvDxTFCDI+X4qz2axYV1dld6uv4t5ja0umuxsOD3357KzO4KDt/vm7
-        iD8pKb68zNDV5TAx8YQkwf5+9I1vbsp0dMD4+DOdnXB3pwVP8hSJb281WltxqzRpaYHp6fzQF7K+LtPW
-        BhcXmSATJSL2tiNJtluJLuKDA5nmZlhb87e9uyvT3/8a9ty2/XaVIiJOpQwaG0HXX4IM7O3JNDTgznCG
-        piZYXlZC8c+IiBMJhfp6f4QK8eR1dTAw8BRkfk1ErOsmNTVwfl7ct56eZ2pr/cMSh6KXJ0km1dUOp6dp
-        3t4sMZ8jIxpVVYhcXCLijY0UlZXQ3m5SUYG4Ly/H7bvF1VXp6fiKUOydqrIybwL8mdU0k+PjtPuNjZ6o
-        uITiZFJ15UoQ/T1FPf5XfJMYPgBZ8ioPi6clgQAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="btnDisconnect.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIbSURBVEhLzZQ7S+RQFID3J/gDtlxEsLERBMFGEEGwVis1
-        CDYWKiiondOIYiFipYJgaaeCiHYi6Fiogy98TWZnkhCNIAYCA+Yz9yaZmZhxnX0I+0FIzkn47snJufnG
-        F/H/i09PM9zdaUH0h+JczuTqKotpWjJOJtOsrMDxsSpjwS/F1vcfwZXP/b3G0pLN/DyFY3XVkufDw3Tw
-        lM+nFYdyUeHMDKyt6WiaiW3bMjc767K87FdeSkVix3GYnITFxbjg+lojkaDQlpCKeizku7sqY2Oin8U+
-        CvL5POPjkEr9DDI+MbGQvO9tGO/sqAwOin4W5ab5xNAQZDJmkPH5sOJwAXEkEs8F+fa2Sn8/HBz48oUF
-        g9FRB9d9lXFIWfHFRY6+Ppfp6QcUJbqIYGtLpacHpqYe6e2F21td5kuJiW9udDo78aq06OiAubni0Jcu
-        sLGh0tUF5+e54G6UiFi8jqI4XiWGjPf3VdrbYX3df20hHB5+9p5zI4uUIyJOp01aW8EwnoIM7O2ptLTg
-        zXCOtjZfLsSllFsgIk4mMzQ3+yNUipA3NcHIyMOHFb4nIjYMi4YGODuL921g4JHGRuRmqUQe+3iKYlFf
-        73JykuXlxZbzOTGhU1eHzAl+W7y5maa2Frq7LWpqkNfV1Xh9t7m8LE6H4DN5QSx2VVWVmAD/L6XrFkdH
-        We8fG91RlVIQp1KaJ88E0d8T6/G/4ovE8AbaRPoZW71vEwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="btnMaps.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPY/j27dt/SjDYACcnJ7IwigEf3n8kCZNswPNb
-        J/+f6DYF0yA+yQac6Db5f6hWCmwIiE+mC0wIu2DS2Vf/F1x6DefjwlgNyNr34r/0wkdgTMgQDAOQNRNj
-        CIoBOg0rMTTDMLIhIHbriZeYBmDTiIxBGkEYxge5liQDsGGQqykyAISpZwAlmIEywMAAAAc1/Jwvt6sN
-        AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <metadata name="Column1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Column7.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Column2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Column6.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Column3.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Column4.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Column5.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="sqlCommand1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>328, 17</value>
+  <metadata name="dlgOpenCsv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
   </metadata>
   <metadata name="dataGridViewTextBoxColumn2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -219,11 +149,5 @@
   </metadata>
   <metadata name="Column12.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="dlgOpenCsv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>460, 17</value>
-  </metadata>
-  <metadata name="dlgSaveCsv.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>579, 17</value>
   </metadata>
 </root>

@@ -40,6 +40,7 @@
 			DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
 			DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
 			DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -61,7 +62,6 @@
 			btnDisconnect = new ToolStripButton();
 			btnMaps = new ToolStripButton();
 			btnLoadMaps = new Button();
-			label1 = new Label();
 			gridPoints = new DataGridView();
 			Column1 = new DataGridViewCheckBoxColumn();
 			Column7 = new DataGridViewTextBoxColumn();
@@ -87,14 +87,11 @@
 			Column12 = new DataGridViewTextBoxColumn();
 			dlgOpenCsv = new OpenFileDialog();
 			dlgSaveCsv = new SaveFileDialog();
-			gridNewData = new DataGridView();
-			dataGridViewLinkColumn1 = new DataGridViewLinkColumn();
-			dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-			dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
-			dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
-			dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
 			groupBox1 = new GroupBox();
-			txtAddCount = new TextBox();
+			btnPointRefresh = new Button();
+			comboPoints = new ComboBox();
+			label1 = new Label();
+			txtPointCount = new TextBox();
 			dtpEndDate = new DateTimePicker();
 			dtpStartDate = new DateTimePicker();
 			label14 = new Label();
@@ -111,14 +108,19 @@
 			label7 = new Label();
 			txtRate = new TextBox();
 			btnExport = new Button();
+			radioButton1 = new RadioButton();
+			radioButton2 = new RadioButton();
+			tabControl1 = new TabControl();
+			tabDerlete = new TabPage();
+			tabPage2 = new TabPage();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)gridPoints).BeginInit();
 			((System.ComponentModel.ISupportInitialize)chartRate).BeginInit();
 			((System.ComponentModel.ISupportInitialize)gridStats).BeginInit();
-			((System.ComponentModel.ISupportInitialize)gridNewData).BeginInit();
 			groupBox1.SuspendLayout();
+			tabControl1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// menuMain
@@ -166,15 +168,16 @@
 			// miPointsExport
 			// 
 			miPointsExport.Name = "miPointsExport";
-			miPointsExport.Size = new Size(172, 22);
+			miPointsExport.Size = new Size(180, 22);
 			miPointsExport.Text = "&Export to CSV...";
 			miPointsExport.Click += miPointsExport_Click;
 			// 
 			// importFromCSVToolStripMenuItem
 			// 
 			importFromCSVToolStripMenuItem.Name = "importFromCSVToolStripMenuItem";
-			importFromCSVToolStripMenuItem.Size = new Size(172, 22);
+			importFromCSVToolStripMenuItem.Size = new Size(180, 22);
 			importFromCSVToolStripMenuItem.Text = "&Import from CSV...";
+			importFromCSVToolStripMenuItem.Click += importFromCSVToolStripMenuItem_Click;
 			// 
 			// popupHelp
 			// 
@@ -203,7 +206,7 @@
 			// 
 			comboMaps.DropDownStyle = ComboBoxStyle.DropDownList;
 			comboMaps.FormattingEnabled = true;
-			comboMaps.Location = new Point(141, 66);
+			comboMaps.Location = new Point(99, 66);
 			comboMaps.Name = "comboMaps";
 			comboMaps.Size = new Size(170, 23);
 			comboMaps.TabIndex = 2;
@@ -211,7 +214,7 @@
 			// status_bar
 			// 
 			status_bar.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripStatusLabel2, toolStripStatusLabel3 });
-			status_bar.Location = new Point(0, 563);
+			status_bar.Location = new Point(0, 589);
 			status_bar.Name = "status_bar";
 			status_bar.Size = new Size(1174, 22);
 			status_bar.TabIndex = 4;
@@ -277,22 +280,13 @@
 			// 
 			// btnLoadMaps
 			// 
-			btnLoadMaps.Location = new Point(49, 66);
+			btnLoadMaps.Location = new Point(7, 65);
 			btnLoadMaps.Name = "btnLoadMaps";
 			btnLoadMaps.Size = new Size(86, 23);
 			btnLoadMaps.TabIndex = 6;
 			btnLoadMaps.Text = "Load Maps";
 			btnLoadMaps.UseVisualStyleBackColor = true;
 			btnLoadMaps.Click += btnLoadMaps_Click;
-			// 
-			// label1
-			// 
-			label1.AutoSize = true;
-			label1.Location = new Point(7, 69);
-			label1.Name = "label1";
-			label1.Size = new Size(36, 15);
-			label1.TabIndex = 7;
-			label1.Text = "Maps";
 			// 
 			// gridPoints
 			// 
@@ -313,7 +307,7 @@
 			gridPoints.MultiSelect = false;
 			gridPoints.Name = "gridPoints";
 			gridPoints.RowHeadersVisible = false;
-			gridPoints.Size = new Size(436, 150);
+			gridPoints.Size = new Size(393, 150);
 			gridPoints.TabIndex = 8;
 			gridPoints.CellClick += gridPoints_CellClick;
 			// 
@@ -373,7 +367,7 @@
 			// 
 			// btnLoadRads
 			// 
-			btnLoadRads.Location = new Point(7, 298);
+			btnLoadRads.Location = new Point(427, 95);
 			btnLoadRads.Name = "btnLoadRads";
 			btnLoadRads.Size = new Size(97, 23);
 			btnLoadRads.TabIndex = 10;
@@ -392,13 +386,13 @@
 			chartRate.ChartAreas.Add(chartArea1);
 			legend1.Name = "Legend1";
 			chartRate.Legends.Add(legend1);
-			chartRate.Location = new Point(179, 291);
+			chartRate.Location = new Point(809, 280);
 			chartRate.Name = "chartRate";
 			series1.ChartArea = "ChartArea1";
 			series1.Legend = "Legend1";
 			series1.Name = "Series1";
 			chartRate.Series.Add(series1);
-			chartRate.Size = new Size(308, 150);
+			chartRate.Size = new Size(353, 280);
 			chartRate.TabIndex = 11;
 			chartRate.Text = "chart1";
 			// 
@@ -417,11 +411,11 @@
 			gridStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridStats.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, Column11, Column13, Column8, Column9, Column10, Column12 });
 			gridStats.EditMode = DataGridViewEditMode.EditProgrammatically;
-			gridStats.Location = new Point(7, 327);
+			gridStats.Location = new Point(427, 124);
 			gridStats.MultiSelect = false;
 			gridStats.Name = "gridStats";
 			gridStats.RowHeadersVisible = false;
-			gridStats.Size = new Size(876, 150);
+			gridStats.Size = new Size(735, 150);
 			gridStats.TabIndex = 12;
 			gridStats.CellClick += gridStats_CellClick;
 			// 
@@ -471,23 +465,39 @@
 			// 
 			// Column8
 			// 
+			dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column8.DefaultCellStyle = dataGridViewCellStyle7;
 			Column8.HeaderText = "Minimum";
 			Column8.Name = "Column8";
+			Column8.ReadOnly = true;
+			Column8.Width = 65;
 			// 
 			// Column9
 			// 
+			dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column9.DefaultCellStyle = dataGridViewCellStyle8;
 			Column9.HeaderText = "Maximum";
 			Column9.Name = "Column9";
+			Column9.ReadOnly = true;
+			Column9.Width = 65;
 			// 
 			// Column10
 			// 
+			dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column10.DefaultCellStyle = dataGridViewCellStyle9;
 			Column10.HeaderText = "Average";
 			Column10.Name = "Column10";
+			Column10.ReadOnly = true;
+			Column10.Width = 65;
 			// 
 			// Column12
 			// 
+			dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column12.DefaultCellStyle = dataGridViewCellStyle10;
 			Column12.HeaderText = "Std Div";
 			Column12.Name = "Column12";
+			Column12.ReadOnly = true;
+			Column12.Width = 75;
 			// 
 			// dlgOpenCsv
 			// 
@@ -499,68 +509,15 @@
 			dlgSaveCsv.DefaultExt = "*.csv";
 			dlgSaveCsv.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
 			// 
-			// gridNewData
-			// 
-			gridNewData.AllowUserToAddRows = false;
-			gridNewData.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle7.BackColor = Color.Silver;
-			dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-			gridNewData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
-			gridNewData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			gridNewData.Columns.AddRange(new DataGridViewColumn[] { dataGridViewLinkColumn1, dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5 });
-			gridNewData.EditMode = DataGridViewEditMode.EditProgrammatically;
-			gridNewData.Location = new Point(303, 46);
-			gridNewData.MultiSelect = false;
-			gridNewData.Name = "gridNewData";
-			gridNewData.RowHeadersVisible = false;
-			gridNewData.Size = new Size(464, 150);
-			gridNewData.TabIndex = 13;
-			// 
-			// dataGridViewLinkColumn1
-			// 
-			dataGridViewLinkColumn1.HeaderText = "Name";
-			dataGridViewLinkColumn1.Name = "dataGridViewLinkColumn1";
-			dataGridViewLinkColumn1.Resizable = DataGridViewTriState.True;
-			dataGridViewLinkColumn1.SortMode = DataGridViewColumnSortMode.Automatic;
-			dataGridViewLinkColumn1.Width = 70;
-			// 
-			// dataGridViewTextBoxColumn1
-			// 
-			dataGridViewTextBoxColumn1.HeaderText = "From";
-			dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-			dataGridViewTextBoxColumn1.Width = 110;
-			// 
-			// dataGridViewTextBoxColumn3
-			// 
-			dataGridViewTextBoxColumn3.HeaderText = "To";
-			dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-			dataGridViewTextBoxColumn3.Width = 110;
-			// 
-			// dataGridViewTextBoxColumn4
-			// 
-			dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle8;
-			dataGridViewTextBoxColumn4.HeaderText = "Count";
-			dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-			dataGridViewTextBoxColumn4.Width = 70;
-			// 
-			// dataGridViewTextBoxColumn5
-			// 
-			dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewTextBoxColumn5.DefaultCellStyle = dataGridViewCellStyle9;
-			dataGridViewTextBoxColumn5.HeaderText = "Sampling";
-			dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-			dataGridViewTextBoxColumn5.Width = 70;
-			// 
 			// groupBox1
 			// 
-			groupBox1.Controls.Add(txtAddCount);
-			groupBox1.Controls.Add(gridNewData);
+			groupBox1.Controls.Add(tabControl1);
+			groupBox1.Controls.Add(radioButton2);
+			groupBox1.Controls.Add(radioButton1);
+			groupBox1.Controls.Add(btnPointRefresh);
+			groupBox1.Controls.Add(comboPoints);
+			groupBox1.Controls.Add(label1);
+			groupBox1.Controls.Add(txtPointCount);
 			groupBox1.Controls.Add(dtpEndDate);
 			groupBox1.Controls.Add(dtpStartDate);
 			groupBox1.Controls.Add(label14);
@@ -576,43 +533,71 @@
 			groupBox1.Controls.Add(label8);
 			groupBox1.Controls.Add(label7);
 			groupBox1.Controls.Add(txtRate);
-			groupBox1.Location = new Point(63, 367);
+			groupBox1.Location = new Point(16, 280);
 			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(513, 167);
+			groupBox1.Size = new Size(745, 280);
 			groupBox1.TabIndex = 14;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "New Points";
 			// 
-			// txtAddCount
+			// btnPointRefresh
 			// 
-			txtAddCount.Location = new Point(116, 111);
-			txtAddCount.Name = "txtAddCount";
-			txtAddCount.Size = new Size(100, 23);
-			txtAddCount.TabIndex = 52;
-			txtAddCount.TextAlign = HorizontalAlignment.Center;
+			btnPointRefresh.Location = new Point(246, 14);
+			btnPointRefresh.Name = "btnPointRefresh";
+			btnPointRefresh.Size = new Size(75, 23);
+			btnPointRefresh.TabIndex = 55;
+			btnPointRefresh.Text = "Refresh";
+			btnPointRefresh.UseVisualStyleBackColor = true;
+			btnPointRefresh.Click += btnPointRefresh_Click;
+			// 
+			// comboPoints
+			// 
+			comboPoints.DropDownStyle = ComboBoxStyle.DropDownList;
+			comboPoints.FormattingEnabled = true;
+			comboPoints.Location = new Point(83, 14);
+			comboPoints.Name = "comboPoints";
+			comboPoints.Size = new Size(157, 23);
+			comboPoints.TabIndex = 54;
+			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(32, 18);
+			label1.Name = "label1";
+			label1.Size = new Size(35, 15);
+			label1.TabIndex = 53;
+			label1.Text = "Point";
+			// 
+			// txtPointCount
+			// 
+			txtPointCount.Location = new Point(103, 134);
+			txtPointCount.Name = "txtPointCount";
+			txtPointCount.Size = new Size(100, 23);
+			txtPointCount.TabIndex = 52;
+			txtPointCount.TextAlign = HorizontalAlignment.Center;
 			// 
 			// dtpEndDate
 			// 
 			dtpEndDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
 			dtpEndDate.Format = DateTimePickerFormat.Custom;
-			dtpEndDate.Location = new Point(116, 51);
+			dtpEndDate.Location = new Point(103, 74);
 			dtpEndDate.Name = "dtpEndDate";
-			dtpEndDate.Size = new Size(160, 23);
+			dtpEndDate.Size = new Size(137, 23);
 			dtpEndDate.TabIndex = 51;
 			// 
 			// dtpStartDate
 			// 
 			dtpStartDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
 			dtpStartDate.Format = DateTimePickerFormat.Custom;
-			dtpStartDate.Location = new Point(116, 24);
+			dtpStartDate.Location = new Point(103, 47);
 			dtpStartDate.Name = "dtpStartDate";
-			dtpStartDate.Size = new Size(160, 23);
+			dtpStartDate.Size = new Size(137, 23);
 			dtpStartDate.TabIndex = 50;
 			// 
 			// label14
 			// 
 			label14.AutoSize = true;
-			label14.Location = new Point(11, 87);
+			label14.Location = new Point(5, 107);
 			label14.Name = "label14";
 			label14.Size = new Size(83, 15);
 			label14.TabIndex = 49;
@@ -621,7 +606,7 @@
 			// label13
 			// 
 			label13.AutoSize = true;
-			label13.Location = new Point(50, 114);
+			label13.Location = new Point(44, 134);
 			label13.Name = "label13";
 			label13.Size = new Size(40, 15);
 			label13.TabIndex = 48;
@@ -630,7 +615,7 @@
 			// label12
 			// 
 			label12.AutoSize = true;
-			label12.Location = new Point(69, 57);
+			label12.Location = new Point(63, 77);
 			label12.Name = "label12";
 			label12.Size = new Size(27, 15);
 			label12.TabIndex = 47;
@@ -639,7 +624,7 @@
 			// label11
 			// 
 			label11.AutoSize = true;
-			label11.Location = new Point(63, 25);
+			label11.Location = new Point(57, 45);
 			label11.Name = "label11";
 			label11.Size = new Size(31, 15);
 			label11.TabIndex = 46;
@@ -647,40 +632,40 @@
 			// 
 			// txtStdDiv
 			// 
-			txtStdDiv.Location = new Point(371, 111);
+			txtStdDiv.Location = new Point(103, 251);
 			txtStdDiv.Name = "txtStdDiv";
-			txtStdDiv.Size = new Size(100, 23);
+			txtStdDiv.Size = new Size(57, 23);
 			txtStdDiv.TabIndex = 45;
 			txtStdDiv.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtAverage
 			// 
-			txtAverage.Location = new Point(371, 82);
+			txtAverage.Location = new Point(103, 222);
 			txtAverage.Name = "txtAverage";
-			txtAverage.Size = new Size(100, 23);
+			txtAverage.Size = new Size(57, 23);
 			txtAverage.TabIndex = 44;
 			txtAverage.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtMax
 			// 
-			txtMax.Location = new Point(371, 53);
+			txtMax.Location = new Point(103, 193);
 			txtMax.Name = "txtMax";
-			txtMax.Size = new Size(100, 23);
+			txtMax.Size = new Size(57, 23);
 			txtMax.TabIndex = 43;
 			txtMax.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtMin
 			// 
-			txtMin.Location = new Point(371, 25);
+			txtMin.Location = new Point(103, 165);
 			txtMin.Name = "txtMin";
-			txtMin.Size = new Size(100, 23);
+			txtMin.Size = new Size(57, 23);
 			txtMin.TabIndex = 42;
 			txtMin.TextAlign = HorizontalAlignment.Center;
 			// 
 			// label10
 			// 
 			label10.AutoSize = true;
-			label10.Location = new Point(258, 111);
+			label10.Location = new Point(-10, 251);
 			label10.Name = "label10";
 			label10.Size = new Size(107, 15);
 			label10.TabIndex = 41;
@@ -689,7 +674,7 @@
 			// label9
 			// 
 			label9.AutoSize = true;
-			label9.Location = new Point(315, 85);
+			label9.Location = new Point(47, 225);
 			label9.Name = "label9";
 			label9.Size = new Size(50, 15);
 			label9.TabIndex = 40;
@@ -698,7 +683,7 @@
 			// label8
 			// 
 			label8.AutoSize = true;
-			label8.Location = new Point(303, 56);
+			label8.Location = new Point(35, 196);
 			label8.Name = "label8";
 			label8.Size = new Size(62, 15);
 			label8.TabIndex = 39;
@@ -707,7 +692,7 @@
 			// label7
 			// 
 			label7.AutoSize = true;
-			label7.Location = new Point(305, 28);
+			label7.Location = new Point(37, 168);
 			label7.Name = "label7";
 			label7.Size = new Size(60, 15);
 			label7.TabIndex = 38;
@@ -715,7 +700,7 @@
 			// 
 			// txtRate
 			// 
-			txtRate.Location = new Point(116, 82);
+			txtRate.Location = new Point(103, 105);
 			txtRate.Name = "txtRate";
 			txtRate.Size = new Size(100, 23);
 			txtRate.TabIndex = 37;
@@ -723,7 +708,7 @@
 			// 
 			// btnExport
 			// 
-			btnExport.Location = new Point(471, 134);
+			btnExport.Location = new Point(300, 95);
 			btnExport.Name = "btnExport";
 			btnExport.Size = new Size(105, 23);
 			btnExport.TabIndex = 1;
@@ -731,19 +716,70 @@
 			btnExport.UseVisualStyleBackColor = true;
 			btnExport.Click += btnExport_Click;
 			// 
+			// radioButton1
+			// 
+			radioButton1.AutoSize = true;
+			radioButton1.Location = new Point(272, 55);
+			radioButton1.Name = "radioButton1";
+			radioButton1.Size = new Size(58, 19);
+			radioButton1.TabIndex = 56;
+			radioButton1.TabStop = true;
+			radioButton1.Text = "Delete";
+			radioButton1.UseVisualStyleBackColor = true;
+			// 
+			// radioButton2
+			// 
+			radioButton2.AutoSize = true;
+			radioButton2.Location = new Point(272, 74);
+			radioButton2.Name = "radioButton2";
+			radioButton2.Size = new Size(54, 19);
+			radioButton2.TabIndex = 57;
+			radioButton2.TabStop = true;
+			radioButton2.Text = "Insert";
+			radioButton2.UseVisualStyleBackColor = true;
+			// 
+			// tabControl1
+			// 
+			tabControl1.Controls.Add(tabDerlete);
+			tabControl1.Controls.Add(tabPage2);
+			tabControl1.Location = new Point(336, 14);
+			tabControl1.Name = "tabControl1";
+			tabControl1.SelectedIndex = 0;
+			tabControl1.Size = new Size(393, 252);
+			tabControl1.TabIndex = 15;
+			// 
+			// tabDerlete
+			// 
+			tabDerlete.Location = new Point(4, 24);
+			tabDerlete.Name = "tabDerlete";
+			tabDerlete.Padding = new Padding(3);
+			tabDerlete.Size = new Size(385, 224);
+			tabDerlete.TabIndex = 0;
+			tabDerlete.Text = "tabPage1";
+			tabDerlete.UseVisualStyleBackColor = true;
+			// 
+			// tabPage2
+			// 
+			tabPage2.Location = new Point(4, 24);
+			tabPage2.Name = "tabPage2";
+			tabPage2.Padding = new Padding(3);
+			tabPage2.Size = new Size(192, 72);
+			tabPage2.TabIndex = 1;
+			tabPage2.Text = "tabPage2";
+			tabPage2.UseVisualStyleBackColor = true;
+			// 
 			// frmMain
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(1174, 585);
-			Controls.Add(btnExport);
+			ClientSize = new Size(1174, 611);
 			Controls.Add(groupBox1);
+			Controls.Add(btnExport);
 			Controls.Add(gridStats);
 			Controls.Add(chartRate);
 			Controls.Add(btnLoadRads);
 			Controls.Add(btnLoadPoints);
 			Controls.Add(gridPoints);
-			Controls.Add(label1);
 			Controls.Add(btnLoadMaps);
 			Controls.Add(toolbar);
 			Controls.Add(status_bar);
@@ -764,9 +800,9 @@
 			((System.ComponentModel.ISupportInitialize)gridPoints).EndInit();
 			((System.ComponentModel.ISupportInitialize)chartRate).EndInit();
 			((System.ComponentModel.ISupportInitialize)gridStats).EndInit();
-			((System.ComponentModel.ISupportInitialize)gridNewData).EndInit();
 			groupBox1.ResumeLayout(false);
 			groupBox1.PerformLayout();
+			tabControl1.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -790,7 +826,6 @@
 		private ToolStripButton btnConnect;
 		private ToolStripButton btnDisconnect;
 		private Button btnLoadMaps;
-		private Label label1;
 		private DataGridView gridPoints;
 		private Button btnLoadPoints;
 		private Button btnLoadRads;
@@ -810,14 +845,8 @@
 		private ToolStripMenuItem importFromCSVToolStripMenuItem;
 		private OpenFileDialog dlgOpenCsv;
 		private SaveFileDialog dlgSaveCsv;
-		private DataGridView gridNewData;
-		private DataGridViewLinkColumn dataGridViewLinkColumn1;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-		private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
 		private GroupBox groupBox1;
-		private TextBox txtAddCount;
+		private TextBox txtPointCount;
 		private DateTimePicker dtpEndDate;
 		private DateTimePicker dtpStartDate;
 		private Label label14;
@@ -844,5 +873,13 @@
 		private DataGridViewTextBoxColumn Column9;
 		private DataGridViewTextBoxColumn Column10;
 		private DataGridViewTextBoxColumn Column12;
+		private Label label1;
+		private Button btnPointRefresh;
+		private ComboBox comboPoints;
+		private RadioButton radioButton2;
+		private RadioButton radioButton1;
+		private TabControl tabControl1;
+		private TabPage tabDerlete;
+		private TabPage tabPage2;
 	}
 }

@@ -24,6 +24,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using OmerEisGlobal;
 using OmerEisCommon;
 using System.Drawing;
+using System.Xml.Linq;
 //-----------------------------------------------------------------------------
 namespace WebiGen {
 	public partial class frmMain : Form {
@@ -36,14 +37,14 @@ namespace WebiGen {
 			m_db_params = null;
 			m_database = null;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void miExit_Click(object sender, EventArgs e) {
 			Close();
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void button1_Click(object sender, EventArgs e) {
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void frmMain_Load(object sender, EventArgs e) {
 			Application.Idle += OnIdle;
 			bool fConnect = false;
@@ -58,7 +59,7 @@ namespace WebiGen {
 			}
 			InitRateChart();
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void InitRateChart() {
 			chartRate.Series.Clear();
 			//ChartArea CA = chartRate.ChartAreas[0];  // quick reference
@@ -66,7 +67,7 @@ namespace WebiGen {
 			//CA.CursorX.AutoScroll = true;
 			//CA.CursorX.IsUserSelectionEnabled = true;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private bool ConnectToDB() {
 			string strConn = LoadIniConnectionString();
 			bool fConnect = false;
@@ -85,7 +86,7 @@ namespace WebiGen {
 			UpdateStatusBar(/*strConn, fConnect*/);
 			return (fConnect);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void miDatabase_Click(object sender, EventArgs e) {
 			DlgEditDB dlg = new DlgEditDB();
 			string strConnection = LoadIniConnectionString();
@@ -97,26 +98,26 @@ namespace WebiGen {
 				//txtConnection.Text = strConnection;
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private string LoadIniConnectionString() {
 			string str = "";
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			str = ini.ReadString("Database", "default");
 			return (str);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void SaveIniConnectionString(string strConnection) {
 			TIniFile ini = new TIniFile(TMisc.GetIniName());
 			ini.WriteString("Database", "default", strConnection);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
 			Application.Idle -= OnIdle;
 			if(m_database != null) {
 				m_database.Close();
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void UpdateStatusBar(/*string strConnection, bool fConnect*/) {
 			//TMsSqlDbParams ms_params = new TMsSqlDbParams(strConnection);
 			string strServer = "", strDatabase = "";
@@ -132,29 +133,29 @@ namespace WebiGen {
 			status_bar.Items[1].Text = System.String.Format("Database={0}", strDatabase);
 			status_bar.Items[2].Text = (fConnect ? "Connected" : "Disconnected");
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnConnect_Click(object sender, EventArgs e) {
 			ConnectToDB();
 			SetConnectButtons(true);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnDisconnect_Click(object sender, EventArgs e) {
 			DisconnectDatabase();
 			SetConnectButtons(false);
 			UpdateStatusBar();
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void DisconnectDatabase() {
 			if(m_database != null)
 				if(m_database.State == ConnectionState.Open)
 					m_database.Close();
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void SetConnectButtons(bool fConnect) {
 			btnConnect.Enabled = !fConnect;
 			btnDisconnect.Enabled = fConnect;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private bool DatabaseConnected() {
 			bool fConnected = false;
 
@@ -162,7 +163,7 @@ namespace WebiGen {
 				fConnected = m_database.State == ConnectionState.Open;
 			return (fConnected);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnLoadMaps_Click(object sender, EventArgs e) {
 			if(DatabaseConnected()) {
 				TMapInfo[] aMaps = null;
@@ -179,13 +180,22 @@ namespace WebiGen {
 				comboMaps.Items.Add("");
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void OnIdle(object sender, EventArgs e) {
 			EnableLoadPoints();
 			EnableLoadRads();
 			btnMaps.Enabled = DatabaseConnected();
+			btnPointRefresh.Enabled = UpoadSelectedPoint(comboPoints) != null;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		private TPointInfo UpoadSelectedPoint(ComboBox combo) {
+			TPointInfo pt = null;
+
+			if(combo.SelectedItem != null)
+				pt = (TPointInfo)combo.SelectedItem;
+			return (pt);
+		}
+		//----------------------------------------------------------------------------
 		private void EnableLoadPoints() {
 			bool fMapSelected = false;
 
@@ -200,7 +210,7 @@ namespace WebiGen {
 			}
 			btnLoadPoints.Enabled = fMapSelected;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private TMapInfo UploadCurrentMap() {
 			TMapInfo map = null;
 
@@ -208,27 +218,29 @@ namespace WebiGen {
 				map = (TMapInfo)comboMaps.SelectedItem;
 			return (map);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnLoadPoints_Click(object sender, EventArgs e) {
 			TPointInfo[] aPoints = null;
 			TMapInfo map = UploadCurrentMap();
 
 			gridPoints.Rows.Clear();
+			comboPoints.Items.Clear();
 			if(TPointInfo.LoadFromDB(m_database, map.ID, ref aPoints, ref m_strErr)) {
 				gridPoints.RowCount = aPoints.Length;
 				for(int n = 0; n < aPoints.Length; n++) {
 					DownloadPointToRow(n, aPoints[n]);
-					//AddPoint (clboxExport, aPoints[n]);
+					AddPoint(comboPoints, aPoints[n]);
 				}
+				comboPoints.Items.Add("");
 			} else
 				MessageBox.Show("Error loading points\n" + m_strErr);
 		}
-//----------------------------------------------------------------------------
-		private void AddPoint(CheckedListBox clbox, TPointInfo point) {
-			if(clbox.Items.IndexOf(point) < 0)
-				clbox.Items.Add(point);
+		//----------------------------------------------------------------------------
+		private void AddPoint(ComboBox combo, TPointInfo point) {
+			if(combo.Items.IndexOf(point) < 0)
+				combo.Items.Add(point);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void DownloadPointToRow(int row, TPointInfo point) {
 			gridPoints.Rows[row].Cells[0].Tag = point;
 			gridPoints.Rows[row].Cells[0].Value = false;
@@ -240,12 +252,12 @@ namespace WebiGen {
 			gridPoints.Rows[row].Cells[6].Value = point.IP;
 
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void gridPoints_CellClick(object sender, DataGridViewCellEventArgs e) {
 			if(e.ColumnIndex == 0)
 				TogglePoint(e.RowIndex);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void TogglePoint(int row) {
 			if((row >= 0) && (row < gridPoints.RowCount)) {
 				//int n = TMisc.ToIntDef (gridPoints.Rows[row].Cells [0].Value);
@@ -256,7 +268,7 @@ namespace WebiGen {
 					gridPoints.Rows[row].Cells[0].Value = true;
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void EnableLoadRads() {
 			bool fEnabled = false;
 			TPointInfo[] aPoints = UploadSelectedPoints();
@@ -267,7 +279,7 @@ namespace WebiGen {
 			miPointsExport.Enabled = fEnabled;
 			btnExport.Enabled = fEnabled;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private TPointInfo[] UploadSelectedPoints() {
 
 			//int[] aIDs = null;
@@ -288,7 +300,7 @@ namespace WebiGen {
 			}
 			return (aPoints);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private bool CheckedPoint(int row) {
 			bool fChecked = false;
 
@@ -296,7 +308,7 @@ namespace WebiGen {
 				fChecked = TMisc.ToIntDef(gridPoints.Rows[row].Cells[0].Value) > 0;
 			return (fChecked);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private TPointInfo UploadPointFromRow(DataGridView grid, int row) {
 			TPointInfo point = null;
 
@@ -306,7 +318,7 @@ namespace WebiGen {
 
 
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnLoadRads_Click(object sender, EventArgs e) {
 			System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
 			try {
@@ -318,6 +330,7 @@ namespace WebiGen {
 				for(int n = 0; n < aPoints.Length; n++) {
 					if(TRadValue.LoadFromDB(m_database, aPoints[n].PointID, ref aRads, ref m_strErr)) {
 						SetPointStats(aPoints[n], aRads);
+						SetPointsTab(aPoints[n], aRads);
 						DownloadPointsChart(aPoints[n], aRads);
 					}
 				}
@@ -326,11 +339,14 @@ namespace WebiGen {
 				System.Windows.Forms.Cursor.Current = curOld;
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void SetPointStats(TPointInfo point, TRadValue[] aRads) {
+			double dMin, dMax, dAvg, dStd;
 			if(aRads != null) {
+				dMin = dMax = dAvg = dStd = 0;
 				if(aRads.Length > 0) {
 					int nRow = GetRowByPointID(gridStats, point);
+					TRadValue.GetStats(aRads, ref dMin, ref dMax, ref dAvg, ref dStd);
 					if(nRow < 0)
 						nRow = gridStats.Rows.Add();
 					if(nRow >= 0) {
@@ -343,6 +359,10 @@ namespace WebiGen {
 							DateTime? dt = TPointInfo.GetSamplingRate(aRads);
 							if(dt != null)
 								gridStats.Rows[nRow].Cells[4].Value = System.String.Format("{0}.{1:D3}", dt.Value.Second, dt.Value.Millisecond);
+							gridStats.Rows[nRow].Cells[6].Value = (1e3 * dMin).ToString("0.##");
+							gridStats.Rows[nRow].Cells[7].Value = (1e3 * dMax).ToString("0.##");
+							gridStats.Rows[nRow].Cells[8].Value = (1e3 * dAvg).ToString("0.##");
+							gridStats.Rows[nRow].Cells[9].Value = (1e3 * dStd).ToString("0.##");
 						} catch(Exception ex) {
 							m_strErr = ex.Message;
 						}
@@ -350,7 +370,7 @@ namespace WebiGen {
 				}
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private int GetRowByPointID(DataGridView grid, TPointInfo point) {
 			int n, nRow = -1;
 			TPointInfo pointGrid;
@@ -362,7 +382,7 @@ namespace WebiGen {
 			}
 			return (nRow);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void DownloadPointsChart(TPointInfo point, TRadValue[] aRads) {
 			Series ser = FindSeriesByPoint(chartRate, point);
 
@@ -374,7 +394,7 @@ namespace WebiGen {
 			for(int n = 0; n < aRads.Length; n++)
 				ser.Points.AddXY(aRads[n].SampleTime, aRads[n].Rate);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private Series FindSeriesByPoint(Chart chart, TPointInfo point) {
 			Series serFound = null;
 
@@ -385,7 +405,7 @@ namespace WebiGen {
 			}
 			return (serFound);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private Series CreateSeries(Chart chart, TPointInfo point) {
 			Series serNew = new Series();
 			serNew.ChartType = SeriesChartType.FastLine;
@@ -394,7 +414,7 @@ namespace WebiGen {
 			serNew.XValueType = ChartValueType.DateTime;
 			return (serNew);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void gridStats_CellClick(object sender, DataGridViewCellEventArgs e) {
 			TRadAdd ra = null;
 			if(e.ColumnIndex == 0) {
@@ -404,12 +424,12 @@ namespace WebiGen {
 				//if (f)
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void miPointsExport_Click(object sender, EventArgs e) {
-			ExportSelectedPoints ();
+			ExportSelectedPoints();
 		}
-//----------------------------------------------------------------------------
-		private void ExportSelectedPoints () {
+		//----------------------------------------------------------------------------
+		private void ExportSelectedPoints() {
 			TPointInfo[] aPoints = UploadSelectedPoints();
 			TRadValue[] aRads = null;
 			ArrayList al = new ArrayList();
@@ -433,10 +453,60 @@ namespace WebiGen {
 				}
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnExport_Click(object sender, EventArgs e) {
-			ExportSelectedPoints ();
+			ExportSelectedPoints();
+		}
+		//----------------------------------------------------------------------------
+		private void SetPointsTab(TPointInfo points, TRadValue[] aRads) {
+		}
+		//----------------------------------------------------------------------------
+		private void btnPointRefresh_Click(object sender, EventArgs e) {
+			RefreshCurrentPoint();
+		}
+		//----------------------------------------------------------------------------
+		private void RefreshCurrentPoint() {
+			TPointInfo pt = UpoadSelectedPoint(comboPoints);
+			TRadValue[] aRads = null;
+			System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
+
+			try {
+				System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+				if(TRadValue.LoadFromDB(m_database, pt.PointID, ref aRads, ref m_strErr)) {
+					if(aRads != null) {
+						dtpStartDate.Value = (DateTime)aRads[0].SampleTime;
+						dtpEndDate.Value = (DateTime)aRads[aRads.Length - 1].SampleTime;
+						txtPointCount.Text = TMisc.IntFormat(aRads.Length);
+						DateTime? dt = TPointInfo.GetSamplingRate(aRads);
+						if(dt != null)
+							txtRate.Text = System.String.Format("{0}.{1:D3}", dt.Value.Second, dt.Value.Millisecond);
+						DownloadStats(aRads);
+					}
+				} else {
+					MessageBox.Show("Error loading point radiation\n" + m_strErr);
+				}
+			} catch(Exception ex) {
+				MessageBox.Show(ex.Message);
+			} finally {
+				System.Windows.Forms.Cursor.Current = curOld;
+			}
+		}
+		//----------------------------------------------------------------------------
+		private void DownloadStats(TRadValue[] aRads) {
+			double dMin, dMax, dAvg, dStd;
+
+			dMin = dMax = dAvg = dStd = 0;
+			TRadValue.GetStats(aRads, ref dMin, ref dMax, ref dAvg, ref dStd);
+			txtMin.Text = (dMin * 1e3).ToString("N3");
+			txtMax.Text = (dMax * 1e3).ToString("N3");
+			txtAverage.Text = (dAvg * 1e3).ToString("N3");
+			txtStdDiv.Text = (dStd * 1e3).ToString("N3");
+		}
+
+		private void importFromCSVToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (dlgOpenCsv.ShowDialog() == DialogResult.OK) {
+			}
 		}
 	}
-//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 }
