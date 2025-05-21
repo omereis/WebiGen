@@ -7,6 +7,7 @@ using OmerEisCommon;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,7 +87,46 @@ namespace WebiGen {
 		public static bool LoadStartRad (SqlConnection database, int idPoint, ref TRadValue rad, ref string strErr) {
 			return (TRadValueDB.LoadStartRad (database, idPoint, ref rad, ref strErr));
 		}
+//----------------------------------------------------------------------------
+		public static DateTime? DateTimeFromString (string strDate, string strTime) {
+			DateTime? dt;
 
+			try {
+				dt = DateTime.Parse (strDate + ", " + strTime);
+			}
+			catch (Exception ex) {
+				dt = null;
+				Console.WriteLine (ex.ToString ());
+			}
+			return (dt);
+		}
+//----------------------------------------------------------------------------
+		public bool ReadFromLine (string[] astrLine) {
+			bool fRead=false;
+
+			try {
+				if (astrLine.Length >= 4) {
+					SampleTime = DateTimeFromString (astrLine[0], astrLine[1]);
+					Rate = (float) TMisc.ToDoubleDef (astrLine[2]);
+					Dose = (float) TMisc.ToDoubleDef (astrLine[3]);
+					fRead = true;
+				}
+			}
+			catch (Exception ex) {
+				Console.WriteLine (ex.Message);
+				fRead = false;
+			}
+			return (fRead);
+		}
+//----------------------------------------------------------------------------
+		public static bool InsertValues (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr) {
+			return (TRadValueDB.InsertValues (database, idPoint, aRads, ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public static bool DeleteRadiations (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr) {
+			return (TRadValueDB.DeleteRadiations(database, idPoint, aRads, ref strErr));
+		}
+//----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -97,8 +137,12 @@ namespace WebiGen {
 		private static readonly string FldPointID = "Point_PointId";
 		private static readonly string FldDose = "Dose";
 		private static readonly string FldRate = "Rate";
+		private static readonly string m_strInsertFormat = "{0} values {1};";
+
 //----------------------------------------------------------------------------
 		public TRadValueDB () : base () {}
+//----------------------------------------------------------------------------
+		public TRadValueDB (TRadValue other) : base (other) {}
 //----------------------------------------------------------------------------
 		public TRadValueDB (TRadValueDB other) : base (other) {}
 //----------------------------------------------------------------------------
@@ -175,5 +219,83 @@ namespace WebiGen {
 			}
 			return (fLoad);
 		}
+//----------------------------------------------------------------------------
+		public static new bool InsertValues (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr) {
+			bool fInsert = false;
+			int j=0;
+			int nRows = 0;
+
+			try {
+				if (aRads != null) {
+					string strValues="", strSqlFmt = String.Format ("({0}={{0}})", FldTime);
+					SqlCommand cmd = database.CreateCommand ();
+					string strSqlBase = String.Format ("insert into {0} ({1},{2},{3},{4})",
+													Table, FldTime, FldPointID, FldRate, FldDose);
+					for (int n=0 ; n < aRads.Length ; n++) {
+						strValues += String.Format ("({0},{1},{2},{3})", TMisc.GetSqlString (aRads[n].SampleTime), idPoint, aRads[n].Rate, aRads[n].Dose);
+						if (j < 10) {
+							strValues += ",";
+						}
+						else {
+							cmd.CommandText = String.Format (m_strInsertFormat, strSqlBase, strValues);
+							nRows += cmd.ExecuteNonQuery ();
+							j = 0;
+							strValues = "";
+						}
+						j++;
+					}
+					if (strValues.Length > 0) {
+						if (strValues[strValues.Length - 1] == ',')
+							strValues.Remove (strValues.Length - 1);
+						cmd.CommandText = String.Format (m_strInsertFormat, strSqlBase, strValues);
+						nRows += cmd.ExecuteNonQuery ();
+					}
+				}
+				fInsert = true;
+			}
+			catch (Exception ex) {
+				strErr=ex.Message;
+				fInsert = false;
+			}
+			string s = nRows.ToString () + " affected rows";
+			return (fInsert);
+		}
+//----------------------------------------------------------------------------
+		public static new bool DeleteRadiations (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr) {
+			bool fDelete = false;
+			int j=0;
+			int nRows = 0;
+
+			try {
+				if (aRads != null) {
+					string str, strDates="", strSqlFmt = String.Format ("({0}={{0}})", FldTime);
+					SqlCommand cmd = database.CreateCommand ();
+					string strSqlBase = String.Format ("delete from {0} where (({1}={2}) and (",
+								Table, FldPointID, idPoint);
+					for (int n=0 ; n < aRads.Length ; n++) {
+						str = String.Format (strSqlFmt, TMisc.GetSqlString (aRads[n].SampleTime));
+						if (strDates.Length > 0)
+							strDates += " or ";
+						strDates += str;
+						if (j < 10)
+							j++;
+						else {
+							cmd.CommandText = String.Format ("{0}{1}));", strSqlBase, strDates);
+							j = 0;
+							strDates = "";
+							nRows += cmd.ExecuteNonQuery ();
+						}
+					}
+				}
+				fDelete = true;
+			}
+			catch (Exception ex) {
+				strErr=ex.Message;
+				fDelete = false;
+			}
+			string s = nRows.ToString () + " affected rows";
+			return (fDelete);
+		}
+//----------------------------------------------------------------------------
 	}
 }

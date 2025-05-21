@@ -505,6 +505,8 @@ namespace WebiGen {
 
 		private void importFromCSVToolStripMenuItem_Click(object sender, EventArgs e) {
 			if (dlgOpenCsv.ShowDialog() == DialogResult.OK) {
+				DlgImportCsv dlg = new DlgImportCsv();
+				dlg.Execute (m_database, dlgOpenCsv.FileName);
 			}
 		}
 	}

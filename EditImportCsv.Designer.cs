@@ -48,12 +48,16 @@
 			Column9 = new DataGridViewTextBoxColumn();
 			Column10 = new DataGridViewTextBoxColumn();
 			Column12 = new DataGridViewTextBoxColumn();
+			btnRefresh = new Button();
+			cboxDeleteCurrent = new CheckBox();
+			cboxOverride = new CheckBox();
+			btnInsert = new Button();
 			((System.ComponentModel.ISupportInitialize)gridStats).BeginInit();
 			SuspendLayout();
 			// 
 			// btnCancel
 			// 
-			btnCancel.Location = new Point(254, 352);
+			btnCancel.Location = new Point(308, 300);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(75, 23);
 			btnCancel.TabIndex = 3;
@@ -62,12 +66,13 @@
 			// 
 			// btnOK
 			// 
-			btnOK.Location = new Point(361, 352);
+			btnOK.Location = new Point(415, 300);
 			btnOK.Name = "btnOK";
 			btnOK.Size = new Size(75, 23);
 			btnOK.TabIndex = 2;
 			btnOK.Text = "OK";
 			btnOK.UseVisualStyleBackColor = true;
+			btnOK.Click += btnOK_Click;
 			// 
 			// label1
 			// 
@@ -201,13 +206,58 @@
 			Column12.ReadOnly = true;
 			Column12.Width = 75;
 			// 
+			// btnRefresh
+			// 
+			btnRefresh.Location = new Point(295, 5);
+			btnRefresh.Name = "btnRefresh";
+			btnRefresh.Size = new Size(75, 23);
+			btnRefresh.TabIndex = 14;
+			btnRefresh.Text = "Refresh";
+			btnRefresh.UseVisualStyleBackColor = true;
+			btnRefresh.Click += btnRefresh_Click;
+			// 
+			// cboxDeleteCurrent
+			// 
+			cboxDeleteCurrent.AutoSize = true;
+			cboxDeleteCurrent.Location = new Point(221, 224);
+			cboxDeleteCurrent.Name = "cboxDeleteCurrent";
+			cboxDeleteCurrent.Size = new Size(102, 19);
+			cboxDeleteCurrent.TabIndex = 15;
+			cboxDeleteCurrent.Text = "Delete Current";
+			cboxDeleteCurrent.UseVisualStyleBackColor = true;
+			cboxDeleteCurrent.CheckedChanged += cboxDeleteCurrent_CheckedChanged;
+			// 
+			// cboxOverride
+			// 
+			cboxOverride.AutoSize = true;
+			cboxOverride.Location = new Point(221, 249);
+			cboxOverride.Name = "cboxOverride";
+			cboxOverride.Size = new Size(71, 19);
+			cboxOverride.TabIndex = 16;
+			cboxOverride.Text = "Override";
+			cboxOverride.UseVisualStyleBackColor = true;
+			// 
+			// btnInsert
+			// 
+			btnInsert.Location = new Point(360, 234);
+			btnInsert.Name = "btnInsert";
+			btnInsert.Size = new Size(75, 23);
+			btnInsert.TabIndex = 17;
+			btnInsert.Text = "Insert";
+			btnInsert.UseVisualStyleBackColor = true;
+			btnInsert.Click += btnInsert_Click;
+			// 
 			// DlgImportCsv
 			// 
 			AcceptButton = btnOK;
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			CancelButton = btnCancel;
-			ClientSize = new Size(800, 450);
+			ClientSize = new Size(800, 339);
+			Controls.Add(btnInsert);
+			Controls.Add(cboxOverride);
+			Controls.Add(cboxDeleteCurrent);
+			Controls.Add(btnRefresh);
 			Controls.Add(gridStats);
 			Controls.Add(btnBrowse);
 			Controls.Add(txtFile);
@@ -244,5 +294,9 @@
 		private DataGridViewTextBoxColumn Column9;
 		private DataGridViewTextBoxColumn Column10;
 		private DataGridViewTextBoxColumn Column12;
+		private Button btnRefresh;
+		private CheckBox cboxDeleteCurrent;
+		private CheckBox cboxOverride;
+		private Button btnInsert;
 	}
 }
