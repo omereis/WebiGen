@@ -27,6 +27,7 @@
 		///  the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
 			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
@@ -88,12 +89,36 @@
 			dlgOpenCsv = new OpenFileDialog();
 			dlgSaveCsv = new SaveFileDialog();
 			groupBox1 = new GroupBox();
+			txtStartDate = new TextBox();
+			gboxDel = new GroupBox();
+			rbDelNone = new RadioButton();
+			rbDelByValue = new RadioButton();
+			gboxDelDates = new GroupBox();
+			dtpDelTo = new DateTimePicker();
+			menuDel = new ContextMenuStrip(components);
+			miFromStart = new ToolStripMenuItem();
+			miTilEnd = new ToolStripMenuItem();
+			label2 = new Label();
+			dtpDelFrom = new DateTimePicker();
+			label3 = new Label();
+			rbDelDates = new RadioButton();
+			gboxDelRates = new GroupBox();
+			txtDelVal = new TextBox();
+			label4 = new Label();
+			rbDelLt = new RadioButton();
+			rbDelEq = new RadioButton();
+			rbDelGt = new RadioButton();
+			rbDelAll = new RadioButton();
+			btnPointRadDel = new Button();
+			gboxManipulation = new GroupBox();
+			rbOpintNone = new RadioButton();
+			rbPointDel = new RadioButton();
+			radioButton2 = new RadioButton();
 			btnPointRefresh = new Button();
 			comboPoints = new ComboBox();
 			label1 = new Label();
 			txtPointCount = new TextBox();
 			dtpEndDate = new DateTimePicker();
-			dtpStartDate = new DateTimePicker();
 			label14 = new Label();
 			label13 = new Label();
 			label12 = new Label();
@@ -108,10 +133,8 @@
 			label7 = new Label();
 			txtRate = new TextBox();
 			btnExport = new Button();
-			radioButton1 = new RadioButton();
-			radioButton2 = new RadioButton();
 			tabControl1 = new TabControl();
-			tabDerlete = new TabPage();
+			tabPage1 = new TabPage();
 			tabPage2 = new TabPage();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
@@ -120,7 +143,13 @@
 			((System.ComponentModel.ISupportInitialize)chartRate).BeginInit();
 			((System.ComponentModel.ISupportInitialize)gridStats).BeginInit();
 			groupBox1.SuspendLayout();
+			gboxDel.SuspendLayout();
+			gboxDelDates.SuspendLayout();
+			menuDel.SuspendLayout();
+			gboxDelRates.SuspendLayout();
+			gboxManipulation.SuspendLayout();
 			tabControl1.SuspendLayout();
+			tabPage1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// menuMain
@@ -168,14 +197,14 @@
 			// miPointsExport
 			// 
 			miPointsExport.Name = "miPointsExport";
-			miPointsExport.Size = new Size(180, 22);
+			miPointsExport.Size = new Size(172, 22);
 			miPointsExport.Text = "&Export to CSV...";
 			miPointsExport.Click += miPointsExport_Click;
 			// 
 			// importFromCSVToolStripMenuItem
 			// 
 			importFromCSVToolStripMenuItem.Name = "importFromCSVToolStripMenuItem";
-			importFromCSVToolStripMenuItem.Size = new Size(180, 22);
+			importFromCSVToolStripMenuItem.Size = new Size(172, 22);
 			importFromCSVToolStripMenuItem.Text = "&Import from CSV...";
 			importFromCSVToolStripMenuItem.Click += importFromCSVToolStripMenuItem_Click;
 			// 
@@ -200,6 +229,7 @@
 			button1.TabIndex = 1;
 			button1.Text = "button1";
 			button1.UseVisualStyleBackColor = true;
+			button1.Visible = false;
 			button1.Click += button1_Click;
 			// 
 			// comboMaps
@@ -386,13 +416,13 @@
 			chartRate.ChartAreas.Add(chartArea1);
 			legend1.Name = "Legend1";
 			chartRate.Legends.Add(legend1);
-			chartRate.Location = new Point(809, 280);
+			chartRate.Location = new Point(-31, 0);
 			chartRate.Name = "chartRate";
 			series1.ChartArea = "ChartArea1";
 			series1.Legend = "Legend1";
 			series1.Name = "Series1";
 			chartRate.Series.Add(series1);
-			chartRate.Size = new Size(353, 280);
+			chartRate.Size = new Size(593, 300);
 			chartRate.TabIndex = 11;
 			chartRate.Text = "chart1";
 			// 
@@ -511,15 +541,14 @@
 			// 
 			// groupBox1
 			// 
-			groupBox1.Controls.Add(tabControl1);
-			groupBox1.Controls.Add(radioButton2);
-			groupBox1.Controls.Add(radioButton1);
+			groupBox1.Controls.Add(txtStartDate);
+			groupBox1.Controls.Add(gboxDel);
+			groupBox1.Controls.Add(gboxManipulation);
 			groupBox1.Controls.Add(btnPointRefresh);
 			groupBox1.Controls.Add(comboPoints);
 			groupBox1.Controls.Add(label1);
 			groupBox1.Controls.Add(txtPointCount);
 			groupBox1.Controls.Add(dtpEndDate);
-			groupBox1.Controls.Add(dtpStartDate);
 			groupBox1.Controls.Add(label14);
 			groupBox1.Controls.Add(label13);
 			groupBox1.Controls.Add(label12);
@@ -535,10 +564,263 @@
 			groupBox1.Controls.Add(txtRate);
 			groupBox1.Location = new Point(16, 280);
 			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(745, 280);
+			groupBox1.Size = new Size(547, 306);
 			groupBox1.TabIndex = 14;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "New Points";
+			// 
+			// txtStartDate
+			// 
+			txtStartDate.Location = new Point(100, 48);
+			txtStartDate.Name = "txtStartDate";
+			txtStartDate.ReadOnly = true;
+			txtStartDate.Size = new Size(138, 23);
+			txtStartDate.TabIndex = 61;
+			txtStartDate.TextAlign = HorizontalAlignment.Center;
+			// 
+			// gboxDel
+			// 
+			gboxDel.Controls.Add(rbDelNone);
+			gboxDel.Controls.Add(rbDelByValue);
+			gboxDel.Controls.Add(gboxDelDates);
+			gboxDel.Controls.Add(rbDelDates);
+			gboxDel.Controls.Add(gboxDelRates);
+			gboxDel.Controls.Add(rbDelAll);
+			gboxDel.Controls.Add(btnPointRadDel);
+			gboxDel.Location = new Point(246, 98);
+			gboxDel.Name = "gboxDel";
+			gboxDel.Size = new Size(293, 202);
+			gboxDel.TabIndex = 60;
+			gboxDel.TabStop = false;
+			gboxDel.Text = "Delete";
+			// 
+			// rbDelNone
+			// 
+			rbDelNone.AutoSize = true;
+			rbDelNone.Checked = true;
+			rbDelNone.Location = new Point(10, 23);
+			rbDelNone.Name = "rbDelNone";
+			rbDelNone.Size = new Size(54, 19);
+			rbDelNone.TabIndex = 63;
+			rbDelNone.TabStop = true;
+			rbDelNone.Text = "None";
+			rbDelNone.UseVisualStyleBackColor = true;
+			// 
+			// rbDelByValue
+			// 
+			rbDelByValue.AutoSize = true;
+			rbDelByValue.Location = new Point(11, 76);
+			rbDelByValue.Name = "rbDelByValue";
+			rbDelByValue.Size = new Size(74, 19);
+			rbDelByValue.TabIndex = 62;
+			rbDelByValue.Text = "By Values";
+			rbDelByValue.UseVisualStyleBackColor = true;
+			// 
+			// gboxDelDates
+			// 
+			gboxDelDates.Controls.Add(dtpDelTo);
+			gboxDelDates.Controls.Add(label2);
+			gboxDelDates.Controls.Add(dtpDelFrom);
+			gboxDelDates.Controls.Add(label3);
+			gboxDelDates.Location = new Point(87, 11);
+			gboxDelDates.Name = "gboxDelDates";
+			gboxDelDates.Size = new Size(200, 84);
+			gboxDelDates.TabIndex = 54;
+			gboxDelDates.TabStop = false;
+			gboxDelDates.Text = "By Dates";
+			// 
+			// dtpDelTo
+			// 
+			dtpDelTo.ContextMenuStrip = menuDel;
+			dtpDelTo.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
+			dtpDelTo.Format = DateTimePickerFormat.Custom;
+			dtpDelTo.Location = new Point(57, 53);
+			dtpDelTo.Name = "dtpDelTo";
+			dtpDelTo.Size = new Size(137, 23);
+			dtpDelTo.TabIndex = 53;
+			// 
+			// menuDel
+			// 
+			menuDel.Items.AddRange(new ToolStripItem[] { miFromStart, miTilEnd });
+			menuDel.Name = "menuDel";
+			menuDel.Size = new Size(130, 48);
+			// 
+			// miFromStart
+			// 
+			miFromStart.Name = "miFromStart";
+			miFromStart.Size = new Size(129, 22);
+			miFromStart.Text = "From Start";
+			// 
+			// miTilEnd
+			// 
+			miTilEnd.Name = "miTilEnd";
+			miTilEnd.Size = new Size(129, 22);
+			miTilEnd.Text = "Till End";
+			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Location = new Point(13, 31);
+			label2.Name = "label2";
+			label2.Size = new Size(35, 15);
+			label2.TabIndex = 0;
+			label2.Text = "From";
+			// 
+			// dtpDelFrom
+			// 
+			dtpDelFrom.ContextMenuStrip = menuDel;
+			dtpDelFrom.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
+			dtpDelFrom.Format = DateTimePickerFormat.Custom;
+			dtpDelFrom.Location = new Point(57, 26);
+			dtpDelFrom.Name = "dtpDelFrom";
+			dtpDelFrom.Size = new Size(137, 23);
+			dtpDelFrom.TabIndex = 52;
+			// 
+			// label3
+			// 
+			label3.AutoSize = true;
+			label3.Location = new Point(13, 57);
+			label3.Name = "label3";
+			label3.Size = new Size(32, 15);
+			label3.TabIndex = 1;
+			label3.Text = "Until";
+			// 
+			// rbDelDates
+			// 
+			rbDelDates.AutoSize = true;
+			rbDelDates.Location = new Point(11, 58);
+			rbDelDates.Name = "rbDelDates";
+			rbDelDates.Size = new Size(70, 19);
+			rbDelDates.TabIndex = 61;
+			rbDelDates.Text = "By Dates";
+			rbDelDates.UseVisualStyleBackColor = true;
+			// 
+			// gboxDelRates
+			// 
+			gboxDelRates.Controls.Add(txtDelVal);
+			gboxDelRates.Controls.Add(label4);
+			gboxDelRates.Controls.Add(rbDelLt);
+			gboxDelRates.Controls.Add(rbDelEq);
+			gboxDelRates.Controls.Add(rbDelGt);
+			gboxDelRates.Location = new Point(87, 95);
+			gboxDelRates.Name = "gboxDelRates";
+			gboxDelRates.Size = new Size(200, 77);
+			gboxDelRates.TabIndex = 58;
+			gboxDelRates.TabStop = false;
+			gboxDelRates.Text = "By Rates";
+			// 
+			// txtDelVal
+			// 
+			txtDelVal.Location = new Point(85, 37);
+			txtDelVal.Name = "txtDelVal";
+			txtDelVal.Size = new Size(69, 23);
+			txtDelVal.TabIndex = 55;
+			// 
+			// label4
+			// 
+			label4.AutoSize = true;
+			label4.Location = new Point(10, 37);
+			label4.Name = "label4";
+			label4.Size = new Size(30, 15);
+			label4.TabIndex = 2;
+			label4.Text = "Rate";
+			// 
+			// rbDelLt
+			// 
+			rbDelLt.AutoSize = true;
+			rbDelLt.Location = new Point(46, 19);
+			rbDelLt.Name = "rbDelLt";
+			rbDelLt.Size = new Size(33, 19);
+			rbDelLt.TabIndex = 5;
+			rbDelLt.TabStop = true;
+			rbDelLt.Text = "<";
+			rbDelLt.UseVisualStyleBackColor = true;
+			// 
+			// rbDelEq
+			// 
+			rbDelEq.AutoSize = true;
+			rbDelEq.Location = new Point(46, 35);
+			rbDelEq.Name = "rbDelEq";
+			rbDelEq.Size = new Size(33, 19);
+			rbDelEq.TabIndex = 3;
+			rbDelEq.TabStop = true;
+			rbDelEq.Text = "=";
+			rbDelEq.UseVisualStyleBackColor = true;
+			// 
+			// rbDelGt
+			// 
+			rbDelGt.AutoSize = true;
+			rbDelGt.Location = new Point(46, 51);
+			rbDelGt.Name = "rbDelGt";
+			rbDelGt.Size = new Size(33, 19);
+			rbDelGt.TabIndex = 4;
+			rbDelGt.TabStop = true;
+			rbDelGt.Text = ">";
+			rbDelGt.UseVisualStyleBackColor = true;
+			// 
+			// rbDelAll
+			// 
+			rbDelAll.AutoSize = true;
+			rbDelAll.Location = new Point(11, 40);
+			rbDelAll.Name = "rbDelAll";
+			rbDelAll.Size = new Size(39, 19);
+			rbDelAll.TabIndex = 60;
+			rbDelAll.Text = "All";
+			rbDelAll.UseVisualStyleBackColor = true;
+			// 
+			// btnPointRadDel
+			// 
+			btnPointRadDel.Location = new Point(107, 174);
+			btnPointRadDel.Name = "btnPointRadDel";
+			btnPointRadDel.Size = new Size(75, 23);
+			btnPointRadDel.TabIndex = 59;
+			btnPointRadDel.Text = "Delete";
+			btnPointRadDel.UseVisualStyleBackColor = true;
+			btnPointRadDel.Click += btnPointRadDel_Click;
+			// 
+			// gboxManipulation
+			// 
+			gboxManipulation.Controls.Add(rbOpintNone);
+			gboxManipulation.Controls.Add(rbPointDel);
+			gboxManipulation.Controls.Add(radioButton2);
+			gboxManipulation.Location = new Point(352, 8);
+			gboxManipulation.Name = "gboxManipulation";
+			gboxManipulation.Size = new Size(102, 84);
+			gboxManipulation.TabIndex = 59;
+			gboxManipulation.TabStop = false;
+			gboxManipulation.Text = "Manipulation";
+			// 
+			// rbOpintNone
+			// 
+			rbOpintNone.AutoSize = true;
+			rbOpintNone.Checked = true;
+			rbOpintNone.Location = new Point(15, 22);
+			rbOpintNone.Name = "rbOpintNone";
+			rbOpintNone.Size = new Size(54, 19);
+			rbOpintNone.TabIndex = 58;
+			rbOpintNone.TabStop = true;
+			rbOpintNone.Text = "None";
+			rbOpintNone.UseVisualStyleBackColor = true;
+			// 
+			// rbPointDel
+			// 
+			rbPointDel.AutoSize = true;
+			rbPointDel.Location = new Point(15, 41);
+			rbPointDel.Name = "rbPointDel";
+			rbPointDel.Size = new Size(58, 19);
+			rbPointDel.TabIndex = 56;
+			rbPointDel.Text = "Delete";
+			rbPointDel.UseVisualStyleBackColor = true;
+			// 
+			// radioButton2
+			// 
+			radioButton2.AutoSize = true;
+			radioButton2.Location = new Point(15, 60);
+			radioButton2.Name = "radioButton2";
+			radioButton2.Size = new Size(54, 19);
+			radioButton2.TabIndex = 57;
+			radioButton2.Text = "Insert";
+			radioButton2.UseVisualStyleBackColor = true;
 			// 
 			// btnPointRefresh
 			// 
@@ -558,6 +840,7 @@
 			comboPoints.Name = "comboPoints";
 			comboPoints.Size = new Size(157, 23);
 			comboPoints.TabIndex = 54;
+			comboPoints.DropDownClosed += comboPoints_DropDownClosed;
 			// 
 			// label1
 			// 
@@ -572,6 +855,7 @@
 			// 
 			txtPointCount.Location = new Point(103, 134);
 			txtPointCount.Name = "txtPointCount";
+			txtPointCount.ReadOnly = true;
 			txtPointCount.Size = new Size(100, 23);
 			txtPointCount.TabIndex = 52;
 			txtPointCount.TextAlign = HorizontalAlignment.Center;
@@ -584,15 +868,6 @@
 			dtpEndDate.Name = "dtpEndDate";
 			dtpEndDate.Size = new Size(137, 23);
 			dtpEndDate.TabIndex = 51;
-			// 
-			// dtpStartDate
-			// 
-			dtpStartDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
-			dtpStartDate.Format = DateTimePickerFormat.Custom;
-			dtpStartDate.Location = new Point(103, 47);
-			dtpStartDate.Name = "dtpStartDate";
-			dtpStartDate.Size = new Size(137, 23);
-			dtpStartDate.TabIndex = 50;
 			// 
 			// label14
 			// 
@@ -624,7 +899,7 @@
 			// label11
 			// 
 			label11.AutoSize = true;
-			label11.Location = new Point(57, 45);
+			label11.Location = new Point(63, 53);
 			label11.Name = "label11";
 			label11.Size = new Size(31, 15);
 			label11.TabIndex = 46;
@@ -634,6 +909,7 @@
 			// 
 			txtStdDiv.Location = new Point(103, 251);
 			txtStdDiv.Name = "txtStdDiv";
+			txtStdDiv.ReadOnly = true;
 			txtStdDiv.Size = new Size(57, 23);
 			txtStdDiv.TabIndex = 45;
 			txtStdDiv.TextAlign = HorizontalAlignment.Center;
@@ -642,6 +918,7 @@
 			// 
 			txtAverage.Location = new Point(103, 222);
 			txtAverage.Name = "txtAverage";
+			txtAverage.ReadOnly = true;
 			txtAverage.Size = new Size(57, 23);
 			txtAverage.TabIndex = 44;
 			txtAverage.TextAlign = HorizontalAlignment.Center;
@@ -650,6 +927,7 @@
 			// 
 			txtMax.Location = new Point(103, 193);
 			txtMax.Name = "txtMax";
+			txtMax.ReadOnly = true;
 			txtMax.Size = new Size(57, 23);
 			txtMax.TabIndex = 43;
 			txtMax.TextAlign = HorizontalAlignment.Center;
@@ -658,6 +936,7 @@
 			// 
 			txtMin.Location = new Point(103, 165);
 			txtMin.Name = "txtMin";
+			txtMin.ReadOnly = true;
 			txtMin.Size = new Size(57, 23);
 			txtMin.TabIndex = 42;
 			txtMin.TextAlign = HorizontalAlignment.Center;
@@ -702,6 +981,7 @@
 			// 
 			txtRate.Location = new Point(103, 105);
 			txtRate.Name = "txtRate";
+			txtRate.ReadOnly = true;
 			txtRate.Size = new Size(100, 23);
 			txtRate.TabIndex = 37;
 			txtRate.TextAlign = HorizontalAlignment.Center;
@@ -716,56 +996,35 @@
 			btnExport.UseVisualStyleBackColor = true;
 			btnExport.Click += btnExport_Click;
 			// 
-			// radioButton1
-			// 
-			radioButton1.AutoSize = true;
-			radioButton1.Location = new Point(272, 55);
-			radioButton1.Name = "radioButton1";
-			radioButton1.Size = new Size(58, 19);
-			radioButton1.TabIndex = 56;
-			radioButton1.TabStop = true;
-			radioButton1.Text = "Delete";
-			radioButton1.UseVisualStyleBackColor = true;
-			// 
-			// radioButton2
-			// 
-			radioButton2.AutoSize = true;
-			radioButton2.Location = new Point(272, 74);
-			radioButton2.Name = "radioButton2";
-			radioButton2.Size = new Size(54, 19);
-			radioButton2.TabIndex = 57;
-			radioButton2.TabStop = true;
-			radioButton2.Text = "Insert";
-			radioButton2.UseVisualStyleBackColor = true;
-			// 
 			// tabControl1
 			// 
-			tabControl1.Controls.Add(tabDerlete);
+			tabControl1.Controls.Add(tabPage1);
 			tabControl1.Controls.Add(tabPage2);
-			tabControl1.Location = new Point(336, 14);
+			tabControl1.Location = new Point(596, 280);
 			tabControl1.Name = "tabControl1";
 			tabControl1.SelectedIndex = 0;
-			tabControl1.Size = new Size(393, 252);
+			tabControl1.Size = new Size(578, 331);
 			tabControl1.TabIndex = 15;
 			// 
-			// tabDerlete
+			// tabPage1
 			// 
-			tabDerlete.Location = new Point(4, 24);
-			tabDerlete.Name = "tabDerlete";
-			tabDerlete.Padding = new Padding(3);
-			tabDerlete.Size = new Size(385, 224);
-			tabDerlete.TabIndex = 0;
-			tabDerlete.Text = "tabPage1";
-			tabDerlete.UseVisualStyleBackColor = true;
+			tabPage1.Controls.Add(chartRate);
+			tabPage1.Location = new Point(4, 24);
+			tabPage1.Name = "tabPage1";
+			tabPage1.Padding = new Padding(3);
+			tabPage1.Size = new Size(570, 303);
+			tabPage1.TabIndex = 0;
+			tabPage1.Text = "Rate vs Time";
+			tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// tabPage2
 			// 
 			tabPage2.Location = new Point(4, 24);
 			tabPage2.Name = "tabPage2";
 			tabPage2.Padding = new Padding(3);
-			tabPage2.Size = new Size(192, 72);
+			tabPage2.Size = new Size(570, 303);
 			tabPage2.TabIndex = 1;
-			tabPage2.Text = "tabPage2";
+			tabPage2.Text = "Histogram";
 			tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// frmMain
@@ -773,10 +1032,10 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1174, 611);
+			Controls.Add(tabControl1);
 			Controls.Add(groupBox1);
 			Controls.Add(btnExport);
 			Controls.Add(gridStats);
-			Controls.Add(chartRate);
 			Controls.Add(btnLoadRads);
 			Controls.Add(btnLoadPoints);
 			Controls.Add(gridPoints);
@@ -802,7 +1061,17 @@
 			((System.ComponentModel.ISupportInitialize)gridStats).EndInit();
 			groupBox1.ResumeLayout(false);
 			groupBox1.PerformLayout();
+			gboxDel.ResumeLayout(false);
+			gboxDel.PerformLayout();
+			gboxDelDates.ResumeLayout(false);
+			gboxDelDates.PerformLayout();
+			menuDel.ResumeLayout(false);
+			gboxDelRates.ResumeLayout(false);
+			gboxDelRates.PerformLayout();
+			gboxManipulation.ResumeLayout(false);
+			gboxManipulation.PerformLayout();
 			tabControl1.ResumeLayout(false);
+			tabPage1.ResumeLayout(false);
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -848,7 +1117,6 @@
 		private GroupBox groupBox1;
 		private TextBox txtPointCount;
 		private DateTimePicker dtpEndDate;
-		private DateTimePicker dtpStartDate;
 		private Label label14;
 		private Label label13;
 		private Label label12;
@@ -877,9 +1145,32 @@
 		private Button btnPointRefresh;
 		private ComboBox comboPoints;
 		private RadioButton radioButton2;
-		private RadioButton radioButton1;
+		private RadioButton rbPointDel;
+		private GroupBox gboxDelDates;
+		private DateTimePicker dtpDelTo;
+		private DateTimePicker dtpDelFrom;
+		private RadioButton rbDelLt;
+		private RadioButton rbDelGt;
+		private RadioButton rbDelEq;
+		private Label label4;
+		private Label label3;
+		private Label label2;
+		private GroupBox gboxDelRates;
+		private TextBox txtDelVal;
+		private RadioButton rbDelByValue;
+		private RadioButton rbDelDates;
+		private RadioButton rbDelAll;
+		private Button btnPointRadDel;
+		private RadioButton rbDelNone;
+		private RadioButton rbOpintNone;
+		private GroupBox gboxDel;
+		private GroupBox gboxManipulation;
 		private TabControl tabControl1;
-		private TabPage tabDerlete;
+		private TabPage tabPage1;
 		private TabPage tabPage2;
+		private ContextMenuStrip menuDel;
+		private ToolStripMenuItem miFromStart;
+		private ToolStripMenuItem miTilEnd;
+		private TextBox txtStartDate;
 	}
 }

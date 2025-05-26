@@ -127,14 +127,8 @@ namespace WebiGen {
 
 			astr[0] = CsvPointStart;
 			astr[1] = Name;
-			//astr[2] = CsvPointID;
 			astr[2] = PointID.ToString();
 			al.Add(astr);
-			//astr = new string[3];
-			//astr[0] = "Date Time";
-			//astr[1] = "Rate";
-			//astr[2] = "Dose";
-			//al.Add(astr);
 			for (int n=0 ; n < aRads.Length ; n++) {
 				astr = new string[3];
 				astr[0] = TMisc.AppDateTime (aRads[n].SampleTime);
@@ -226,10 +220,21 @@ namespace WebiGen {
 				}
 		}
 //----------------------------------------------------------------------------
-		public bool InsertToDB (SqlConnection database, bool fDeleteCurrent, bool fOverride, ref string strErr) {
+		public bool InsertToDB (SqlConnection database, bool fDeleteCurrent, bool fOverride, ref string strErr, ref int nInserted) {
 			TPointInfoDB ptdb = new TPointInfoDB (this);
-			return (ptdb.InsertToDB (database, fDeleteCurrent, fOverride, ref strErr));
+			return (ptdb.InsertToDB (database, fDeleteCurrent, fOverride, ref strErr, ref nInserted));
 		}
+//----------------------------------------------------------------------------
+		public bool InsertToDB (SqlCommand cmd, bool fDeleteCurrent, bool fOverride, ref string strErr, ref int nInserted) {
+			TPointInfoDB ptdb = new TPointInfoDB (this);
+			return (ptdb.InsertToDB (cmd, fDeleteCurrent, fOverride, ref strErr, ref nInserted));
+		}
+//----------------------------------------------------------------------------
+		public bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr) {
+			TPointInfoDB ptdb = new TPointInfoDB (this);
+			return (ptdb.DeleteRadiations (database, del_params, ref strErr));
+		}
+
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
@@ -298,6 +303,33 @@ namespace WebiGen {
 			return (fRead);
 		}
 //----------------------------------------------------------------------------
+		public bool LoadPointByID (SqlCommand cmd, ref TPointInfo pt, int idPoint, ref string strErr) {
+			bool fLoad=false;
+			SqlDataReader reader = null;
+
+			try {
+				//SqlCommand cmd = database.CreateCommand();
+				cmd.CommandText = String.Format("select * from {0} where {1}={2};", PointsTable,FldPointID, idPoint);
+				reader = cmd.ExecuteReader();
+				if (reader.Read()) {
+					TPointInfoDB ptdb = new TPointInfoDB ();
+					if (ptdb.LoadFromReader (reader, ref strErr))
+						pt = new TPointInfo (ptdb);
+
+				}
+				fLoad = true;
+			}
+			catch (Exception ex) {
+				strErr = ex.Message;
+				fLoad = false;
+			}
+			finally {
+				if (reader != null)
+					reader.Close ();
+			}
+			return (fLoad);
+		}
+//----------------------------------------------------------------------------
 		public bool LoadPointByID (SqlConnection database, ref TPointInfo pt, int idPoint, ref string strErr) {
 			bool fLoad=false;
 			SqlDataReader reader = null;
@@ -325,30 +357,34 @@ namespace WebiGen {
 			return (fLoad);
 		}
 //----------------------------------------------------------------------------
-		public new bool InsertToDB (SqlConnection database, bool fDeleteCurrent, bool fOverride, ref string strErr) {
+		public new bool InsertToDB (SqlCommand cmd, bool fDeleteCurrent, bool fOverride, ref string strErr, ref int nInserted) {
 			TPointInfo pt = null;
 			bool fInsert = false;
 
-			if (LoadPointByID (database, ref pt, PointID, ref strErr)) {
+			if (LoadPointByID (cmd, ref pt, PointID, ref strErr)) {
 				if (pt.PointID == PointID) {
 					if ((pt.Name != Name) && (fDeleteCurrent || fOverride))
-						fInsert = UpdateInDB (database, ref strErr);
+						fInsert = UpdateInDB (cmd, ref strErr);
 				}
 				else
-					fInsert = InsertAsNew (database, ref strErr);
+					fInsert = InsertAsNew (cmd, ref strErr);
 			}
 			if (fOverride)
-				fInsert = TRadValue.DeleteRadiations (database, PointID, Radiations, ref strErr);
+				fInsert = TRadValue.DeleteRadiations (cmd, PointID, Radiations, ref strErr);
 			if (fInsert)
-				fInsert = TRadValue.InsertValues (database, PointID, Radiations, ref strErr);
+				fInsert = TRadValue.InsertValues (cmd, PointID, Radiations, ref strErr, ref nInserted);
 			return (fInsert);
 		}
 //----------------------------------------------------------------------------
-		public new bool UpdateInDB (SqlConnection database, ref string strErr) {
+		public new bool InsertToDB (SqlConnection database, bool fDeleteCurrent, bool fOverride, ref string strErr, ref int nInserted) {
+			return (InsertToDB (database.CreateCommand(), fDeleteCurrent, fOverride, ref strErr, ref nInserted));
+		}
+//----------------------------------------------------------------------------
+		public new bool UpdateInDB (SqlCommand cmd, ref string strErr) {
 			bool fUpdate = false;
 
 			try {
-				SqlCommand cmd = database.CreateCommand ();
+				//SqlCommand cmd = database.CreateCommand ();
 				cmd.CommandText = String.Format ("update {0} set {1}={2} where {3}={4};",
 									PointsTable,
 									FldName, TMisc.GetSqlText(Name),
@@ -363,11 +399,15 @@ namespace WebiGen {
 			return (fUpdate);
 		}
 //----------------------------------------------------------------------------
-		public bool InsertAsNew (SqlConnection database, ref string strErr) {
+		public new bool UpdateInDB (SqlConnection database, ref string strErr) {
+			return (UpdateInDB (database.CreateCommand(), ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public bool InsertAsNew (SqlCommand cmd, ref string strErr) {
 			bool fInsert = false;
 
 			try {
-				SqlCommand cmd = database.CreateCommand ();
+				//SqlCommand cmd = database.CreateCommand ();
 				cmd.CommandText = String.Format ("insert into {0} ({1},{2}) values ({3},{4});",
 								PointsTable,
 								FldPointID, FldName,
@@ -381,6 +421,22 @@ namespace WebiGen {
 			}
 			return (fInsert);
 		}
+//----------------------------------------------------------------------------
+		public bool InsertAsNew (SqlConnection database, ref string strErr) {
+			return (InsertAsNew (database.CreateCommand(), ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public new bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr) {
+			if (del_params == null)
+				return (DeleteAllRadiations (database.CreateCommand(), ref strErr));
+			else
+				return (false);
+		}
+//----------------------------------------------------------------------------
+		public new bool DeleteAllRadiations (SqlCommand cmd, ref string strErr) {
+			return (TRadValue.DeleteRadiations (cmd, PointID, new TDelValueParams(), ref strErr));
+		}
+
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------

@@ -19,3 +19,10 @@ insert into Connections_tcp (ConnectionId,ip,Port) values (41,'169.254.231.129',
 select * from maps
 select * from Points
 insert into Points (name,
+
+select count(*) from datarecords where Point_PointId=98
+select count(*) from datarecords where Point_PointId=98 and dose <> 0
+delete from datarecords where Point_PointId=98 and dose <> 0
+select * from datarecords where Point_PointId=98 order by RecordTime asc
+
+delete from DataRecords where Point_PointId=98 or Point_PointId=99;

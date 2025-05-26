@@ -21,9 +21,11 @@ using OmerEisCommon;
 namespace WebiGen {
 	public partial class DlgImportCsv : Form {
 		private SqlConnection m_database;
+		SqlCommand m_cmd;
 		private string m_strErr;
 		public DlgImportCsv() {
 			InitializeComponent();
+			m_cmd = null;
 		}
 		//-----------------------------------------------------------------------------
 		private void btnRefresh_Click(object sender, EventArgs e) {
@@ -34,14 +36,17 @@ namespace WebiGen {
 			DialogResult = DialogResult.OK;
 		}
 		//-----------------------------------------------------------------------------
-		public bool Execute(SqlConnection database, string strFile) {
-			Download(database, strFile);
+		public bool Execute(SqlCommand cmd, string strFile) {
+			//Download(database, strFile);
+			Download(cmd, strFile);
 			bool f = ShowDialog() == DialogResult.OK;
 			return (f);
 		}
 		//-----------------------------------------------------------------------------
-		private void Download(SqlConnection database, string strFile) {
-			m_database = database;
+		//private void Download(SqlConnection database, string strFile) {
+		private void Download(SqlCommand cmd, string strFile) {
+			m_database = null;//database;
+			m_cmd = cmd;
 			txtFile.Text = strFile;
 			ReadFromCsv();
 		}
@@ -110,10 +115,24 @@ namespace WebiGen {
 		}
 		//-----------------------------------------------------------------------------
 		private void btnInsert_Click(object sender, EventArgs e) {
-			TPointInfo[] aPoints = UploadGridPoints();
-			for (int n=0 ; n < aPoints.Length ; n++) {
-				if (!aPoints[n].InsertToDB (m_database, cboxDeleteCurrent.Checked, cboxOverride.Checked, ref m_strErr))
-					MessageBox.Show (m_strErr);
+			System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
+			int nInserted=0;
+			try {
+				System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+				TPointInfo[] aPoints = UploadGridPoints();
+				for (int n=0 ; n < aPoints.Length ; n++) {
+					//if (!aPoints[n].InsertToDB (m_database, cboxDeleteCurrent.Checked, cboxOverride.Checked, ref m_strErr))
+					if (aPoints[n].InsertToDB (m_cmd, cboxDeleteCurrent.Checked, cboxOverride.Checked, ref m_strErr, ref nInserted))
+						MessageBox.Show(TMisc.IntFormat (nInserted)  + " records inserted");
+					else
+						MessageBox.Show (m_strErr);
+				}
+			}
+			catch (Exception ex) {
+				MessageBox.Show (ex.ToString ());
+			}
+			finally {
+				System.Windows.Forms.Cursor.Current = curOld;
 			}
 		}
 	}

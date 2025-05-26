@@ -57,7 +57,7 @@
 			// 
 			// btnCancel
 			// 
-			btnCancel.Location = new Point(308, 300);
+			btnCancel.Location = new Point(299, 343);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(75, 23);
 			btnCancel.TabIndex = 3;
@@ -66,7 +66,7 @@
 			// 
 			// btnOK
 			// 
-			btnOK.Location = new Point(415, 300);
+			btnOK.Location = new Point(406, 343);
 			btnOK.Name = "btnOK";
 			btnOK.Size = new Size(75, 23);
 			btnOK.TabIndex = 2;
@@ -239,9 +239,10 @@
 			// 
 			// btnInsert
 			// 
-			btnInsert.Location = new Point(360, 234);
+			btnInsert.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+			btnInsert.Location = new Point(325, 287);
 			btnInsert.Name = "btnInsert";
-			btnInsert.Size = new Size(75, 23);
+			btnInsert.Size = new Size(139, 37);
 			btnInsert.TabIndex = 17;
 			btnInsert.Text = "Insert";
 			btnInsert.UseVisualStyleBackColor = true;
@@ -253,7 +254,7 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			CancelButton = btnCancel;
-			ClientSize = new Size(800, 339);
+			ClientSize = new Size(800, 387);
 			Controls.Add(btnInsert);
 			Controls.Add(cboxOverride);
 			Controls.Add(cboxDeleteCurrent);
