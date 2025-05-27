@@ -26,3 +26,9 @@ delete from datarecords where Point_PointId=98 and dose <> 0
 select * from datarecords where Point_PointId=98 order by RecordTime asc
 
 delete from DataRecords where Point_PointId=98 or Point_PointId=99;
+RecordTime 
+select * from DataRecords where cast (DataRecords.RecordTime as date) >= '21/4/2025'
+select * from DataRecords where RecordTime between '2023-01-01' and '2025-04-21'
+
+select count(*) as 'count' from DataRecords where RecordTime >= '2025-04-21 08:25:13' and RecordTime <= '2025-04-21 13:00:00';
+select count(*) from DataRecords where Point_PointId=98 and (RecordTime >= '2025-04-21 07:00:00' and RecordTime <= '2025-04-21 11:00:00');

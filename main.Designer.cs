@@ -27,7 +27,6 @@
 		///  the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
 			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
@@ -52,7 +51,7 @@
 			importFromCSVToolStripMenuItem = new ToolStripMenuItem();
 			popupHelp = new ToolStripMenuItem();
 			miAbout = new ToolStripMenuItem();
-			button1 = new Button();
+			btnSetBoundaries = new Button();
 			comboMaps = new ComboBox();
 			status_bar = new StatusStrip();
 			toolStripStatusLabel1 = new ToolStripStatusLabel();
@@ -89,15 +88,13 @@
 			dlgOpenCsv = new OpenFileDialog();
 			dlgSaveCsv = new SaveFileDialog();
 			groupBox1 = new GroupBox();
+			txtEndDate = new TextBox();
 			txtStartDate = new TextBox();
 			gboxDel = new GroupBox();
 			rbDelNone = new RadioButton();
 			rbDelByValue = new RadioButton();
 			gboxDelDates = new GroupBox();
 			dtpDelTo = new DateTimePicker();
-			menuDel = new ContextMenuStrip(components);
-			miFromStart = new ToolStripMenuItem();
-			miTilEnd = new ToolStripMenuItem();
 			label2 = new Label();
 			dtpDelFrom = new DateTimePicker();
 			label3 = new Label();
@@ -118,7 +115,6 @@
 			comboPoints = new ComboBox();
 			label1 = new Label();
 			txtPointCount = new TextBox();
-			dtpEndDate = new DateTimePicker();
 			label14 = new Label();
 			label13 = new Label();
 			label12 = new Label();
@@ -145,7 +141,6 @@
 			groupBox1.SuspendLayout();
 			gboxDel.SuspendLayout();
 			gboxDelDates.SuspendLayout();
-			menuDel.SuspendLayout();
 			gboxDelRates.SuspendLayout();
 			gboxManipulation.SuspendLayout();
 			tabControl1.SuspendLayout();
@@ -221,16 +216,15 @@
 			miAbout.Size = new Size(116, 22);
 			miAbout.Text = "&About...";
 			// 
-			// button1
+			// btnSetBoundaries
 			// 
-			button1.Location = new Point(368, 68);
-			button1.Name = "button1";
-			button1.Size = new Size(75, 23);
-			button1.TabIndex = 1;
-			button1.Text = "button1";
-			button1.UseVisualStyleBackColor = true;
-			button1.Visible = false;
-			button1.Click += button1_Click;
+			btnSetBoundaries.Location = new Point(0, 116);
+			btnSetBoundaries.Name = "btnSetBoundaries";
+			btnSetBoundaries.Size = new Size(81, 23);
+			btnSetBoundaries.TabIndex = 1;
+			btnSetBoundaries.Text = "Boundaries";
+			btnSetBoundaries.UseVisualStyleBackColor = true;
+			btnSetBoundaries.Click += btnSetBoundaries_Click;
 			// 
 			// comboMaps
 			// 
@@ -541,6 +535,7 @@
 			// 
 			// groupBox1
 			// 
+			groupBox1.Controls.Add(txtEndDate);
 			groupBox1.Controls.Add(txtStartDate);
 			groupBox1.Controls.Add(gboxDel);
 			groupBox1.Controls.Add(gboxManipulation);
@@ -548,7 +543,6 @@
 			groupBox1.Controls.Add(comboPoints);
 			groupBox1.Controls.Add(label1);
 			groupBox1.Controls.Add(txtPointCount);
-			groupBox1.Controls.Add(dtpEndDate);
 			groupBox1.Controls.Add(label14);
 			groupBox1.Controls.Add(label13);
 			groupBox1.Controls.Add(label12);
@@ -564,17 +558,26 @@
 			groupBox1.Controls.Add(txtRate);
 			groupBox1.Location = new Point(16, 280);
 			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(547, 306);
+			groupBox1.Size = new Size(491, 306);
 			groupBox1.TabIndex = 14;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "New Points";
+			// 
+			// txtEndDate
+			// 
+			txtEndDate.Location = new Point(100, 77);
+			txtEndDate.Name = "txtEndDate";
+			txtEndDate.ReadOnly = true;
+			txtEndDate.Size = new Size(103, 23);
+			txtEndDate.TabIndex = 62;
+			txtEndDate.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtStartDate
 			// 
 			txtStartDate.Location = new Point(100, 48);
 			txtStartDate.Name = "txtStartDate";
 			txtStartDate.ReadOnly = true;
-			txtStartDate.Size = new Size(138, 23);
+			txtStartDate.Size = new Size(103, 23);
 			txtStartDate.TabIndex = 61;
 			txtStartDate.TextAlign = HorizontalAlignment.Center;
 			// 
@@ -587,9 +590,10 @@
 			gboxDel.Controls.Add(gboxDelRates);
 			gboxDel.Controls.Add(rbDelAll);
 			gboxDel.Controls.Add(btnPointRadDel);
-			gboxDel.Location = new Point(246, 98);
+			gboxDel.Controls.Add(btnSetBoundaries);
+			gboxDel.Location = new Point(209, 93);
 			gboxDel.Name = "gboxDel";
-			gboxDel.Size = new Size(293, 202);
+			gboxDel.Size = new Size(279, 202);
 			gboxDel.TabIndex = 60;
 			gboxDel.TabStop = false;
 			gboxDel.Text = "Delete";
@@ -618,49 +622,31 @@
 			// 
 			// gboxDelDates
 			// 
+			gboxDelDates.BackColor = Color.LightGray;
 			gboxDelDates.Controls.Add(dtpDelTo);
 			gboxDelDates.Controls.Add(label2);
 			gboxDelDates.Controls.Add(dtpDelFrom);
 			gboxDelDates.Controls.Add(label3);
-			gboxDelDates.Location = new Point(87, 11);
+			gboxDelDates.Location = new Point(88, 90);
 			gboxDelDates.Name = "gboxDelDates";
-			gboxDelDates.Size = new Size(200, 84);
+			gboxDelDates.Size = new Size(184, 74);
 			gboxDelDates.TabIndex = 54;
 			gboxDelDates.TabStop = false;
 			gboxDelDates.Text = "By Dates";
 			// 
 			// dtpDelTo
 			// 
-			dtpDelTo.ContextMenuStrip = menuDel;
-			dtpDelTo.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
+			dtpDelTo.CustomFormat = "dd/MM/yyyy, HH:mm:ss";
 			dtpDelTo.Format = DateTimePickerFormat.Custom;
-			dtpDelTo.Location = new Point(57, 53);
+			dtpDelTo.Location = new Point(40, 49);
 			dtpDelTo.Name = "dtpDelTo";
 			dtpDelTo.Size = new Size(137, 23);
 			dtpDelTo.TabIndex = 53;
 			// 
-			// menuDel
-			// 
-			menuDel.Items.AddRange(new ToolStripItem[] { miFromStart, miTilEnd });
-			menuDel.Name = "menuDel";
-			menuDel.Size = new Size(130, 48);
-			// 
-			// miFromStart
-			// 
-			miFromStart.Name = "miFromStart";
-			miFromStart.Size = new Size(129, 22);
-			miFromStart.Text = "From Start";
-			// 
-			// miTilEnd
-			// 
-			miTilEnd.Name = "miTilEnd";
-			miTilEnd.Size = new Size(129, 22);
-			miTilEnd.Text = "Till End";
-			// 
 			// label2
 			// 
 			label2.AutoSize = true;
-			label2.Location = new Point(13, 31);
+			label2.Location = new Point(2, 23);
 			label2.Name = "label2";
 			label2.Size = new Size(35, 15);
 			label2.TabIndex = 0;
@@ -668,10 +654,9 @@
 			// 
 			// dtpDelFrom
 			// 
-			dtpDelFrom.ContextMenuStrip = menuDel;
 			dtpDelFrom.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
 			dtpDelFrom.Format = DateTimePickerFormat.Custom;
-			dtpDelFrom.Location = new Point(57, 26);
+			dtpDelFrom.Location = new Point(40, 19);
 			dtpDelFrom.Name = "dtpDelFrom";
 			dtpDelFrom.Size = new Size(137, 23);
 			dtpDelFrom.TabIndex = 52;
@@ -679,7 +664,7 @@
 			// label3
 			// 
 			label3.AutoSize = true;
-			label3.Location = new Point(13, 57);
+			label3.Location = new Point(2, 53);
 			label3.Name = "label3";
 			label3.Size = new Size(32, 15);
 			label3.TabIndex = 1;
@@ -702,9 +687,9 @@
 			gboxDelRates.Controls.Add(rbDelLt);
 			gboxDelRates.Controls.Add(rbDelEq);
 			gboxDelRates.Controls.Add(rbDelGt);
-			gboxDelRates.Location = new Point(87, 95);
+			gboxDelRates.Location = new Point(92, 6);
 			gboxDelRates.Name = "gboxDelRates";
-			gboxDelRates.Size = new Size(200, 77);
+			gboxDelRates.Size = new Size(184, 77);
 			gboxDelRates.TabIndex = 58;
 			gboxDelRates.TabStop = false;
 			gboxDelRates.Text = "By Rates";
@@ -860,15 +845,6 @@
 			txtPointCount.TabIndex = 52;
 			txtPointCount.TextAlign = HorizontalAlignment.Center;
 			// 
-			// dtpEndDate
-			// 
-			dtpEndDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
-			dtpEndDate.Format = DateTimePickerFormat.Custom;
-			dtpEndDate.Location = new Point(103, 74);
-			dtpEndDate.Name = "dtpEndDate";
-			dtpEndDate.Size = new Size(137, 23);
-			dtpEndDate.TabIndex = 51;
-			// 
 			// label14
 			// 
 			label14.AutoSize = true;
@@ -1000,10 +976,10 @@
 			// 
 			tabControl1.Controls.Add(tabPage1);
 			tabControl1.Controls.Add(tabPage2);
-			tabControl1.Location = new Point(596, 280);
+			tabControl1.Location = new Point(530, 280);
 			tabControl1.Name = "tabControl1";
 			tabControl1.SelectedIndex = 0;
-			tabControl1.Size = new Size(578, 331);
+			tabControl1.Size = new Size(644, 331);
 			tabControl1.TabIndex = 15;
 			// 
 			// tabPage1
@@ -1012,7 +988,7 @@
 			tabPage1.Location = new Point(4, 24);
 			tabPage1.Name = "tabPage1";
 			tabPage1.Padding = new Padding(3);
-			tabPage1.Size = new Size(570, 303);
+			tabPage1.Size = new Size(636, 303);
 			tabPage1.TabIndex = 0;
 			tabPage1.Text = "Rate vs Time";
 			tabPage1.UseVisualStyleBackColor = true;
@@ -1022,7 +998,7 @@
 			tabPage2.Location = new Point(4, 24);
 			tabPage2.Name = "tabPage2";
 			tabPage2.Padding = new Padding(3);
-			tabPage2.Size = new Size(570, 303);
+			tabPage2.Size = new Size(636, 303);
 			tabPage2.TabIndex = 1;
 			tabPage2.Text = "Histogram";
 			tabPage2.UseVisualStyleBackColor = true;
@@ -1043,7 +1019,6 @@
 			Controls.Add(toolbar);
 			Controls.Add(status_bar);
 			Controls.Add(comboMaps);
-			Controls.Add(button1);
 			Controls.Add(menuMain);
 			MainMenuStrip = menuMain;
 			Name = "frmMain";
@@ -1065,7 +1040,6 @@
 			gboxDel.PerformLayout();
 			gboxDelDates.ResumeLayout(false);
 			gboxDelDates.PerformLayout();
-			menuDel.ResumeLayout(false);
 			gboxDelRates.ResumeLayout(false);
 			gboxDelRates.PerformLayout();
 			gboxManipulation.ResumeLayout(false);
@@ -1085,7 +1059,7 @@
 		private ToolStripMenuItem miExit;
 		private ToolStripMenuItem popupHelp;
 		private ToolStripMenuItem miAbout;
-		private Button button1;
+		private Button btnSetBoundaries;
 		private ComboBox comboMaps;
 		private StatusStrip status_bar;
 		private ToolStripStatusLabel toolStripStatusLabel1;
@@ -1116,7 +1090,6 @@
 		private SaveFileDialog dlgSaveCsv;
 		private GroupBox groupBox1;
 		private TextBox txtPointCount;
-		private DateTimePicker dtpEndDate;
 		private Label label14;
 		private Label label13;
 		private Label label12;
@@ -1168,9 +1141,7 @@
 		private TabControl tabControl1;
 		private TabPage tabPage1;
 		private TabPage tabPage2;
-		private ContextMenuStrip menuDel;
-		private ToolStripMenuItem miFromStart;
-		private ToolStripMenuItem miTilEnd;
 		private TextBox txtStartDate;
+		private TextBox txtEndDate;
 	}
 }

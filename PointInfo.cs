@@ -234,7 +234,11 @@ namespace WebiGen {
 			TPointInfoDB ptdb = new TPointInfoDB (this);
 			return (ptdb.DeleteRadiations (database, del_params, ref strErr));
 		}
-
+//----------------------------------------------------------------------------
+		public bool LoadRadiationCount (SqlConnection database, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
+			TPointInfoDB ptdb = new TPointInfoDB (this);
+			return (ptdb.LoadRadiationCount (database, dtFrom, dtUntil, ref nCount, ref strErr));
+		}
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
@@ -427,16 +431,16 @@ namespace WebiGen {
 		}
 //----------------------------------------------------------------------------
 		public new bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr) {
-			if (del_params == null)
-				return (DeleteAllRadiations (database.CreateCommand(), ref strErr));
-			else
-				return (false);
+			return (TRadValue.DeleteRadiations (database.CreateCommand(), PointID, del_params, ref strErr));
 		}
 //----------------------------------------------------------------------------
-		public new bool DeleteAllRadiations (SqlCommand cmd, ref string strErr) {
-			return (TRadValue.DeleteRadiations (cmd, PointID, new TDelValueParams(), ref strErr));
+		public new bool LoadRadiationCount (SqlConnection database, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
+			return (LoadRadiationCount (database.CreateCommand(), dtFrom, dtUntil, ref nCount, ref strErr));
 		}
-
+//----------------------------------------------------------------------------
+		public new bool LoadRadiationCount (SqlCommand cmd, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
+			return (TRadValue.LoadRadiationCount (cmd, dtFrom, dtUntil, PointID, ref nCount, ref strErr));
+		}
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
