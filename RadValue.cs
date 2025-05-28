@@ -151,6 +151,10 @@ namespace WebiGen {
 			return (TRadValueDB.LoadRadiationCount (cmd, dtFrom, dtUntil, idPoint, ref nCount, ref strErr));
 		}
 //----------------------------------------------------------------------------
+		public static bool LoadRadiationCount (SqlCommand cmd, TDelValueParams del_param, int idPoint, ref int nCount, ref string strErr) {
+			return (TRadValueDB.LoadRadiationCount (cmd, del_param, idPoint, ref nCount, ref strErr));
+		}
+//----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -401,7 +405,7 @@ namespace WebiGen {
 					else if (del_params.Op == EDelValueOp.DVO_LT)
 						strOp = ">";
 					if (strOp.Length > 0)
-						strWhere = String.Format ("{0} {1}", strOp, del_params.Value);
+						strWhere = String.Format ("{0} {1} {2}", FldRate, strOp, del_params.Value);
 				}
 			}
 			return (strWhere);
@@ -415,6 +419,39 @@ namespace WebiGen {
 			try {
 				cmd.CommandText = String.Format ("select count(*) as '{1}' from {0} where {2} >= {3} and {2} <= {4};",
 									Table, strCount, FldTime, TMisc.GetSqlString (dtFrom), TMisc.GetSqlString (dtUntil));
+				reader = cmd.ExecuteReader ();
+				if (reader.Read()) {
+					nCount = TMisc.ReadIntField (reader, strCount, ref strErr);
+					fCount = true;
+				}
+			}
+			catch (Exception ex) {
+				strErr = ex.Message;
+			}
+			finally {
+				if (reader != null)
+					reader.Close ();
+			}
+			return (fCount);
+		}
+//----------------------------------------------------------------------------
+		public static string GetSqlWhere (TDelValueParams del_param) {
+			string strWhere="";
+			string strOp = TDelValueParams.GetOpString (del_param);
+			if (strOp.Length > 0)
+				strWhere = String.Format ("{0} {1} {2}", FldRate, strOp, del_param.Value);
+			return (strWhere);
+		}
+//----------------------------------------------------------------------------
+		public new static bool LoadRadiationCount (SqlCommand cmd, TDelValueParams del_param, int idPoint, ref int nCount, ref string strErr) {
+			bool fCount = false;
+			SqlDataReader reader = null;
+			string strCount = "count";
+
+			try {
+				string strWhere = GetSqlWhere (del_param);
+				cmd.CommandText = String.Format ("select count(*) as '{0}' from {1} where ({2}={3}) and ({4});",
+									strCount, Table, FldPointID,idPoint, strWhere);
 				reader = cmd.ExecuteReader ();
 				if (reader.Read()) {
 					nCount = TMisc.ReadIntField (reader, strCount, ref strErr);

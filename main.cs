@@ -503,14 +503,13 @@ namespace WebiGen {
 			System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
 
 			try {
+				chartRate.Series.Clear();
 				if(pt != null) {
 					System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
 					if(TRadValue.LoadFromDB(m_database, pt.PointID, ref aRads, ref m_strErr)) {
 						if(aRads != null) {
-							txtStartDate.Text = TMisc.AppDateTime(aRads[0].SampleTime);
-							txtStartDate.Tag = aRads[0].SampleTime;
-							txtEndDate.Text = TMisc.AppDateTime(aRads[aRads.Length - 1].SampleTime);
-							txtEndDate.Tag = aRads[aRads.Length - 1].SampleTime;
+							SetTextDate (txtStartDate, aRads[0].SampleTime);
+							SetTextDate (txtEndDate, aRads[aRads.Length - 1].SampleTime);
 							txtPointCount.Text = TMisc.IntFormat(aRads.Length);
 							DateTime? dt = TPointInfo.GetSamplingRate(aRads);
 							if(dt != null)
@@ -538,6 +537,12 @@ namespace WebiGen {
 			} finally {
 				System.Windows.Forms.Cursor.Current = curOld;
 			}
+		}
+//----------------------------------------------------------------------------
+		private void SetTextDate (TextBox txt, DateTime? dt) {
+			txt.Tag = dt;
+			if (dt != null)
+				txt.Text = TMisc.AppDateTime(dt);
 		}
 //----------------------------------------------------------------------------
 		private void DownloadStats(TRadValue[] aRads) {
@@ -588,7 +593,6 @@ namespace WebiGen {
 			else
 				del_params.Upload(rbDelLt.Checked, rbDelEq.Checked, rbDelGt.Checked, txtDelVal.Text);
 			return (del_params.IsValid());
-			//return (TDelValueParams.IsValid(rbDelLt.Checked, rbDelEq.Checked, rbDelGt.Checked, txtDelVal.Text));
 		}
 //----------------------------------------------------------------------------
 		private void btnPointRadDel_Click(object sender, EventArgs e) {
@@ -600,11 +604,17 @@ namespace WebiGen {
 					if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 						if(!pt.DeleteRadiations(m_database, null, ref m_strErr))
 							MessageBox.Show("Error deleting radiations:\n" + m_strErr);
-				} else {
+				}
+				else if (rbDelDates.Checked) {
 					TDelValueParams del_param = new TDelValueParams();
 					if(rbDelDates.Checked) {
-						del_param.Upload(dtpDelFrom.Value, dtpDelTo.Value);
-						if (pt.LoadRadiationCount (m_database, del_param.From, del_param.Until, ref nCount, ref m_strErr)) {
+						DeleteByDates (pt, del_param);
+					}
+				}
+				else if (rbDelByValue.Checked) {
+					TDelValueParams del_param = new TDelValueParams();
+					if (del_param.Upload(rbDelLt.Checked, rbDelEq.Checked, rbDelGt.Checked, txtDelVal.Text)) {
+						if (pt.LoadRadiationCount (m_database, del_param, ref nCount, ref m_strErr)) {
 							string strMessage = System.String.Format ("Delete {0} records from point {1}?", nCount, pt.Name);
 							if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 								if(pt.DeleteRadiations(m_database, del_param, ref m_strErr))
@@ -612,10 +622,21 @@ namespace WebiGen {
 								else
 									MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 						}
-						//if(!pt.DeleteRadiations(m_database, del_param, ref m_strErr))
-							//MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 					}
 				}
+			}
+		}
+//----------------------------------------------------------------------------
+		private void DeleteByDates (TPointInfo pt, TDelValueParams del_param) {
+			int nCount=0;
+			del_param.Upload(dtpDelFrom.Value, dtpDelTo.Value);
+			if (pt.LoadRadiationCount (m_database, del_param.From, del_param.Until, ref nCount, ref m_strErr)) {
+				string strMessage = System.String.Format ("Delete {0} records from point {1}?", nCount, pt.Name);
+				if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+					if(pt.DeleteRadiations(m_database, del_param, ref m_strErr))
+						RefreshCurrentPoint();
+					else
+						MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 			}
 		}
 //----------------------------------------------------------------------------

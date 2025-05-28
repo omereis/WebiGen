@@ -62,7 +62,7 @@ namespace WebiGen {
 				Op = EDelValueOp.DVO_GT;
 			else
 				Op = EDelValueOp.DVO_NONE;
-			return (Op != EDelValueOp.DVO_NONE);
+			return (IsValid() && (Op != EDelValueOp.DVO_NONE));
 		}
 //-----------------------------------------------------------------------------
 		public bool IsValid() {
@@ -92,5 +92,24 @@ namespace WebiGen {
 				fValid = fLt || fEq || fGt;
 			return (fValid);
 		}
+//-----------------------------------------------------------------------------
+		public static string GetOpString (TDelValueParams del_param) {
+			string strOp;
+
+			if (del_param != null) {
+				if (del_param.Op == EDelValueOp.DVO_LT)
+					strOp = "<";
+				else if (del_param.Op == EDelValueOp.DVO_EQ)
+					strOp = "=";
+				else if (del_param.Op == EDelValueOp.DVO_GT)
+					strOp = ">";
+				else
+					strOp = "";
+			}
+			else
+				strOp = "";
+			return (strOp);
+		}
+//-----------------------------------------------------------------------------
 	}
 }

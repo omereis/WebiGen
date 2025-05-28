@@ -240,6 +240,11 @@ namespace WebiGen {
 			return (ptdb.LoadRadiationCount (database, dtFrom, dtUntil, ref nCount, ref strErr));
 		}
 //----------------------------------------------------------------------------
+		public bool LoadRadiationCount (SqlConnection database, TDelValueParams del_param, ref int nCount, ref string strErr) {
+			TPointInfoDB ptdb = new TPointInfoDB (this);
+			return (ptdb.LoadRadiationCount (database, del_param, ref nCount, ref strErr));
+		}
+//----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -441,6 +446,11 @@ namespace WebiGen {
 		public new bool LoadRadiationCount (SqlCommand cmd, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
 			return (TRadValue.LoadRadiationCount (cmd, dtFrom, dtUntil, PointID, ref nCount, ref strErr));
 		}
+//----------------------------------------------------------------------------
+		public new bool LoadRadiationCount (SqlConnection database, TDelValueParams del_param, ref int nCount, ref string strErr) {
+			return (TRadValue.LoadRadiationCount (database.CreateCommand(), del_param, PointID, ref nCount, ref strErr));
+		}
+
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
