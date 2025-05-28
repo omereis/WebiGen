@@ -141,9 +141,8 @@ namespace WebiGen {
 			return (TRadValueDB.DeleteRadiations(cmd, idPoint, aRads, ref strErr));
 		}
 //----------------------------------------------------------------------------
-		public static bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_params, ref string strErr) {
-			//return (TRadValueDB.DeleteRadiations(DeleteRadiations (cmd, idPoint, del_params, ref strErr));
-			bool f = TRadValueDB.DeleteRadiations (cmd, idPoint, del_params, ref strErr);
+		public static bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_param, ref string strErr) {
+			bool f = TRadValueDB.DeleteRadiations (cmd, idPoint, del_param, ref strErr);
 			return (f);
 		}
 //----------------------------------------------------------------------------
@@ -362,17 +361,14 @@ namespace WebiGen {
 			return (str);
 		}
 //----------------------------------------------------------------------------
-		public static new bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_params, ref string strErr) {
+		public static new bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_param, ref string strErr) {
 			bool fDel = false;
-			string strSql="", strWhere="";
+			string strWhere="";
 
 			try {
-				strSql = String.Format ("delete from {0} where {1}={2}", Table, FldPointID, idPoint);
-				if (del_params != null)
-					strWhere = GetSqlDelParams (del_params);
-				if (strWhere.Length > 0 )
-					strSql += " and (" + strWhere + ");";
-				cmd.CommandText = strSql;
+				strWhere = GetSqlWhere (del_param);
+				cmd.CommandText = String.Format ("delete from {0} where ({1}={2}) and ({3});",
+									Table, FldPointID,idPoint, strWhere);
 				int nRows = cmd.ExecuteNonQuery ();
 				fDel = true;
 			}
@@ -387,28 +383,6 @@ namespace WebiGen {
 			if (dt != null)
 				str = dt.Value.ToString("yyyy-MM-dd HH:mm:ss.fff");
 			return (str);
-		}
-//----------------------------------------------------------------------------
-		private static string GetSqlDelParams (TDelValueParams del_params) {
-			string strWhere = "";
-			string strOp = "";
-
-			if (del_params != null) {
-				if (del_params.Op == EDelValueOp.DVO_BY_DATE) {
-					strWhere = String.Format ("{0} >= {1} and {0} <= {2}", FldTime, TMisc.GetSqlString (del_params.From), TMisc.GetSqlString (del_params.Until));
-				}
-				else {
-					if (del_params.Op == EDelValueOp.DVO_GT)
-						strOp = ">";
-					else if (del_params.Op == EDelValueOp.DVO_EQ)
-						strOp = "=";
-					else if (del_params.Op == EDelValueOp.DVO_LT)
-						strOp = ">";
-					if (strOp.Length > 0)
-						strWhere = String.Format ("{0} {1} {2}", FldRate, strOp, del_params.Value);
-				}
-			}
-			return (strWhere);
 		}
 //----------------------------------------------------------------------------
 		public static new bool LoadRadiationCount (SqlCommand cmd, DateTime? dtFrom, DateTime? dtUntil, int idPoint, ref int nCount, ref string strErr) {
@@ -437,9 +411,13 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		public static string GetSqlWhere (TDelValueParams del_param) {
 			string strWhere="";
-			string strOp = TDelValueParams.GetOpString (del_param);
-			if (strOp.Length > 0)
-				strWhere = String.Format ("{0} {1} {2}", FldRate, strOp, del_param.Value);
+			if (del_param.Op == EDelValueOp.DVO_BY_DATE)
+				strWhere = String.Format ("{0} between {1} and {2}", FldTime, TMisc.GetSqlString (del_param.From), TMisc.GetSqlString (del_param.Until));
+			else {
+				string strOp = TDelValueParams.GetOpString (del_param);
+				if (strOp.Length > 0)
+					strWhere = String.Format ("{0} {1} {2}", FldRate, strOp, del_param.Value);
+			}
 			return (strWhere);
 		}
 //----------------------------------------------------------------------------

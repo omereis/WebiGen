@@ -35,4 +35,4 @@ select min(recordtime) as 'start', max(recordtime) as 'end' from DataRecords whe
 select * from DataRecords where Point_PointId=99 order by RecordTime desc
 select * from DataRecords where Point_PointId=99 and rate > 0.5
 select max(rate) from DataRecords where Point_PointId=98
-select * from points, connections, connections_tcp where (connections.ConnectionId = connections_tcp.ConnectionId) and (connections.ConnectionId=points.Connection_ConnectionId)
+select count(*) as 'count' from DataRecords where (Point_PointId=99) and (RecordTime between '2025-04-21 08:26:14' and '2025-04-28 13:54:47');

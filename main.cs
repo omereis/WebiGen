@@ -605,32 +605,20 @@ namespace WebiGen {
 						if(!pt.DeleteRadiations(m_database, null, ref m_strErr))
 							MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 				}
-				else if (rbDelDates.Checked) {
+				else {
 					TDelValueParams del_param = new TDelValueParams();
-					if(rbDelDates.Checked) {
-						DeleteByDates (pt, del_param);
-					}
-				}
-				else if (rbDelByValue.Checked) {
-					TDelValueParams del_param = new TDelValueParams();
-					if (del_param.Upload(rbDelLt.Checked, rbDelEq.Checked, rbDelGt.Checked, txtDelVal.Text)) {
-						if (pt.LoadRadiationCount (m_database, del_param, ref nCount, ref m_strErr)) {
-							string strMessage = System.String.Format ("Delete {0} records from point {1}?", nCount, pt.Name);
-							if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-								if(pt.DeleteRadiations(m_database, del_param, ref m_strErr))
-									RefreshCurrentPoint();
-								else
-									MessageBox.Show("Error deleting radiations:\n" + m_strErr);
-						}
-					}
+					if (rbDelDates.Checked)
+						del_param.Upload(dtpDelFrom.Value, dtpDelTo.Value);
+					else if (rbDelByValue.Checked)
+						del_param.Upload(rbDelLt.Checked, rbDelEq.Checked, rbDelGt.Checked, txtDelVal.Text);
+					DeleteByParam (pt, del_param);
 				}
 			}
 		}
 //----------------------------------------------------------------------------
-		private void DeleteByDates (TPointInfo pt, TDelValueParams del_param) {
+		private void DeleteByParam (TPointInfo pt, TDelValueParams del_param) {
 			int nCount=0;
-			del_param.Upload(dtpDelFrom.Value, dtpDelTo.Value);
-			if (pt.LoadRadiationCount (m_database, del_param.From, del_param.Until, ref nCount, ref m_strErr)) {
+			if (pt.LoadRadiationCount (m_database, del_param, ref nCount, ref m_strErr)) {
 				string strMessage = System.String.Format ("Delete {0} records from point {1}?", nCount, pt.Name);
 				if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 					if(pt.DeleteRadiations(m_database, del_param, ref m_strErr))
@@ -638,6 +626,8 @@ namespace WebiGen {
 					else
 						MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 			}
+			else
+				MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 		}
 //----------------------------------------------------------------------------
 		private void btnSetBoundaries_Click(object sender, EventArgs e) {
