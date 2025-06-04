@@ -33,11 +33,13 @@ namespace WebiGen {
 		private static readonly string DefauleConnectionString = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=master;Data Source=OMER\\SQLEXPRESS;TrustServerCertificate=True;";
 		SqlConnection m_database;
 		string m_strErr = "";
+		TRadValue[] m_aStatRads;
 //----------------------------------------------------------------------------
 		public frmMain() {
 			InitializeComponent();
 			m_db_params = null;
 			m_database = null;
+			m_aStatRads = null;
 		}
 //----------------------------------------------------------------------------
 		private void miExit_Click(object sender, EventArgs e) {
@@ -422,8 +424,12 @@ namespace WebiGen {
 					ser = CreateSeries(chartRate, point);
 					chartRate.Series.Add(ser);
 				}
-				for(int n = 0; n < aRads.Length; n++)
+				//StreamWriter writer = new StreamWriter("rad.csv");
+				for(int n = 0; n < aRads.Length; n++) {
 					ser.Points.AddXY(aRads[n].SampleTime, aRads[n].Rate);
+					//writer.WriteLine(aRads[n].Rate.ToString());
+				}
+				//writer.Close();
 			}
 		}
 //----------------------------------------------------------------------------
@@ -508,8 +514,8 @@ namespace WebiGen {
 					System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
 					if(TRadValue.LoadFromDB(m_database, pt.PointID, ref aRads, ref m_strErr)) {
 						if(aRads != null) {
-							SetTextDate (txtStartDate, aRads[0].SampleTime);
-							SetTextDate (txtEndDate, aRads[aRads.Length - 1].SampleTime);
+							SetTextDate(txtStartDate, aRads[0].SampleTime);
+							SetTextDate(txtEndDate, aRads[aRads.Length - 1].SampleTime);
 							txtPointCount.Text = TMisc.IntFormat(aRads.Length);
 							DateTime? dt = TPointInfo.GetSamplingRate(aRads);
 							if(dt != null)
@@ -539,9 +545,9 @@ namespace WebiGen {
 			}
 		}
 //----------------------------------------------------------------------------
-		private void SetTextDate (TextBox txt, DateTime? dt) {
+		private void SetTextDate(TextBox txt, DateTime? dt) {
 			txt.Tag = dt;
-			if (dt != null)
+			if(dt != null)
 				txt.Text = TMisc.AppDateTime(dt);
 		}
 //----------------------------------------------------------------------------
@@ -549,11 +555,13 @@ namespace WebiGen {
 			double dMin, dMax, dAvg, dStd;
 
 			dMin = dMax = dAvg = dStd = 0;
+			double dFactor = radioRem.Checked ? 1 : 1e3;
 			TRadValue.GetStats(aRads, ref dMin, ref dMax, ref dAvg, ref dStd);
-			txtMin.Text = (dMin * 1e3).ToString("N3");
-			txtMax.Text = (dMax * 1e3).ToString("N3");
-			txtAverage.Text = (dAvg * 1e3).ToString("N3");
-			txtStdDiv.Text = (dStd * 1e3).ToString("N3");
+			txtMin.Text = (dMin * dFactor).ToString("N3");
+			txtMax.Text = (dMax * dFactor).ToString("N3");
+			txtAverage.Text = (dAvg * dFactor).ToString("N3");
+			txtStdDiv.Text = (dStd * dFactor).ToString("N3");
+			m_aStatRads = aRads;
 		}
 //----------------------------------------------------------------------------
 		private void importFromCSVToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -604,29 +612,27 @@ namespace WebiGen {
 					if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 						if(!pt.DeleteRadiations(m_database, null, ref m_strErr))
 							MessageBox.Show("Error deleting radiations:\n" + m_strErr);
-				}
-				else {
+				} else {
 					TDelValueParams del_param = new TDelValueParams();
-					if (rbDelDates.Checked)
+					if(rbDelDates.Checked)
 						del_param.Upload(dtpDelFrom.Value, dtpDelTo.Value);
-					else if (rbDelByValue.Checked)
+					else if(rbDelByValue.Checked)
 						del_param.Upload(rbDelLt.Checked, rbDelEq.Checked, rbDelGt.Checked, txtDelVal.Text);
-					DeleteByParam (pt, del_param);
+					DeleteByParam(pt, del_param);
 				}
 			}
 		}
 //----------------------------------------------------------------------------
-		private void DeleteByParam (TPointInfo pt, TDelValueParams del_param) {
-			int nCount=0;
-			if (pt.LoadRadiationCount (m_database, del_param, ref nCount, ref m_strErr)) {
-				string strMessage = System.String.Format ("Delete {0} records from point {1}?", nCount, pt.Name);
+		private void DeleteByParam(TPointInfo pt, TDelValueParams del_param) {
+			int nCount = 0;
+			if(pt.LoadRadiationCount(m_database, del_param, ref nCount, ref m_strErr)) {
+				string strMessage = System.String.Format("Delete {0} records from point {1}?", nCount, pt.Name);
 				if(MessageBox.Show(strMessage, "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 					if(pt.DeleteRadiations(m_database, del_param, ref m_strErr))
 						RefreshCurrentPoint();
 					else
 						MessageBox.Show("Error deleting radiations:\n" + m_strErr);
-			}
-			else
+			} else
 				MessageBox.Show("Error deleting radiations:\n" + m_strErr);
 		}
 //----------------------------------------------------------------------------
@@ -635,6 +641,16 @@ namespace WebiGen {
 				dtpDelFrom.Value = (DateTime)txtStartDate.Tag;
 			if(txtEndDate.Tag != null)
 				dtpDelTo.Value = (DateTime)txtEndDate.Tag;
+		}
+//----------------------------------------------------------------------------
+		private void radioRem_CheckedChanged(object sender, EventArgs e) {
+			if(m_aStatRads != null)
+				DownloadStats(m_aStatRads);
+		}
+//----------------------------------------------------------------------------
+		private void radioMilliRem_CheckedChanged(object sender, EventArgs e) {
+			if(m_aStatRads != null)
+				DownloadStats(m_aStatRads);
 		}
 	}
 	//----------------------------------------------------------------------------
