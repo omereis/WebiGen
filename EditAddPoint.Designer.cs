@@ -23,6 +23,8 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
 			btnOK = new Button();
 			btnCancel = new Button();
 			label1 = new Label();
@@ -53,6 +55,9 @@
 			btnCalculateCount = new Button();
 			btnCalculateStart = new Button();
 			label15 = new Label();
+			chartRate = new System.Windows.Forms.DataVisualization.Charting.Chart();
+			Draw = new Button();
+			((System.ComponentModel.ISupportInitialize)chartRate).BeginInit();
 			SuspendLayout();
 			// 
 			// btnOK
@@ -77,7 +82,7 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Location = new Point(115, 20);
+			label1.Location = new Point(6, 15);
 			label1.Name = "label1";
 			label1.Size = new Size(35, 15);
 			label1.TabIndex = 2;
@@ -85,17 +90,17 @@
 			// 
 			// txtName
 			// 
-			txtName.Location = new Point(165, 12);
+			txtName.Location = new Point(56, 7);
 			txtName.Name = "txtName";
 			txtName.ReadOnly = true;
-			txtName.Size = new Size(100, 23);
+			txtName.Size = new Size(67, 23);
 			txtName.TabIndex = 3;
 			txtName.TextAlign = HorizontalAlignment.Center;
 			// 
 			// label2
 			// 
 			label2.AutoSize = true;
-			label2.Location = new Point(122, 58);
+			label2.Location = new Point(13, 38);
 			label2.Name = "label2";
 			label2.Size = new Size(37, 15);
 			label2.TabIndex = 4;
@@ -104,7 +109,7 @@
 			// label3
 			// 
 			label3.AutoSize = true;
-			label3.Location = new Point(132, 86);
+			label3.Location = new Point(23, 66);
 			label3.Name = "label3";
 			label3.Size = new Size(27, 15);
 			label3.TabIndex = 5;
@@ -113,7 +118,7 @@
 			// label4
 			// 
 			label4.AutoSize = true;
-			label4.Location = new Point(115, 115);
+			label4.Location = new Point(6, 95);
 			label4.Name = "label4";
 			label4.Size = new Size(40, 15);
 			label4.TabIndex = 6;
@@ -121,34 +126,34 @@
 			// 
 			// txtFrom
 			// 
-			txtFrom.Location = new Point(165, 55);
+			txtFrom.Location = new Point(56, 35);
 			txtFrom.Name = "txtFrom";
 			txtFrom.ReadOnly = true;
-			txtFrom.Size = new Size(100, 23);
+			txtFrom.Size = new Size(67, 23);
 			txtFrom.TabIndex = 8;
 			txtFrom.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtTo
 			// 
-			txtTo.Location = new Point(165, 83);
+			txtTo.Location = new Point(56, 63);
 			txtTo.Name = "txtTo";
 			txtTo.ReadOnly = true;
-			txtTo.Size = new Size(100, 23);
+			txtTo.Size = new Size(67, 23);
 			txtTo.TabIndex = 9;
 			txtTo.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtCount
 			// 
-			txtCount.Location = new Point(165, 112);
+			txtCount.Location = new Point(56, 92);
 			txtCount.Name = "txtCount";
 			txtCount.ReadOnly = true;
-			txtCount.Size = new Size(100, 23);
+			txtCount.Size = new Size(67, 23);
 			txtCount.TabIndex = 10;
 			txtCount.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtRate
 			// 
-			txtRate.Location = new Point(315, 208);
+			txtRate.Location = new Point(110, 185);
 			txtRate.Name = "txtRate";
 			txtRate.Size = new Size(100, 23);
 			txtRate.TabIndex = 11;
@@ -157,7 +162,7 @@
 			// label7
 			// 
 			label7.AutoSize = true;
-			label7.Location = new Point(362, 15);
+			label7.Location = new Point(183, 15);
 			label7.Name = "label7";
 			label7.Size = new Size(60, 15);
 			label7.TabIndex = 13;
@@ -166,7 +171,7 @@
 			// label8
 			// 
 			label8.AutoSize = true;
-			label8.Location = new Point(360, 43);
+			label8.Location = new Point(181, 43);
 			label8.Name = "label8";
 			label8.Size = new Size(62, 15);
 			label8.TabIndex = 14;
@@ -175,7 +180,7 @@
 			// label9
 			// 
 			label9.AutoSize = true;
-			label9.Location = new Point(372, 72);
+			label9.Location = new Point(193, 72);
 			label9.Name = "label9";
 			label9.Size = new Size(50, 15);
 			label9.TabIndex = 15;
@@ -184,7 +189,7 @@
 			// label10
 			// 
 			label10.AutoSize = true;
-			label10.Location = new Point(315, 98);
+			label10.Location = new Point(136, 98);
 			label10.Name = "label10";
 			label10.Size = new Size(107, 15);
 			label10.TabIndex = 16;
@@ -192,44 +197,44 @@
 			// 
 			// txtStdDiv
 			// 
-			txtStdDiv.Location = new Point(428, 98);
+			txtStdDiv.Location = new Point(249, 98);
 			txtStdDiv.Name = "txtStdDiv";
 			txtStdDiv.ReadOnly = true;
-			txtStdDiv.Size = new Size(100, 23);
+			txtStdDiv.Size = new Size(71, 23);
 			txtStdDiv.TabIndex = 20;
 			txtStdDiv.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtAverage
 			// 
-			txtAverage.Location = new Point(428, 69);
+			txtAverage.Location = new Point(249, 69);
 			txtAverage.Name = "txtAverage";
 			txtAverage.ReadOnly = true;
-			txtAverage.Size = new Size(100, 23);
+			txtAverage.Size = new Size(71, 23);
 			txtAverage.TabIndex = 19;
 			txtAverage.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtMax
 			// 
-			txtMax.Location = new Point(428, 40);
+			txtMax.Location = new Point(249, 40);
 			txtMax.Name = "txtMax";
 			txtMax.ReadOnly = true;
-			txtMax.Size = new Size(100, 23);
+			txtMax.Size = new Size(71, 23);
 			txtMax.TabIndex = 18;
 			txtMax.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtMin
 			// 
-			txtMin.Location = new Point(428, 12);
+			txtMin.Location = new Point(249, 12);
 			txtMin.Name = "txtMin";
 			txtMin.ReadOnly = true;
-			txtMin.Size = new Size(100, 23);
+			txtMin.Size = new Size(71, 23);
 			txtMin.TabIndex = 17;
 			txtMin.TextAlign = HorizontalAlignment.Center;
 			// 
 			// label11
 			// 
 			label11.AutoSize = true;
-			label11.Location = new Point(262, 151);
+			label11.Location = new Point(57, 128);
 			label11.Name = "label11";
 			label11.Size = new Size(31, 15);
 			label11.TabIndex = 21;
@@ -238,7 +243,7 @@
 			// label12
 			// 
 			label12.AutoSize = true;
-			label12.Location = new Point(268, 183);
+			label12.Location = new Point(63, 160);
 			label12.Name = "label12";
 			label12.Size = new Size(27, 15);
 			label12.TabIndex = 22;
@@ -247,7 +252,7 @@
 			// label13
 			// 
 			label13.AutoSize = true;
-			label13.Location = new Point(249, 240);
+			label13.Location = new Point(44, 217);
 			label13.Name = "label13";
 			label13.Size = new Size(40, 15);
 			label13.TabIndex = 25;
@@ -256,7 +261,7 @@
 			// label14
 			// 
 			label14.AutoSize = true;
-			label14.Location = new Point(210, 213);
+			label14.Location = new Point(5, 190);
 			label14.Name = "label14";
 			label14.Size = new Size(83, 15);
 			label14.TabIndex = 26;
@@ -266,23 +271,23 @@
 			// 
 			dtpStartDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
 			dtpStartDate.Format = DateTimePickerFormat.Custom;
-			dtpStartDate.Location = new Point(315, 150);
+			dtpStartDate.Location = new Point(110, 127);
 			dtpStartDate.Name = "dtpStartDate";
-			dtpStartDate.Size = new Size(160, 23);
+			dtpStartDate.Size = new Size(146, 23);
 			dtpStartDate.TabIndex = 27;
 			// 
 			// dtpEndDate
 			// 
 			dtpEndDate.CustomFormat = "dd/MM/yyyy, hh:mm:ss";
 			dtpEndDate.Format = DateTimePickerFormat.Custom;
-			dtpEndDate.Location = new Point(315, 177);
+			dtpEndDate.Location = new Point(110, 154);
 			dtpEndDate.Name = "dtpEndDate";
-			dtpEndDate.Size = new Size(160, 23);
+			dtpEndDate.Size = new Size(146, 23);
 			dtpEndDate.TabIndex = 28;
 			// 
 			// txtAddCount
 			// 
-			txtAddCount.Location = new Point(315, 237);
+			txtAddCount.Location = new Point(110, 214);
 			txtAddCount.Name = "txtAddCount";
 			txtAddCount.Size = new Size(100, 23);
 			txtAddCount.TabIndex = 30;
@@ -290,7 +295,7 @@
 			// 
 			// btnSetToStart
 			// 
-			btnSetToStart.Location = new Point(524, 179);
+			btnSetToStart.Location = new Point(262, 158);
 			btnSetToStart.Name = "btnSetToStart";
 			btnSetToStart.Size = new Size(118, 23);
 			btnSetToStart.TabIndex = 33;
@@ -300,7 +305,7 @@
 			// 
 			// btnCalculateCount
 			// 
-			btnCalculateCount.Location = new Point(524, 150);
+			btnCalculateCount.Location = new Point(262, 129);
 			btnCalculateCount.Name = "btnCalculateCount";
 			btnCalculateCount.Size = new Size(116, 23);
 			btnCalculateCount.TabIndex = 34;
@@ -310,7 +315,7 @@
 			// 
 			// btnCalculateStart
 			// 
-			btnCalculateStart.Location = new Point(524, 245);
+			btnCalculateStart.Location = new Point(262, 224);
 			btnCalculateStart.Name = "btnCalculateStart";
 			btnCalculateStart.Size = new Size(118, 23);
 			btnCalculateStart.TabIndex = 35;
@@ -321,11 +326,34 @@
 			// label15
 			// 
 			label15.AutoSize = true;
-			label15.Location = new Point(424, 215);
+			label15.Location = new Point(219, 192);
 			label15.Name = "label15";
 			label15.Size = new Size(51, 15);
 			label15.TabIndex = 36;
 			label15.Text = "Seconds";
+			// 
+			// chartRate
+			// 
+			chartArea1.Name = "ChartArea1";
+			chartRate.ChartAreas.Add(chartArea1);
+			chartRate.Location = new Point(407, 15);
+			chartRate.Name = "chartRate";
+			series1.ChartArea = "ChartArea1";
+			series1.Name = "Series1";
+			chartRate.Series.Add(series1);
+			chartRate.Size = new Size(566, 300);
+			chartRate.TabIndex = 37;
+			chartRate.Text = "chart1";
+			// 
+			// Draw
+			// 
+			Draw.Location = new Point(303, 269);
+			Draw.Name = "Draw";
+			Draw.Size = new Size(75, 23);
+			Draw.TabIndex = 38;
+			Draw.Text = "button1";
+			Draw.UseVisualStyleBackColor = true;
+			Draw.Click += Draw_Click;
 			// 
 			// DlgAddPoint
 			// 
@@ -333,7 +361,9 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			CancelButton = btnCancel;
-			ClientSize = new Size(680, 358);
+			ClientSize = new Size(985, 358);
+			Controls.Add(Draw);
+			Controls.Add(chartRate);
 			Controls.Add(label15);
 			Controls.Add(btnCalculateStart);
 			Controls.Add(btnCalculateCount);
@@ -371,6 +401,7 @@
 			ShowInTaskbar = false;
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "EditAddPoint";
+			((System.ComponentModel.ISupportInitialize)chartRate).EndInit();
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -407,5 +438,7 @@
 		private Button btnCalculateCount;
 		private Button btnCalculateStart;
 		private Label label15;
+		private System.Windows.Forms.DataVisualization.Charting.Chart chartRate;
+		private Button Draw;
 	}
 }

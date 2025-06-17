@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+
 //-----------------------------------------------------------------------------
 using Microsoft.Data.SqlClient;
 using OmerEisCommon;
@@ -25,12 +27,13 @@ namespace WebiGen {
 		private TPointInfo m_point;
 		public DlgAddPoint() {
 			InitializeComponent();
+			chartRate.Series.Clear();
 		}
 
 		private void btnOK_Click(object sender, EventArgs e) {
 			DialogResult = DialogResult.OK;
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		public bool Execute(SqlConnection database, TPointInfo point, ref TRadAdd ra) {
 			m_database = database;
 			m_point = point;
@@ -38,15 +41,15 @@ namespace WebiGen {
 			//m_trns = database.BeginTransaction();
 			Download(point);
 			bool f = ShowDialog() == DialogResult.OK;
-			if (f)
-				Upload (ref ra);
+			if(f)
+				Upload(ref ra);
 			return (f);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void Download(TPointInfo point) {
 			TRadValue[] aRads = new TRadValue[3];
 
-			if (TRadValue.LoadFromDB(m_database, point.PointID, ref aRads, ref m_strErr)) {
+			if(TRadValue.LoadFromDB(m_database, point.PointID, ref aRads, ref m_strErr)) {
 				Tag = point;
 				txtName.Text = point.Name;
 				txtFrom.Text = TMisc.AppDateTime(aRads[0].SampleTime);
@@ -57,25 +60,24 @@ namespace WebiGen {
 				if(dt != null)
 					txtRate.Text = System.String.Format("{0}.{1:D3}", dt.Value.Second, dt.Value.Millisecond);
 				DownloadStats(aRads);
-				SetToStart ();
-			}
-			else
+				SetToStart();
+			} else
 				MessageBox.Show(m_strErr);
 		}
-//----------------------------------------------------------------------------
-		private void Upload (ref TRadAdd raDest) {
+		//----------------------------------------------------------------------------
+		private void Upload(ref TRadAdd raDest) {
 			TRadAdd ra = new TRadAdd();
 			ra.Start = dtpStartDate.Value;
 			ra.End = dtpEndDate.Value;
-			ra.SamplingRate = TMisc.ToDoubleDef (txtRate.Text);
+			ra.SamplingRate = TMisc.ToDoubleDef(txtRate.Text);
 			ra.Min = TMisc.ToDoubleDef(txtMin.Text);
 			ra.Max = TMisc.ToDoubleDef(txtMax.Text);
 			ra.Average = TMisc.ToDoubleDef(txtAverage.Text);
-			ra.StdDev = TMisc.ToDoubleDef (txtStdDiv.Text);
-			if (ra.IsValid())
+			ra.StdDev = TMisc.ToDoubleDef(txtStdDiv.Text);
+			if(ra.IsValid())
 				raDest = new TRadAdd(ra);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private TimeSpan? UploadSamplingRate() {
 			TimeSpan? ts = null;
 
@@ -85,7 +87,7 @@ namespace WebiGen {
 			}
 			return (ts);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void DownloadStats(TRadValue[] aRads) {
 			double dMin, dMax, dAvg, dStd;
 
@@ -96,12 +98,12 @@ namespace WebiGen {
 			txtAverage.Text = (dAvg * 1e3).ToString("N3");
 			txtStdDiv.Text = (dStd * 1e3).ToString("N3");
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnSetToEnd_Click(object sender, EventArgs e) {
-			SetToStart ();
+			SetToStart();
 		}
-//----------------------------------------------------------------------------
-		private void SetToStart () {
+		//----------------------------------------------------------------------------
+		private void SetToStart() {
 			TRadValue rad = null;
 
 			if(m_point.LoadStartRad(m_database, ref rad, ref m_strErr)) {
@@ -113,7 +115,7 @@ namespace WebiGen {
 				}
 			}
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnCalculateCount_Click(object sender, EventArgs e) {
 			DateTime dtEnd = dtpEndDate.Value;
 			DateTime dtStart = dtpStartDate.Value;
@@ -125,24 +127,40 @@ namespace WebiGen {
 			else
 				txtAddCount.Text = String.Format("Illegal sampling rate: {0}", dSamplingRate);
 		}
-//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
 		private void btnCalculateStart_Click(object sender, EventArgs e) {
 			DateTime dtEnd = dtpEndDate.Value;
 			string str = txtAddCount.Text;
 			int idx;
-			if (str.Length > 0) {
-				while ((idx = str.IndexOf(",")) >= 0)
+			if(str.Length > 0) {
+				while((idx = str.IndexOf(",")) >= 0)
 					str = str.Remove(idx, 1);
 				int nCount = TMisc.ToIntDef(str);
 				double dSamplingRate = TMisc.ToDoubleDef(txtRate.Text);
-				if (dSamplingRate > 0) {
-					ulong nTotalCount = (ulong) (nCount * dSamplingRate);
+				if(dSamplingRate > 0) {
+					ulong nTotalCount = (ulong)(nCount * dSamplingRate);
 					TimeSpan ts = TimeSpan.FromSeconds(nTotalCount);
 					DateTime dtStart = dtEnd.Subtract(ts);
 					dtpStartDate.Value = dtStart;
 				}
 			}
 		}
-//----------------------------------------------------------------------------
+
+		private void Draw_Click(object sender, EventArgs e) {
+			TRadValue[] aRads = null;
+			chartRate.Series.Clear();
+			if (m_point.LoadRadiations (m_database, ref aRads, ref m_strErr)) {
+				if (aRads != null) {
+					Series ser = new Series();
+					ser.ChartType = SeriesChartType.Line;
+					ser.XValueType = ChartValueType.DateTime;
+					for (int n=0 ; n < aRads.Length ; n++)
+						//ser.Points.AddXY (n, aRads[n].Rate);
+						ser.Points.AddXY (aRads[n].SampleTime, aRads[n].Rate);
+					chartRate.Series.Add(ser);
+				}
+			}
+		}
+		//----------------------------------------------------------------------------
 	}
 }

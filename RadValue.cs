@@ -7,10 +7,13 @@ using OmerEisCommon;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using TUintHistogram = System.Collections.Generic.SortedDictionary<uint, double>;
 //----------------------------------------------------------------------------
 namespace WebiGen {
 	public class TRadValue {
@@ -134,15 +137,25 @@ namespace WebiGen {
 		}
 //----------------------------------------------------------------------------
 		public static bool DeleteRadiations (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr) {
-			return (TRadValueDB.DeleteRadiations(database, idPoint, aRads, ref strErr));
+			int nRows=0;
+			return (TRadValueDB.DeleteRadiations(database, idPoint, aRads, ref strErr, ref nRows));
+		}
+//----------------------------------------------------------------------------
+		public static bool DeleteRadiations (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr, ref int nRows) {
+			return (TRadValueDB.DeleteRadiations(database, idPoint, aRads, ref strErr, ref nRows));
 		}
 //----------------------------------------------------------------------------
 		public static bool DeleteRadiations (SqlCommand cmd, int idPoint, TRadValue[] aRads, ref string strErr) {
-			return (TRadValueDB.DeleteRadiations(cmd, idPoint, aRads, ref strErr));
+			int nRows=0;
+			return (TRadValueDB.DeleteRadiations(cmd, idPoint, aRads, ref strErr, ref nRows));
 		}
 //----------------------------------------------------------------------------
-		public static bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_param, ref string strErr) {
-			bool f = TRadValueDB.DeleteRadiations (cmd, idPoint, del_param, ref strErr);
+		public static bool DeleteRadiations (SqlCommand cmd, int idPoint, TRadValue[] aRads, ref string strErr, ref int nRows) {
+			return (TRadValueDB.DeleteRadiations(cmd, idPoint, aRads, ref strErr, ref nRows));
+		}
+//----------------------------------------------------------------------------
+		public static bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_param, ref string strErr, ref int nRows) {
+			bool f = TRadValueDB.DeleteRadiations (cmd, idPoint, del_param, ref strErr, ref nRows);
 			return (f);
 		}
 //----------------------------------------------------------------------------
@@ -152,6 +165,44 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		public static bool LoadRadiationCount (SqlCommand cmd, TDelValueParams del_param, int idPoint, ref int nCount, ref string strErr) {
 			return (TRadValueDB.LoadRadiationCount (cmd, del_param, idPoint, ref nCount, ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public static DateTime? GetLastDate (TRadValue[] aRad) {
+			DateTime? dt = null;
+
+			if (aRad != null) {
+				dt = aRad[0].SampleTime;
+				for (int n=1 ; n < aRad.Length; n++) {
+					if (dt.Value < aRad[n].SampleTime)
+						dt = aRad[n].SampleTime;
+				}
+			}
+			return (dt);
+		}
+//----------------------------------------------------------------------------
+		public static bool GetStartEndTimes (TRadValue[] aRad, TDelValueParams rad_params) {
+			bool fFound=false;
+			int nStart, nEnd;
+
+			if (aRad != null) {
+				if (aRad.Length > 0) {
+					nStart = nEnd = 0;
+					for (int n=1 ; n < aRad.Length ; n++) {
+						if (aRad[n].SampleTime < aRad[nStart].SampleTime)
+							nStart = n;
+						if (aRad[n].SampleTime > aRad[nEnd].SampleTime)
+							nEnd = n;
+					}
+					rad_params.From = aRad[nStart].SampleTime;
+					rad_params.Until = aRad[nEnd].SampleTime;
+					fFound = true;
+				}
+			}
+			return (fFound);
+		}
+//----------------------------------------------------------------------------
+		public static bool LoadRateHistogram (SqlConnection database, int idPoint, TUintHistogram hist, ref string strErr) {
+			return (TRadValueDB.LoadRateHistogram (database, idPoint, hist, ref strErr));
 		}
 //----------------------------------------------------------------------------
 	}
@@ -180,7 +231,7 @@ namespace WebiGen {
 			try {
 				SqlCommand cmd = database.CreateCommand ();
 				TRadValueDB rad = new TRadValueDB ();
-				cmd.CommandText = String.Format ("select * from {0} where {1}={2} order by {3}", Table, FldPointID, idPoint, FldTime);
+				cmd.CommandText = System.String.Format ("select * from {0} where {1}={2} order by {3}", Table, FldPointID, idPoint, FldTime);
 				reader = cmd.ExecuteReader ();
 				fLoad = true;
 				al = new ArrayList ();
@@ -224,7 +275,7 @@ namespace WebiGen {
 
 			try {
 				SqlCommand cmd = database.CreateCommand ();
-				cmd.CommandText = String.Format("select * from {0} where {1}={2} order by {3} asc;",
+				cmd.CommandText = System.String.Format("select * from {0} where {1}={2} order by {3} asc;",
 									Table, FldPointID, idPoint, FldTime);
 				reader = cmd.ExecuteReader ();
 				if (reader != null) {
@@ -254,11 +305,11 @@ namespace WebiGen {
 			try {
 				if (aRads != null) {
 					ArrayList al = new ArrayList ();
-					string strValues="", strSqlFmt = String.Format ("({0}={{0}})", FldTime);
-					string strSqlBase = String.Format ("insert into {0} ({1},{2},{3},{4})",
+					string strValues="", strSqlFmt = System.String.Format ("({0}={{0}})", FldTime);
+					string strSqlBase = System.String.Format ("insert into {0} ({1},{2},{3},{4})",
 													Table, FldTime, FldPointID, FldRate, FldDose);
 					for (n=0 ; n < aRads.Length ; n++) {
-						strValues = String.Format ("({0},{1},{2},{3})", TMisc.GetSqlString (aRads[n].SampleTime), idPoint, aRads[n].Rate, aRads[n].Dose);
+						strValues = System.String.Format ("({0},{1},{2},{3})", TMisc.GetSqlString (aRads[n].SampleTime), idPoint, aRads[n].Rate, aRads[n].Dose);
 						al.Add (strValues);
 						if (al.Count == 25) {
 							nRows += InsertValues (cmd, al, strSqlBase, ref strErr);
@@ -291,7 +342,7 @@ namespace WebiGen {
 
 			try {
 				strValues = CombineForInsert (al);
-				cmd.CommandText = String.Format (m_strInsertFormat, strSqlBase, strValues);
+				cmd.CommandText = System.String.Format (m_strInsertFormat, strSqlBase, strValues);
 				nRows = cmd.ExecuteNonQuery ();
 			}
 			catch (Exception ex) {
@@ -311,30 +362,44 @@ namespace WebiGen {
 			return (str);
 		}
 //----------------------------------------------------------------------------
-		public static new bool DeleteRadiations (SqlCommand cmd, int idPoint, TRadValue[] aRads, ref string strErr) {
+		public static new bool DeleteRadiations (SqlCommand cmd, int idPoint, TRadValue[] aRads, ref string strErr, ref int nRows) {
 			bool fDelete = false;
-			int nRows = 0;
+			//nRows = 0;
 
 			try {
 				if (aRads != null) {
+					TDelValueParams rad_params = new TDelValueParams (ERadValueOp.RVO_DEL_BY_DATE);
+					if (TRadValue.GetStartEndTimes (aRads, rad_params)) {
+						fDelete = DeleteRadiations (cmd, idPoint, rad_params, ref strErr, ref nRows);
+/*
+						string str = System.String.Format ("delete from {0} where {1}={2} and {3} between {4} and {5};",
+												Table, FldPointID, idPoint, FldTime,
+												TMisc.GetDateString (rad_params.From),
+												TMisc.GetDateString (rad_params.Until));
+						cmd.CommandText = str;
+						nRows = cmd.ExecuteNonQuery ();
+*/
+					}
+/*
 					ArrayList al = new ArrayList();
-					string str, strDates="", strSqlFmt = String.Format ("({0}={{0}})", FldTime);
+					string str, strDates="", strSqlFmt = System.String.Format ("({0}={{0}})", FldTime);
 					//SqlCommand cmd = database.CreateCommand ();
-					string strSqlBase = String.Format ("delete from {0} where (({1}={2}) and (",
+					string strSqlBase = System.String.Format ("delete from {0} where (({1}={2}) and (",
 								Table, FldPointID, idPoint);
 					for (int n=0 ; n < aRads.Length ; n++) {
-						str = String.Format (strSqlFmt, TMisc.GetSqlString (aRads[n].SampleTime));
+						str = System.String.Format (strSqlFmt, TMisc.GetSqlString (aRads[n].SampleTime));
 						al.Add (str);
 						if (al.Count == 25) {
-							cmd.CommandText = String.Format ("{0}{1}));", strSqlBase, CombineItems (al));
+							cmd.CommandText = System.String.Format ("{0}{1}));", strSqlBase, CombineItems (al));
 							al.Clear();
 							nRows += cmd.ExecuteNonQuery ();
 						}
 					}
 					if (al.Count > 0) {
-						cmd.CommandText = String.Format ("{0}{1}));", strSqlBase, CombineItems (al));
+						cmd.CommandText = System.String.Format ("{0}{1}));", strSqlBase, CombineItems (al));
 						nRows += cmd.ExecuteNonQuery ();
 					}
+*/
 				}
 				fDelete = true;
 			}
@@ -346,8 +411,8 @@ namespace WebiGen {
 			return (fDelete);
 		}
 //----------------------------------------------------------------------------
-		public static new bool DeleteRadiations (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr) {
-			return (DeleteRadiations (database.CreateCommand(), idPoint, aRads, ref strErr));
+		public static new bool DeleteRadiations (SqlConnection database, int idPoint, TRadValue[] aRads, ref string strErr, ref int nRows) {
+			return (DeleteRadiations (database.CreateCommand(), idPoint, aRads, ref strErr, ref nRows));
 		}
 //----------------------------------------------------------------------------
 		private static string CombineItems (ArrayList al) {
@@ -361,15 +426,16 @@ namespace WebiGen {
 			return (str);
 		}
 //----------------------------------------------------------------------------
-		public static new bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_param, ref string strErr) {
+		public static new bool DeleteRadiations (SqlCommand cmd, int idPoint, TDelValueParams del_param, ref string strErr, ref int nRows) {
 			bool fDel = false;
 			string strWhere="";
 
 			try {
+				nRows = 0;
 				strWhere = GetSqlWhere (del_param);
-				cmd.CommandText = String.Format ("delete from {0} where ({1}={2}) and ({3});",
+				cmd.CommandText = System.String.Format ("delete from {0} where ({1}={2}) and ({3});",
 									Table, FldPointID,idPoint, strWhere);
-				int nRows = cmd.ExecuteNonQuery ();
+				nRows = cmd.ExecuteNonQuery ();
 				fDel = true;
 			}
 			catch (Exception ex) {
@@ -378,6 +444,7 @@ namespace WebiGen {
 			}
 			return (fDel);
 		}
+//----------------------------------------------------------------------------
 		public static string GetSqlDateString (DateTime? dt) {
 			string str="";
 			if (dt != null)
@@ -391,7 +458,7 @@ namespace WebiGen {
 			string strCount = "count";
 
 			try {
-				cmd.CommandText = String.Format ("select count(*) as '{1}' from {0} where {2} >= {3} and {2} <= {4};",
+				cmd.CommandText = System.String.Format ("select count(*) as '{1}' from {0} where {2} >= {3} and {2} <= {4};",
 									Table, strCount, FldTime, TMisc.GetSqlString (dtFrom), TMisc.GetSqlString (dtUntil));
 				reader = cmd.ExecuteReader ();
 				if (reader.Read()) {
@@ -411,12 +478,12 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		public static string GetSqlWhere (TDelValueParams del_param) {
 			string strWhere="";
-			if (del_param.Op == EDelValueOp.DVO_BY_DATE)
-				strWhere = String.Format ("{0} between {1} and {2}", FldTime, TMisc.GetSqlString (del_param.From), TMisc.GetSqlString (del_param.Until));
+			if (del_param.Op == ERadValueOp.RVO_DEL_BY_DATE)
+				strWhere = System.String.Format ("{0} between {1} and {2}", FldTime, TMisc.GetSqlString (del_param.From), TMisc.GetSqlString (del_param.Until));
 			else {
 				string strOp = TDelValueParams.GetOpString (del_param);
 				if (strOp.Length > 0)
-					strWhere = String.Format ("{0} {1} {2}", FldRate, strOp, del_param.Value);
+					strWhere = System.String.Format ("{0} {1} {2}", FldRate, strOp, del_param.Value);
 			}
 			return (strWhere);
 		}
@@ -428,7 +495,7 @@ namespace WebiGen {
 
 			try {
 				string strWhere = GetSqlWhere (del_param);
-				cmd.CommandText = String.Format ("select count(*) as '{0}' from {1} where ({2}={3}) and ({4});",
+				cmd.CommandText = System.String.Format ("select count(*) as '{0}' from {1} where ({2}={3}) and ({4});",
 									strCount, Table, FldPointID,idPoint, strWhere);
 				reader = cmd.ExecuteReader ();
 				if (reader.Read()) {
@@ -446,5 +513,47 @@ namespace WebiGen {
 			return (fCount);
 		}
 //----------------------------------------------------------------------------
+		public static bool LoadRateHistogram (SqlConnection database, int idPoint, TUintHistogram hist, ref string strErr) {
+			bool fCount = false;
+			SqlDataReader reader = null;
+			string strCount = "count";
+
+			try {
+				SqlCommand cmd = database.CreateCommand ();
+				hist.Clear ();
+				//string strWhere = GetSqlWhere (del_param);
+				cmd.CommandText = System.String.Format ("select {0},count({0}) as '{1}' from {2} where ({4}={3}) group by {0} order by {0};",
+												FldRate, strCount, Table, FldPointID, idPoint);
+				//cmd.CommandText = System.String.Format ("select count(*) as '{0}' from {1} where ({2}={3}) and ({4});",
+									//strCount, Table, FldPointID,idPoint, strWhere);
+				reader = cmd.ExecuteReader ();
+				while (reader.Read()) {
+					uint uiCount = TMisc.ReadUIntField (reader, strCount, ref strErr);
+					double dValue = TMisc.ReadFloatField (reader, FldRate, ref strErr);
+					hist.Add (uiCount, dValue);
+				}
+				fCount = true;
+			}
+			catch (Exception ex) {
+				strErr = ex.Message;
+			}
+			finally {
+				if (reader != null)
+					reader.Close ();
+			}
+			return (fCount);
+		}
+//----------------------------------------------------------------------------
+	}
+//----------------------------------------------------------------------------
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//----------------------------------------------------------------------------
+	public class TRadValueCompare : IComparer {
+		public int Compare (object x, object y) {
+			TRadValue rv1 = (TRadValue)x;
+			TRadValue rv2 = (TRadValue)y;
+			int nComapare = rv1.SampleTime < rv2.SampleTime ? 1 : 0;
+			return (nComapare);
+		}
 	}
 }

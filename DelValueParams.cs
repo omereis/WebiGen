@@ -11,20 +11,25 @@ using System.Threading.Tasks;
 using OmerEisCommon;
 //-----------------------------------------------------------------------------
 namespace WebiGen {
-	public enum EDelValueOp {DVO_NONE, DVO_LT, DVO_EQ, DVO_GT, DVO_BY_DATE};
+	public enum ERadValueOp {RVO_NONE, RVO_DEL_LT, RVO_DEL_EQ, RVO_DEL_GT, RVO_DEL_BY_DATE, RVO_INSERT};
 	public class TDelValueParams {
 		private double m_dValue;
-		private EDelValueOp m_op;
+		private ERadValueOp m_op;
 		private DateTime? m_dtFrom;
 		private DateTime? m_dtUntil;
 //-----------------------------------------------------------------------------
 		public double Value {get{return (m_dValue);}set{m_dValue=value;}}
-		public EDelValueOp Op {get{return (m_op);}set{m_op=value;}}
+		public ERadValueOp Op {get{return (m_op);}set{m_op=value;}}
 		public DateTime? From  {get{return (m_dtFrom);}set{m_dtFrom=value;}}
 		public DateTime? Until {get{return (m_dtUntil);}set{m_dtUntil=value;}}
 //-----------------------------------------------------------------------------
 		public TDelValueParams () {
 			Clear ();
+		}
+//-----------------------------------------------------------------------------
+		public TDelValueParams (ERadValueOp op) {
+			Clear ();
+			Op = op;
 		}
 //-----------------------------------------------------------------------------
 		public TDelValueParams (TDelValueParams other) {
@@ -33,7 +38,7 @@ namespace WebiGen {
 //-----------------------------------------------------------------------------
 		public void Clear () {
 			Value = 0;
-			Op    = EDelValueOp.DVO_NONE;
+			Op    = ERadValueOp.RVO_NONE;
 			From  = null;
 			Until = null;
 		}
@@ -46,7 +51,7 @@ namespace WebiGen {
 		}
 //-----------------------------------------------------------------------------
 		public bool Upload (DateTime dtFrom, DateTime dtUntil) {
-			Op = EDelValueOp.DVO_BY_DATE;
+			Op = ERadValueOp.RVO_DEL_BY_DATE;
 			From = dtFrom;
 			Until= dtUntil;
 			return (From > Until);
@@ -55,20 +60,20 @@ namespace WebiGen {
 		public bool Upload (bool fLt, bool fEq, bool fGt, string strValue) {
 			Value = TMisc.ToDoubleDef (strValue);
 			if (fLt)
-				Op = EDelValueOp.DVO_LT;
+				Op = ERadValueOp.RVO_DEL_LT;
 			else if (fEq)
-				Op = EDelValueOp.DVO_EQ;
+				Op = ERadValueOp.RVO_DEL_EQ;
 			else if (fGt)
-				Op = EDelValueOp.DVO_GT;
+				Op = ERadValueOp.RVO_DEL_GT;
 			else
-				Op = EDelValueOp.DVO_NONE;
-			return (IsValid() && (Op != EDelValueOp.DVO_NONE));
+				Op = ERadValueOp.RVO_NONE;
+			return (IsValid() && (Op != ERadValueOp.RVO_NONE));
 		}
 //-----------------------------------------------------------------------------
 		public bool IsValid() {
 			bool fValid = false;
 
-			if (Op == EDelValueOp.DVO_BY_DATE) {
+			if (Op == ERadValueOp.RVO_DEL_BY_DATE) {
 				if ((From != null) & (Until != null)) {
 					if (From.Value > Until.Value) {
 						DateTime? dt = From.Value;
@@ -79,7 +84,7 @@ namespace WebiGen {
 				}
 			}
 			else {
-				if ((Op == EDelValueOp.DVO_LT) || (Op == EDelValueOp.DVO_EQ) || (Op == EDelValueOp.DVO_GT))
+				if ((Op == ERadValueOp.RVO_DEL_LT) || (Op == ERadValueOp.RVO_DEL_EQ) || (Op == ERadValueOp.RVO_DEL_GT))
 					fValid = true;
 			}
 			return (fValid);
@@ -97,11 +102,11 @@ namespace WebiGen {
 			string strOp;
 
 			if (del_param != null) {
-				if (del_param.Op == EDelValueOp.DVO_LT)
+				if (del_param.Op == ERadValueOp.RVO_DEL_LT)
 					strOp = "<";
-				else if (del_param.Op == EDelValueOp.DVO_EQ)
+				else if (del_param.Op == ERadValueOp.RVO_DEL_EQ)
 					strOp = "=";
-				else if (del_param.Op == EDelValueOp.DVO_GT)
+				else if (del_param.Op == ERadValueOp.RVO_DEL_GT)
 					strOp = ">";
 				else
 					strOp = "";

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using OmerEisCommon;
 using System.Runtime.InteropServices;
 using System.IO;
+using TUintHistogram = System.Collections.Generic.SortedDictionary<uint, double>;
 //----------------------------------------------------------------------------
 namespace WebiGen {
 	public class TPointInfo {
@@ -230,9 +231,9 @@ namespace WebiGen {
 			return (ptdb.InsertToDB (cmd, fDeleteCurrent, fOverride, ref strErr, ref nInserted));
 		}
 //----------------------------------------------------------------------------
-		public bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr) {
+		public bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr, ref int nRows) {
 			TPointInfoDB ptdb = new TPointInfoDB (this);
-			return (ptdb.DeleteRadiations (database, del_params, ref strErr));
+			return (ptdb.DeleteRadiations (database, del_params, ref strErr, ref nRows));
 		}
 //----------------------------------------------------------------------------
 		public bool LoadRadiationCount (SqlConnection database, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
@@ -244,6 +245,12 @@ namespace WebiGen {
 			TPointInfoDB ptdb = new TPointInfoDB (this);
 			return (ptdb.LoadRadiationCount (database, del_param, ref nCount, ref strErr));
 		}
+//----------------------------------------------------------------------------
+		public bool LoadRateHistogram (SqlConnection database, TUintHistogram hist, ref string m_strErr) {
+			TPointInfoDB ptdb = new TPointInfoDB (this);
+			return (ptdb.LoadRateHistogram (database, hist, ref m_strErr));
+		}
+
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
@@ -435,14 +442,13 @@ namespace WebiGen {
 			return (InsertAsNew (database.CreateCommand(), ref strErr));
 		}
 //----------------------------------------------------------------------------
-		public new bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr) {
-			return (TRadValue.DeleteRadiations (database.CreateCommand(), PointID, del_params, ref strErr));
+		public new bool DeleteRadiations (SqlConnection database, TDelValueParams del_params, ref string strErr, ref int nRows) {
+			return (TRadValue.DeleteRadiations (database.CreateCommand(), PointID, del_params, ref strErr, ref nRows));
 		}
 //----------------------------------------------------------------------------
 		public new bool LoadRadiationCount (SqlConnection database, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
 			return (LoadRadiationCount (database.CreateCommand(), dtFrom, dtUntil, ref nCount, ref strErr));
-		}
-//----------------------------------------------------------------------------
+		}//----------------------------------------------------------------------------
 		public new bool LoadRadiationCount (SqlCommand cmd, DateTime? dtFrom, DateTime? dtUntil, ref int nCount, ref string strErr) {
 			return (TRadValue.LoadRadiationCount (cmd, dtFrom, dtUntil, PointID, ref nCount, ref strErr));
 		}
@@ -451,6 +457,10 @@ namespace WebiGen {
 			return (TRadValue.LoadRadiationCount (database.CreateCommand(), del_param, PointID, ref nCount, ref strErr));
 		}
 
+//----------------------------------------------------------------------------
+		public new bool LoadRateHistogram (SqlConnection database, TUintHistogram hist, ref string strErr) {
+			return (TRadValue.LoadRateHistogram (database, PointID, hist, ref strErr));
+		}
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------

@@ -35,4 +35,8 @@ select min(recordtime) as 'start', max(recordtime) as 'end' from DataRecords whe
 select * from DataRecords where Point_PointId=99 order by RecordTime desc
 select * from DataRecords where Point_PointId=99 and rate > 0.5
 select max(rate) from DataRecords where Point_PointId=98
-select count(*) as 'count' from DataRecords where (Point_PointId=99) and (RecordTime between '2025-04-21 08:26:14' and '2025-04-28 13:54:47');
+select * from DataRecords where Point_PointId=99 
+select * from DataRecords where Point_PointId=99 and rate>1
+select min(rate) as 'min',max(rate) as 'max' from DataRecords where Point_PointId=99
+select count(*) from DataRecords where Point_PointId=99 and rate=0.03
+select rate,count(rate) from DataRecords where Point_PointId=99 group by rate order by rate
