@@ -28,22 +28,22 @@
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
-			DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+			System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+			DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle19 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle20 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle21 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle22 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle23 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle24 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle25 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle26 = new DataGridViewCellStyle();
 			menuMain = new MenuStrip();
 			popupFile = new ToolStripMenuItem();
 			miDatabase = new ToolStripMenuItem();
@@ -122,6 +122,9 @@
 			Column14 = new DataGridViewTextBoxColumn();
 			tabControl2 = new TabControl();
 			tabInsert = new TabPage();
+			label22 = new Label();
+			txtDoseReset = new TextBox();
+			label21 = new Label();
 			label20 = new Label();
 			btnInsertDefault = new Button();
 			btnCalculateInsert = new Button();
@@ -163,8 +166,6 @@
 			rbDelAll = new RadioButton();
 			btnPointRadDel = new Button();
 			btnSetBoundaries = new Button();
-			label21 = new Label();
-			txtDoseReset = new TextBox();
 			menuMain.SuspendLayout();
 			status_bar.SuspendLayout();
 			toolbar.SuspendLayout();
@@ -344,14 +345,14 @@
 			// 
 			gridPoints.AllowUserToAddRows = false;
 			gridPoints.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle1.BackColor = Color.Silver;
-			dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle14.BackColor = Color.Silver;
+			dataGridViewCellStyle14.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle14.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle14.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle14.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle14.WrapMode = DataGridViewTriState.True;
+			gridPoints.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
 			gridPoints.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridPoints.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column6, Column3, Column4, Column5 });
 			gridPoints.EditMode = DataGridViewEditMode.EditProgrammatically;
@@ -371,8 +372,8 @@
 			// 
 			// Column7
 			// 
-			dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column7.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column7.DefaultCellStyle = dataGridViewCellStyle15;
 			Column7.HeaderText = "Point ID";
 			Column7.Name = "Column7";
 			Column7.Width = 55;
@@ -434,16 +435,16 @@
 			// 
 			// chartRate
 			// 
-			chartArea1.Name = "ChartArea1";
-			chartRate.ChartAreas.Add(chartArea1);
-			legend1.Name = "Legend1";
-			chartRate.Legends.Add(legend1);
+			chartArea2.Name = "ChartArea1";
+			chartRate.ChartAreas.Add(chartArea2);
+			legend2.Name = "Legend1";
+			chartRate.Legends.Add(legend2);
 			chartRate.Location = new Point(-31, 0);
 			chartRate.Name = "chartRate";
-			series1.ChartArea = "ChartArea1";
-			series1.Legend = "Legend1";
-			series1.Name = "Series1";
-			chartRate.Series.Add(series1);
+			series2.ChartArea = "ChartArea1";
+			series2.Legend = "Legend1";
+			series2.Name = "Series1";
+			chartRate.Series.Add(series2);
 			chartRate.Size = new Size(593, 300);
 			chartRate.TabIndex = 11;
 			chartRate.Text = "chart1";
@@ -452,14 +453,14 @@
 			// 
 			gridStats.AllowUserToAddRows = false;
 			gridStats.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle3.BackColor = Color.Silver;
-			dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle16.BackColor = Color.Silver;
+			dataGridViewCellStyle16.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle16.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle16.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle16.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle16.WrapMode = DataGridViewTriState.True;
+			gridStats.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
 			gridStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridStats.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, Column11, Column13, Column8, Column9, Column10, Column12 });
 			gridStats.EditMode = DataGridViewEditMode.EditProgrammatically;
@@ -493,32 +494,32 @@
 			// 
 			// dataGridViewTextBoxColumn9
 			// 
-			dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle17.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewTextBoxColumn9.DefaultCellStyle = dataGridViewCellStyle17;
 			dataGridViewTextBoxColumn9.HeaderText = "Count";
 			dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
 			dataGridViewTextBoxColumn9.Width = 70;
 			// 
 			// Column11
 			// 
-			dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column11.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle18.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column11.DefaultCellStyle = dataGridViewCellStyle18;
 			Column11.HeaderText = "Sampling";
 			Column11.Name = "Column11";
 			Column11.Width = 70;
 			// 
 			// Column13
 			// 
-			dataGridViewCellStyle6.BackColor = Color.FromArgb(64, 64, 64);
-			Column13.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle19.BackColor = Color.FromArgb(64, 64, 64);
+			Column13.DefaultCellStyle = dataGridViewCellStyle19;
 			Column13.HeaderText = "";
 			Column13.Name = "Column13";
 			Column13.Width = 10;
 			// 
 			// Column8
 			// 
-			dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column8.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle20.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column8.DefaultCellStyle = dataGridViewCellStyle20;
 			Column8.HeaderText = "Minimum";
 			Column8.Name = "Column8";
 			Column8.ReadOnly = true;
@@ -526,8 +527,8 @@
 			// 
 			// Column9
 			// 
-			dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column9.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle21.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column9.DefaultCellStyle = dataGridViewCellStyle21;
 			Column9.HeaderText = "Maximum";
 			Column9.Name = "Column9";
 			Column9.ReadOnly = true;
@@ -535,8 +536,8 @@
 			// 
 			// Column10
 			// 
-			dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column10.DefaultCellStyle = dataGridViewCellStyle9;
+			dataGridViewCellStyle22.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column10.DefaultCellStyle = dataGridViewCellStyle22;
 			Column10.HeaderText = "Average";
 			Column10.Name = "Column10";
 			Column10.ReadOnly = true;
@@ -544,8 +545,8 @@
 			// 
 			// Column12
 			// 
-			dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column12.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle23.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column12.DefaultCellStyle = dataGridViewCellStyle23;
 			Column12.HeaderText = "Std Div";
 			Column12.Name = "Column12";
 			Column12.ReadOnly = true;
@@ -857,14 +858,14 @@
 			// 
 			gridHistogram.AllowUserToAddRows = false;
 			gridHistogram.AllowUserToDeleteRows = false;
-			dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle11.BackColor = Color.Silver;
-			dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F);
-			dataGridViewCellStyle11.ForeColor = SystemColors.WindowText;
-			dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
-			dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
-			dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
-			gridHistogram.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle24.Alignment = DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle24.BackColor = Color.Silver;
+			dataGridViewCellStyle24.Font = new Font("Segoe UI", 9F);
+			dataGridViewCellStyle24.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle24.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle24.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle24.WrapMode = DataGridViewTriState.True;
+			gridHistogram.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle24;
 			gridHistogram.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			gridHistogram.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, Column14 });
 			gridHistogram.EditMode = DataGridViewEditMode.EditProgrammatically;
@@ -877,16 +878,16 @@
 			// 
 			// dataGridViewTextBoxColumn1
 			// 
-			dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle25.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle25;
 			dataGridViewTextBoxColumn1.HeaderText = "Rate";
 			dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
 			dataGridViewTextBoxColumn1.Width = 110;
 			// 
 			// Column14
 			// 
-			dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			Column14.DefaultCellStyle = dataGridViewCellStyle13;
+			dataGridViewCellStyle26.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			Column14.DefaultCellStyle = dataGridViewCellStyle26;
 			Column14.HeaderText = "Count";
 			Column14.Name = "Column14";
 			// 
@@ -903,6 +904,7 @@
 			// tabInsert
 			// 
 			tabInsert.BackColor = Color.LightSkyBlue;
+			tabInsert.Controls.Add(label22);
 			tabInsert.Controls.Add(txtDoseReset);
 			tabInsert.Controls.Add(label21);
 			tabInsert.Controls.Add(label20);
@@ -933,10 +935,37 @@
 			tabInsert.TabIndex = 0;
 			tabInsert.Text = "Insert";
 			// 
+			// label22
+			// 
+			label22.AutoSize = true;
+			label22.Location = new Point(160, 201);
+			label22.Name = "label22";
+			label22.Size = new Size(39, 15);
+			label22.TabIndex = 91;
+			label22.Text = "Hours";
+			// 
+			// txtDoseReset
+			// 
+			txtDoseReset.Location = new Point(89, 198);
+			txtDoseReset.Name = "txtDoseReset";
+			txtDoseReset.Size = new Size(69, 23);
+			txtDoseReset.TabIndex = 90;
+			txtDoseReset.Text = "24";
+			txtDoseReset.TextAlign = HorizontalAlignment.Center;
+			// 
+			// label21
+			// 
+			label21.AutoSize = true;
+			label21.Location = new Point(19, 201);
+			label21.Name = "label21";
+			label21.Size = new Size(64, 15);
+			label21.TabIndex = 89;
+			label21.Text = "Reset Dose";
+			// 
 			// label20
 			// 
 			label20.AutoSize = true;
-			label20.Location = new Point(164, 90);
+			label20.Location = new Point(160, 90);
 			label20.Name = "label20";
 			label20.Size = new Size(51, 15);
 			label20.TabIndex = 88;
@@ -944,7 +973,7 @@
 			// 
 			// btnInsertDefault
 			// 
-			btnInsertDefault.Location = new Point(45, 233);
+			btnInsertDefault.Location = new Point(16, 233);
 			btnInsertDefault.Name = "btnInsertDefault";
 			btnInsertDefault.Size = new Size(75, 23);
 			btnInsertDefault.TabIndex = 87;
@@ -954,7 +983,7 @@
 			// 
 			// btnCalculateInsert
 			// 
-			btnCalculateInsert.Location = new Point(140, 233);
+			btnCalculateInsert.Location = new Point(97, 233);
 			btnCalculateInsert.Name = "btnCalculateInsert";
 			btnCalculateInsert.Size = new Size(75, 23);
 			btnCalculateInsert.TabIndex = 86;
@@ -1002,6 +1031,7 @@
 			txtInsertAvg.Name = "txtInsertAvg";
 			txtInsertAvg.Size = new Size(70, 23);
 			txtInsertAvg.TabIndex = 84;
+			txtInsertAvg.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtInsertMax
 			// 
@@ -1009,6 +1039,7 @@
 			txtInsertMax.Name = "txtInsertMax";
 			txtInsertMax.Size = new Size(70, 23);
 			txtInsertMax.TabIndex = 83;
+			txtInsertMax.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtInsertMin
 			// 
@@ -1016,6 +1047,7 @@
 			txtInsertMin.Name = "txtInsertMin";
 			txtInsertMin.Size = new Size(70, 23);
 			txtInsertMin.TabIndex = 82;
+			txtInsertMin.TextAlign = HorizontalAlignment.Center;
 			// 
 			// txtInsertSampling
 			// 
@@ -1023,6 +1055,7 @@
 			txtInsertSampling.Name = "txtInsertSampling";
 			txtInsertSampling.Size = new Size(70, 23);
 			txtInsertSampling.TabIndex = 81;
+			txtInsertSampling.TextAlign = HorizontalAlignment.Center;
 			// 
 			// btnInsertCount
 			// 
@@ -1032,6 +1065,7 @@
 			btnInsertCount.TabIndex = 80;
 			btnInsertCount.Text = "Counts By Dates";
 			btnInsertCount.UseVisualStyleBackColor = true;
+			btnInsertCount.Click += btnInsertCount_Click;
 			// 
 			// txtInsertCount
 			// 
@@ -1040,6 +1074,7 @@
 			txtInsertCount.Size = new Size(70, 23);
 			txtInsertCount.TabIndex = 79;
 			txtInsertCount.Text = "100000";
+			txtInsertCount.TextAlign = HorizontalAlignment.Center;
 			// 
 			// btnInsStartByCount
 			// 
@@ -1156,7 +1191,7 @@
 			tabDelete.Location = new Point(4, 24);
 			tabDelete.Name = "tabDelete";
 			tabDelete.Padding = new Padding(3);
-			tabDelete.Size = new Size(295, 233);
+			tabDelete.Size = new Size(295, 262);
 			tabDelete.TabIndex = 1;
 			tabDelete.Text = "Delete";
 			// 
@@ -1334,22 +1369,6 @@
 			btnSetBoundaries.Text = "Boundaries";
 			btnSetBoundaries.UseVisualStyleBackColor = true;
 			btnSetBoundaries.Click += btnSetBoundaries_Click;
-			// 
-			// label21
-			// 
-			label21.AutoSize = true;
-			label21.Location = new Point(19, 201);
-			label21.Name = "label21";
-			label21.Size = new Size(64, 15);
-			label21.TabIndex = 89;
-			label21.Text = "Reset Dose";
-			// 
-			// txtDoseReset
-			// 
-			txtDoseReset.Location = new Point(89, 198);
-			txtDoseReset.Name = "txtDoseReset";
-			txtDoseReset.Size = new Size(69, 23);
-			txtDoseReset.TabIndex = 90;
 			// 
 			// frmMain
 			// 
@@ -1529,5 +1548,6 @@
 		private DataGridViewTextBoxColumn Column14;
 		private Label label21;
 		private TextBox txtDoseReset;
+		private Label label22;
 	}
 }

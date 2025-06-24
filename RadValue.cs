@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -203,6 +204,26 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		public static bool LoadRateHistogram (SqlConnection database, int idPoint, TUintHistogram hist, ref string strErr) {
 			return (TRadValueDB.LoadRateHistogram (database, idPoint, hist, ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public static bool InsertToDB (SqlConnection database, int idPoint, TRadValue[] aRad, ref uint nRows, ref string strErr) {
+			return (TRadValueDB.InsertToDB (database, idPoint, aRad, ref nRows, ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public static void GetStartEnd (TRadValue[] aRad, ref DateTime? dtStart, ref DateTime? dtEnd) {
+			if (aRad == null) {
+				dtStart = dtEnd = null;
+			}
+			else {
+				dtStart = aRad[0].SampleTime;
+				dtEnd =  aRad[aRad.Length-1].SampleTime;
+				for (int n=0 ; n < aRad.Length ; n++) {
+					if (dtEnd < aRad[n].SampleTime)
+						dtEnd = aRad[n].SampleTime;
+					if (dtStart > aRad[n].SampleTime)
+						dtStart = aRad[n].SampleTime;
+				}
+			}
 		}
 //----------------------------------------------------------------------------
 	}
@@ -542,6 +563,62 @@ namespace WebiGen {
 					reader.Close ();
 			}
 			return (fCount);
+		}
+//----------------------------------------------------------------------------
+		public static new bool InsertToDB (SqlConnection database, int idPoint, TRadValue[] aRad, ref uint nRows, ref string strErr) {
+			bool fInsert=false;
+
+			try {
+				if (aRad != null) {
+					SqlCommand cmd = database.CreateCommand();
+					DateTime? dtStart=null, dtEnd=null;
+					nRows = 0;
+					string strValues="", str;
+					GetStartEnd (aRad, ref dtStart, ref dtEnd);
+					if ((fInsert = DeleteBetweenDates (database, idPoint, dtStart, dtEnd, ref strErr)) == true) {
+						string strSqlBase = System.String.Format ("insert into {0} ({1},{2},{3},{4}) values ",
+												Table, FldPointID, FldRate, FldDose, FldTime);
+						for (int n=0 ; n < aRad.Length ; n++) {
+							str = System.String.Format ("({0},{1},{2},{3})",idPoint, aRad[n].Rate, aRad[n].Dose,
+													TMisc.GetSqlString (aRad[n].SampleTime));
+							strValues += str;
+							if ((n+1) % 100 == 0) {
+								cmd.CommandText = System.String.Format ("{0} {1};", strSqlBase, strValues);
+								nRows += (uint) cmd.ExecuteNonQuery();
+								strValues = "";
+							}
+							else
+								strValues += ",";
+						}
+						fInsert = true;
+					}
+				}
+			}
+			catch (Exception ex) {
+				strErr = ex.Message;
+				fInsert = false;
+			}
+			return (fInsert);
+		}
+//----------------------------------------------------------------------------
+		public static bool DeleteBetweenDates (SqlConnection database, int idPoint, DateTime? dtStart, DateTime? dtEnd, ref string strErr) {
+			bool fDel=false;
+			int nRows;
+
+			try {
+				if ((dtStart != null) && (dtEnd != null)) {
+					SqlCommand cmd = database.CreateCommand();
+					cmd.CommandText = System.String.Format ("delete from {0} where ({1}={2}) and ({3} between {4} and {5});",
+												Table, FldPointID, idPoint, FldTime, TMisc.GetSqlString (dtStart), TMisc.GetSqlString (dtEnd));
+					nRows = cmd.ExecuteNonQuery();
+					fDel = true;
+				}
+			}
+			catch (Exception ex) {
+				strErr = ex.Message;
+				fDel = false;
+			}
+			return (fDel);
 		}
 //----------------------------------------------------------------------------
 	}

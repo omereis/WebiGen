@@ -250,7 +250,11 @@ namespace WebiGen {
 			TPointInfoDB ptdb = new TPointInfoDB (this);
 			return (ptdb.LoadRateHistogram (database, hist, ref m_strErr));
 		}
-
+//----------------------------------------------------------------------------
+		public bool InsertToDB (SqlConnection database, TRadValue[] aRad, ref uint nRows, ref string strErr) {
+			TPointInfoDB ptdb = new TPointInfoDB (this);
+			return (ptdb.InsertToDB (database, aRad, ref nRows, ref strErr));
+		}
 //----------------------------------------------------------------------------
 	}
 //----------------------------------------------------------------------------
@@ -460,6 +464,10 @@ namespace WebiGen {
 //----------------------------------------------------------------------------
 		public new bool LoadRateHistogram (SqlConnection database, TUintHistogram hist, ref string strErr) {
 			return (TRadValue.LoadRateHistogram (database, PointID, hist, ref strErr));
+		}
+//----------------------------------------------------------------------------
+		public new bool InsertToDB (SqlConnection database, TRadValue[] aRad, ref uint nRows, ref string strErr) {
+			return (TRadValue.InsertToDB (database, PointID, aRad, ref nRows, ref strErr));
 		}
 //----------------------------------------------------------------------------
 	}

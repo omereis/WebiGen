@@ -788,9 +788,44 @@ namespace WebiGen {
 				dtpInsertEnd.Value = (DateTime)txtStartDate.Tag;
 			}
 		}
-
+		//----------------------------------------------------------------------------
 		private void btnCalculateInsert_Click(object sender, EventArgs e) {
-
+			TPointInfo pt = UpoadSelectedPoint(comboPoints);
+			uint nRows = 0;
+			if(pt != null) {
+				TRadAdd ra = new TRadAdd();
+				if(Upload(ra)) {
+					System.Windows.Forms.Cursor curOld = System.Windows.Forms.Cursor.Current;
+					TRadValue[] aRad = null;
+					if(ra.Generate(pt, ref aRad)) {
+						bool fInsert=true;
+						try {
+							System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+							fInsert = pt.InsertToDB(m_database, aRad, ref nRows, ref m_strErr);
+						}
+						catch (Exception) {}
+						finally {
+							System.Windows.Forms.Cursor.Current = curOld;
+						}
+						if (fInsert)
+							MessageBox.Show (TMisc.IntFormat ((int) nRows) + " new rows added");
+						else
+							MessageBox.Show (m_strErr );
+					}
+				}
+			}
+		}
+		//----------------------------------------------------------------------------
+		private bool Upload(TRadAdd ra) {
+			ra.Clear();
+			ra.Start = dtpInsertStart.Value;
+			ra.End = dtpInsertEnd.Value;
+			ra.SamplingRate = TMisc.ToDoubleDef(txtInsertSampling.Text);
+			ra.Min = TMisc.ToDoubleDef(txtInsertMin.Text);
+			ra.Max = TMisc.ToDoubleDef(txtInsertMax.Text);
+			ra.Average = TMisc.ToDoubleDef(txtInsertMax.Text);
+			ra.DoseReset = TMisc.ToUIntDef(txtInsertAvg.Text);
+			return (ra.IsValid());
 		}
 	}
 	//----------------------------------------------------------------------------

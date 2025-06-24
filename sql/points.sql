@@ -39,4 +39,8 @@ select * from DataRecords where Point_PointId=99
 select * from DataRecords where Point_PointId=99 and rate>1
 select min(rate) as 'min',max(rate) as 'max' from DataRecords where Point_PointId=99
 select count(*) from DataRecords where Point_PointId=99 and rate=0.03
-select rate,count(rate) from DataRecords where Point_PointId=99 group by rate order by rate
+select rate,count(rate) as 'count' from DataRecords where Point_PointId=99 group by rate order by rate
+
+select * from DataRecords where Point_PointId=99 order by RecordTime asc
+
+select min(RecordTime) as 'Start', max(RecordTime) as 'End' from DataRecords where Point_PointId=99
